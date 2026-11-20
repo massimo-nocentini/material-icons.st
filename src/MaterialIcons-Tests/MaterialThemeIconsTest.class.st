@@ -83,6 +83,8 @@ MaterialThemeIconsTest >> testExportZip [
 		        fallback: previous;
 		        build;
 		        yourself.
+	pack iconNamed: #material_cloud_sync.	"a key material_<name>, added on first use"
+	self assert: ((pack iconsPerScale at: 1.0) includesKey: #material_cloud_sync).
 	name := 'materialRoundTest' , Time millisecondClockValue printString.
 	pack name: name.
 	file := ThemeIcons destinationPath / (name , '.zip').
@@ -95,11 +97,14 @@ MaterialThemeIconsTest >> testExportZip [
 		archive := ZipArchive new readFrom: stream.
 		self
 			assert: (archive memberNamed: name , '/LICENSE-material-icons') contents asString
-			equals: MaterialThemeIconsArt licenseText withUnixLineEndings.
+			equals: MaterialIconsRoundedCategory licenseText withUnixLineEndings.
 		self
 			assert: (archive memberNamed: name , '/NOTICE') contents asString
 			equals: MaterialThemeIconsArt noticeText withUnixLineEndings.
-		self deny: ((archive memberNamed: name , '/NOTICE') contents asString includes: Character cr) ].
+		self deny: ((archive memberNamed: name , '/NOTICE') contents asString includes: Character cr).
+		self deny: (archive memberNames anySatisfy: [ :each |
+				 each includesSubstring: '/' , MaterialThemeIcons materialPrefix ]).
+		self assert: (archive memberNames includes: name , '/png-scale1.0/add.png') ].
 	loaded := ThemeIcons named: name.
 	loaded loadIconsFromUrl.
 	self
@@ -112,6 +117,25 @@ MaterialThemeIconsTest >> testExportZip [
 			theirs := (loaded iconsPerScale at: scale) at: key.
 			self assert: theirs extent equals: mine extent.
 			self assert: (theirs colorAt: theirs extent // 2) equals: (mine colorAt: mine extent // 2) ] ]
+]
+
+{ #category : 'tests' }
+MaterialThemeIconsTest >> testExportOverSnapshot [
+	"With a snapshot read from materialRound.zip current (chosen in the Settings), the pack to export goes over the pack replaced before, as install does, not over the snapshot"
+
+	| first snapshot pack |
+	first := MaterialThemeIcons install.
+	snapshot := ThemeIcons named: MaterialThemeIcons packName.
+	snapshot
+		instVarNamed: #iconsPerScale put: first iconsPerScale copy;
+		instVarNamed: #scale put: 1.
+	ThemeIcons current: snapshot.
+	self deny: MaterialThemeIcons isInstalled.
+	pack := MaterialThemeIcons packToExport.
+	self assert: pack fallback identicalTo: previous.
+	self deny: ThemeIcons current identicalTo: pack.
+	MaterialThemeIcons install.
+	self assert: MaterialThemeIcons packToExport identicalTo: MaterialThemeIcons installed
 ]
 
 { #category : 'tests' }
@@ -199,8 +223,9 @@ MaterialThemeIconsTest >> testLicence [
 	self assert: (MaterialIconsRoundedCategory comment includesSubstring: commit).
 	self assert: (MaterialThemeIconsArt comment includesSubstring: commit).
 	self assert: (MaterialThemeIconsArt noticeText includesSubstring: commit).
-	self assert: (MaterialThemeIconsArt licenseText includesSubstring: 'Apache License').
-	self assert: (MaterialThemeIconsArt licenseText includesSubstring: 'Version 2.0')
+	self assert: (MaterialIconsRoundedCategory licenseText includesSubstring: 'Apache License').
+	self assert: (MaterialIconsRoundedCategory licenseText includesSubstring: 'Version 2.0').
+	self assert: (MaterialIconsRoundedCategory comment includesSubstring: 'licenseText')
 ]
 
 { #category : 'tests' }
@@ -240,6 +265,25 @@ MaterialThemeIconsTest >> testMaterialKeys [
 ]
 
 { #category : 'tests' }
+MaterialThemeIconsTest >> testNotRunIsNotAWidget [
+	"testNotRun is a filled grey circle, not the empty circle of a radio button"
+
+	| pack |
+	pack := MaterialThemeIcons install.
+	self
+		assert: (MaterialThemeIconsArt entries detect: [ :each | each first = #testNotRun ]) allButFirst
+		equals: #( 'circle' 16 '9E9E9E' ).
+	self
+		assert: (pack iconNamed: #testNotRun) bits
+		equals: (MaterialIcons rounded
+				 formNamed: #circle
+				 scale: 1
+				 color: (Color fromHexString: '9E9E9E')) bits.
+	self deny: ((MaterialThemeIconsArt entries collect: [ :each | each second ]) includes:
+			 'radio_button_unchecked')
+]
+
+{ #category : 'tests' }
 MaterialThemeIconsTest >> testSettings [
 	"Stored settings record the fallback, a pack that a new image can restore, not materialRound, whose zip it could not download"
 
@@ -252,6 +296,17 @@ MaterialThemeIconsTest >> testSettings [
 	self assert: stored url equals: previous url.
 	self deny: stored name equals: MaterialThemeIcons packName.
 	self assert: stored realValue name equals: previous name
+]
+
+{ #category : 'tests' }
+MaterialThemeIconsTest >> testUninstallFlushesCache [
+	"The Forms the pack was drawn with do not stay in the shared cache of the icons after uninstall"
+
+	MaterialThemeIcons install.
+	Smalltalk ui icons iconNamed: #material_cloud_sync.
+	self assert: MaterialIcons rounded cacheSize > 0.
+	MaterialThemeIcons uninstall.
+	self assert: MaterialIcons rounded cacheSize equals: 0
 ]
 
 { #category : 'tests' }

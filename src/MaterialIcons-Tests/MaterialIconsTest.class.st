@@ -47,6 +47,31 @@ MaterialIconsTest >> testCache [
 ]
 
 { #category : 'tests' }
+MaterialIconsTest >> testCacheOfAnotherSession [
+	"Forms decoded in a previous session of the image (saved with it) are not counted, and are thrown away at the next access"
+
+	| form |
+	form := icons iconNamed: #home.
+	icons instVarNamed: #cacheSession put: Object new.
+	self assert: icons cacheSize equals: 0.
+	self deny: (icons iconNamed: #home) identicalTo: form.
+	self assert: icons cacheSize equals: 2
+]
+
+{ #category : 'tests' }
+MaterialIconsTest >> testCacheShutDown [
+	"Saving the image empties the caches of the shared instances, so that the saved image does not carry their Forms"
+
+	| shared |
+	self assert: (SessionManager default hasRegistered: #MaterialIcons).
+	shared := MaterialIcons rounded.
+	shared iconNamed: #home.
+	self assert: shared cacheSize > 0.
+	MaterialIcons shutDown: false.
+	self assert: shared cacheSize equals: 0
+]
+
+{ #category : 'tests' }
 MaterialIconsTest >> testCategoriesAndTags [
 
 	self assert: icons categories size equals: 18.

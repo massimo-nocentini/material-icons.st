@@ -19,7 +19,7 @@ The icons are drawn in my `color`: by default (nil) the text colour of the curre
 
 The scales are 1, 1.5 and 2 (16, 24 and 32 pixels), those of the Pharo icon packs. A FormSet holds the three, so that a canvas scaled for HiDPI picks the sharp one.
 
-I decode an icon the first time it is asked for, and keep its Form, per name, scale and colour, until `flushCache` or the next start of the image. Nothing else empties the cache: every new colour adds Forms to it (MaterialThemeIcons flushes it when the UI theme changes). My index of names is built at the first use and rebuilt by `MaterialIcons reset`.
+I decode an icon the first time it is asked for, and keep its Form, per name, scale and colour, until `flushCache`, the next save of the image (the class empties the caches of its instances when the image is saved, so that the saved image does not carry them) or the next start. Nothing else empties the cache: every new colour adds Forms to it (MaterialThemeIcons flushes it when the UI theme changes). My index of names is built at the first use and rebuilt by `MaterialIcons reset`.
 
 My icons do not change the icons of Pharo's UI: `MaterialThemeIcons install` (package MaterialIcons-ThemePack) does.
 "
@@ -51,6 +51,13 @@ MaterialIcons class >> formFromBase64PNG: aString [
 		  ifFalse: [ form asFormOfDepth: 32 ]
 ]
 
+{ #category : 'class initialization' }
+MaterialIcons class >> initialize [
+	"Empty the caches of the Forms when the image is saved (shutDown:)"
+
+	SessionManager default registerToolClassNamed: self name
+]
+
 { #category : 'accessing' }
 MaterialIcons class >> pixelSizes [
 	"The sides of the icons, in pixels, at my scales"
@@ -80,6 +87,12 @@ MaterialIcons class >> scales [
 	^ #( 1 1.5 2 )
 ]
 
+{ #category : 'class initialization' }
+MaterialIcons class >> unload [
+
+	SessionManager default unregisterClassNamed: self name
+]
+
 { #category : 'accessing' }
 MaterialIcons class >> style: aSymbol [
 	"The icons of the style aSymbol, one instance per style"
@@ -94,6 +107,13 @@ MaterialIcons class >> styles [
 	"The styles of the icons in the image"
 
 	^ MaterialIconsCategory styles
+]
+
+{ #category : 'system startup' }
+MaterialIcons class >> shutDown: isImageQuitting [
+	"The image is about to be saved: the Forms decoded so far would be saved with it, to be thrown away at its next start (they are kept per session). Forget them"
+
+	Instances ifNotNil: [ :all | all do: [ :each | each flushCache ] ]
 ]
 
 { #category : 'converting' }
@@ -135,9 +155,10 @@ MaterialIcons >> buildEntries [
 
 { #category : 'caching' }
 MaterialIcons >> cacheSize [
-	"The number of Forms in my cache"
+	"The number of Forms in my cache. Those of a previous session of the image do not count: the next access throws them away"
 
-	^ cache ifNil: [ 0 ] ifNotNil: [ cache size ]
+	(cache isNil or: [ cacheSession ~~ Smalltalk session ]) ifTrue: [ ^ 0 ].
+	^ cache size
 ]
 
 { #category : 'private' }

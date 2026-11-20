@@ -17,7 +17,9 @@ Loading the package changes nothing: only `install` does. `install` keeps the cu
 
 Saving the Settings of Pharo while I am installed records my fallback as the icon pack, not me: a pack restored from stored settings is read from a zip named after it, which only `exportToIconPacks` writes, so a new image could not restore me. To get me at every start, put `MaterialThemeIcons install` in a startup script.
 
-The Settings of Pharo (the Icon Set of Pharo 12, the Icons Pack Manager of Pharo 15) list the current pack and the zips of `ThemeIcons destinationPath`. `exportToIconPacks` writes me there as such a zip (`materialRound.zip`, the layout of pharo-project/pharo-icon-packs: png-scale1.0, png-scale1.5, png-scale2.0), and my fallback too when its zip is missing, so that both can be chosen there, offline. A pack chosen there is a plain ThemeIcons read from the zip: a snapshot of me, without the `material_` keys. `install` over such a snapshot takes the pack that I replaced before (or the default pack, svgPack) as the fallback, not the snapshot. The zip holds the Apache License 2.0 of the icons and a NOTICE (`MaterialThemeIconsArt licenseText` and `noticeText`) next to the PNGs.
+The Settings of Pharo (the Icon Set of Pharo 12, the Icons Pack Manager of Pharo 15) list the current pack and the zips of `ThemeIcons destinationPath`. `exportToIconPacks` writes me there as such a zip (`materialRound.zip`, the layout of pharo-project/pharo-icon-packs: png-scale1.0, png-scale1.5, png-scale2.0), and my fallback too when its zip is missing, so that both can be chosen there, offline. A pack chosen there is a plain ThemeIcons read from the zip: a snapshot of me, without the `material_` keys (the export leaves them out, even those already used) and without the redraw on theme changes. `install` and `exportToIconPacks` over such a snapshot take the pack that I replaced before (or the default pack, svgPack) as the fallback, not the snapshot. The zip holds the Apache License 2.0 of the icons and a NOTICE (`MaterialIconsRoundedCategory licenseText` and `MaterialThemeIconsArt noticeText`) next to the PNGs.
+
+`uninstall` also empties the cache of `MaterialIcons rounded`, which holds the Forms I was drawn with.
 "
 Class {
 	#name : 'MaterialThemeIcons',
@@ -35,21 +37,23 @@ Class {
 
 { #category : 'exporting' }
 MaterialThemeIcons class >> exportPack: aThemeIcons to: aFileReference [
-	"Write aThemeIcons as an icon pack zip that ThemeIcons loads: <name>/png-scale<scale>/<key>.png. A Material pack also gets <name>/LICENSE-material-icons and <name>/NOTICE, which ThemeIcons does not read (it reads the *.png files of the png-scale* directories), with LF line ends"
+	"Write aThemeIcons as an icon pack zip that ThemeIcons loads: <name>/png-scale<scale>/<key>.png. A Material pack leaves out its keys material_<name>, added when they are used (so the zip does not depend on which were), and also gets <name>/LICENSE-material-icons and <name>/NOTICE, which ThemeIcons does not read (it reads the *.png files of the png-scale* directories), with LF line ends"
 
-	| archive |
+	| archive isMaterial |
+	isMaterial := aThemeIcons isKindOf: self.
 	archive := ZipArchive new.
 	aThemeIcons iconsPerScale keys sorted do: [ :scale |
 		| icons |
 		icons := aThemeIcons iconsPerScale at: scale.
 		icons keys sorted do: [ :key |
-			key = #notFound ifFalse: [
+			(key = #notFound or: [
+				 isMaterial and: [ key beginsWith: self materialPrefix ] ]) ifFalse: [
 				archive
 					addDeflateString: (self pngBytesOf: (icons at: key))
 					as: aThemeIcons name , '/png-scale' , scale asFloat printString , '/' , key , '.png' ] ] ].
-	(aThemeIcons isKindOf: self) ifTrue: [
+	isMaterial ifTrue: [
 		archive
-			addDeflateString: MaterialThemeIconsArt licenseText withUnixLineEndings
+			addDeflateString: MaterialIconsRoundedCategory licenseText withUnixLineEndings
 			as: aThemeIcons name , '/LICENSE-material-icons'.
 		archive
 			addDeflateString: MaterialThemeIconsArt noticeText withUnixLineEndings
@@ -63,10 +67,10 @@ MaterialThemeIcons class >> exportPack: aThemeIcons to: aFileReference [
 
 { #category : 'exporting' }
 MaterialThemeIcons class >> exportToIconPacks [
-	"Write the installed pack (or a new one, over the current pack) as <ThemeIcons destinationPath>/materialRound.zip, and its fallback as <its name>.zip when that file is missing: the Settings of Pharo list them. Answer the zip of the pack"
+	"Write the installed pack (or a new one, over the pack that install would take) as <ThemeIcons destinationPath>/materialRound.zip, and its fallback as <its name>.zip when that file is missing: the Settings of Pharo list them. Answer the zip of the pack"
 
 	| pack file |
-	pack := self installed ifNil: [ self new fallback: ThemeIcons current; build; yourself ].
+	pack := self packToExport.
 	file := self exportPack: pack to: ThemeIcons destinationPath / (pack name , '.zip').
 	pack fallback ifNotNil: [ :previous |
 		previous name ifNotNil: [ :previousName |
@@ -74,6 +78,17 @@ MaterialThemeIcons class >> exportToIconPacks [
 			previousFile := ThemeIcons destinationPath / (previousName , '.zip').
 			previousFile exists ifFalse: [ self exportPack: previous to: previousFile ] ] ].
 	^ file
+]
+
+{ #category : 'exporting' }
+MaterialThemeIcons class >> packToExport [
+	"The installed pack, else a new one over the pack that install would go over (fallbackForInstall), so that the export of a snapshot chosen in the Settings is not built over that snapshot"
+
+	^ self installed ifNil: [
+		  self new
+			  fallback: self fallbackForInstall;
+			  build;
+			  yourself ]
 ]
 
 { #category : 'installing' }
@@ -101,7 +116,7 @@ MaterialThemeIcons class >> installColor: aColorOrNil [
 	^ pack
 ]
 
-{ #category : 'installing' }
+{ #category : 'accessing' }
 MaterialThemeIcons class >> defaultPackName [
 	"The name of Pharo's default icon pack"
 
@@ -124,7 +139,7 @@ MaterialThemeIcons class >> fallbackForInstall [
 			  yourself ]
 ]
 
-{ #category : 'installing' }
+{ #category : 'accessing' }
 MaterialThemeIcons class >> installed [
 	"The installed pack, or nil. ThemeIcons current is not used here: when no pack is current yet, it loads the default one (ThemeIcons class >> loadDefault, which may download svgPack.zip) as a side effect"
 
@@ -172,7 +187,7 @@ MaterialThemeIcons class >> pngBytesOf: aForm [
 		  PNGReadWriter putForm: plain onStream: stream ]
 ]
 
-{ #category : 'installing' }
+{ #category : 'event handling' }
 MaterialThemeIcons class >> subscribeToThemeChanges [
 
 	self unsubscribeFromThemeChanges.
@@ -182,7 +197,7 @@ MaterialThemeIcons class >> subscribeToThemeChanges [
 		to: self
 ]
 
-{ #category : 'installing' }
+{ #category : 'event handling' }
 MaterialThemeIcons class >> themeChanged: anAnnouncement [
 	"Redraw the installed pack in the colours of the new UI theme, dropping the Forms of the old colours from the cache of the icons. When another pack has been made current (in the Settings), stop listening"
 
@@ -196,15 +211,16 @@ MaterialThemeIcons class >> themeChanged: anAnnouncement [
 
 { #category : 'installing' }
 MaterialThemeIcons class >> uninstall [
-	"Make the pack that the installed one replaced the icons of the UI again"
+	"Make the pack that the installed one replaced the icons of the UI again, and empty the cache of the Material icons, which holds the Forms it was drawn with"
 
 	<script>
 	self unsubscribeFromThemeChanges.
 	self installed ifNotNil: [ :pack |
-		pack fallback ifNotNil: [ :previous | previous beCurrent ] ]
+		pack fallback ifNotNil: [ :previous | previous beCurrent ].
+		pack provider flushCache ]
 ]
 
-{ #category : 'installing' }
+{ #category : 'event handling' }
 MaterialThemeIcons class >> unsubscribeFromThemeChanges [
 
 	self codeSupportAnnouncer unsubscribe: self
@@ -370,6 +386,7 @@ MaterialThemeIcons >> loadIconsFromUrl [
 
 { #category : 'loading' }
 MaterialThemeIcons >> loadIconsFromUrlUsingScale: aNumber [
+	"My icons are in the image, at every scale: build them, whatever aNumber"
 
 	self build
 ]

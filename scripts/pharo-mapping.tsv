@@ -218,7 +218,7 @@ string	text_snippet	16	-
 system	computer	16	-
 table	table_chart	16	-
 testGreen	check_circle	16	43A047
-testNotRun	radio_button_unchecked	16	-
+testNotRun	circle	16	9E9E9E
 testRed	cancel	16	E53935
 testRunner	checklist	16	-
 testYellow	error	16	FFB300
