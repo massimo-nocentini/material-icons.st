@@ -1,0 +1,203 @@
+"
+I test `MaterialThemeIcons`, the Material icon pack of the UI: install and uninstall restore the previous pack, mapped keys are Material at the size of the previous pack, the others are those of the previous pack, the keys material_<name>, HiDPI, the zip for the Settings. I leave the UI's pack as I found it.
+"
+Class {
+	#name : 'MaterialThemeIconsTest',
+	#superclass : 'TestCase',
+	#instVars : [
+		'previous',
+		'exported'
+	],
+	#category : 'MaterialIcons-Tests',
+	#package : 'MaterialIcons-Tests'
+}
+
+{ #category : 'running' }
+MaterialThemeIconsTest >> defaultTimeLimit [
+
+	^ 2 minutes
+]
+
+{ #category : 'running' }
+MaterialThemeIconsTest >> setUp [
+
+	super setUp.
+	previous := ThemeIcons current.
+	exported := OrderedCollection new
+]
+
+{ #category : 'running' }
+MaterialThemeIconsTest >> tearDown [
+
+	MaterialThemeIcons unsubscribeFromThemeChanges.
+	ThemeIcons current == previous ifFalse: [ previous beCurrent ].
+	exported do: [ :each | each ensureDelete ].
+	super tearDown
+]
+
+{ #category : 'tests' }
+MaterialThemeIconsTest >> testColors [
+
+	| pack testGreen |
+	pack := MaterialThemeIcons installColor: Color red.
+	self deny: pack followsTheme.
+	self
+		assert: (pack iconNamed: #add) bits
+		equals: (MaterialIcons rounded formNamed: #add scale: 1 color: Color red) bits.
+	testGreen := pack iconNamed: #testGreen.
+	self
+		assert: testGreen bits
+		equals: (MaterialIcons rounded
+				 formNamed: #check_circle
+				 scale: 1
+				 color: (Color fromHexString: '43A047')) bits
+]
+
+{ #category : 'tests' }
+MaterialThemeIconsTest >> testEntries [
+	"Mapped keys are unique Pharo keys of the default pack, mapped to Material icons"
+
+	| keys |
+	keys := MaterialThemeIconsArt entries collect: [ :each | each first ].
+	self assert: keys asSet size equals: keys size.
+	self assert: keys size equals: 243.
+	MaterialThemeIconsArt entries do: [ :each |
+		self assert: (MaterialIcons rounded includesIcon: each second) ]
+]
+
+{ #category : 'tests' }
+MaterialThemeIconsTest >> testExportZip [
+	"The zip that the Settings list loads as a plain ThemeIcons, offline, with the same icons"
+
+	| pack name file loaded |
+	pack := MaterialThemeIcons new
+		        fallback: previous;
+		        build;
+		        yourself.
+	name := 'materialRoundTest' , Time millisecondClockValue printString.
+	pack name: name.
+	file := ThemeIcons destinationPath / (name , '.zip').
+	exported add: file.
+	MaterialThemeIcons exportPack: pack to: file.
+	self assert: file exists.
+	self assert: ((ThemeIcons availablePacks collect: [ :each | each name ]) includes: name).
+	loaded := ThemeIcons named: name.
+	loaded loadIconsFromUrl.
+	self
+		assert: loaded iconsPerScale keys asSet
+		equals: (MaterialIcons scales collect: [ :each | each asFloat ]) asSet.
+	#( #add #smallSave #accept #checkboxSelected ) do: [ :key |
+		MaterialIcons scales do: [ :scale |
+			| mine theirs |
+			mine := (pack iconsPerScale at: scale) at: key.
+			theirs := (loaded iconsPerScale at: scale) at: key.
+			self assert: theirs extent equals: mine extent.
+			self assert: (theirs colorAt: theirs extent // 2) equals: (mine colorAt: mine extent // 2) ] ]
+]
+
+{ #category : 'tests' }
+MaterialThemeIconsTest >> testFallbackKeys [
+	"The keys of the previous pack that are not mapped are its own Forms"
+
+	| pack mapped |
+	pack := MaterialThemeIcons install.
+	mapped := (MaterialThemeIconsArt entries collect: [ :each | each first ]) asSet.
+	(previous iconsPerScale at: 1.0) keysAndValuesDo: [ :key :form |
+		(mapped includes: key) ifFalse: [
+			self assert: ((pack iconsPerScale at: 1.0) at: key) identicalTo: form ] ].
+	self
+		assert: (pack iconNamed: #checkboxSelected) extent
+		equals: (previous iconNamed: #checkboxSelected) extent
+]
+
+{ #category : 'tests' }
+MaterialThemeIconsTest >> testHiDPI [
+
+	| pack formSet |
+	pack := MaterialThemeIcons install.
+	formSet := pack iconFormSetNamed: #add.
+	self assert: (formSet asFormAtScale: 2) extent equals: 32 @ 32.
+	self assert: ((pack iconsPerScale at: 1.5) at: #add) extent equals: 24 @ 24
+]
+
+{ #category : 'tests' }
+MaterialThemeIconsTest >> testInstallAndUninstall [
+
+	| pack |
+	self deny: MaterialThemeIcons isInstalled.
+	pack := MaterialThemeIcons install.
+	self assert: MaterialThemeIcons isInstalled.
+	self assert: Smalltalk ui icons identicalTo: pack.
+	self assert: ThemeIcons current identicalTo: pack.
+	self assert: pack fallback identicalTo: previous.
+	self assert: pack name equals: 'materialRound'.
+	self assert: pack hasIcons.
+	MaterialThemeIcons uninstall.
+	self deny: MaterialThemeIcons isInstalled.
+	self assert: Smalltalk ui icons identicalTo: previous.
+	self assert: ThemeIcons current identicalTo: previous
+]
+
+{ #category : 'tests' }
+MaterialThemeIconsTest >> testInstallTwice [
+	"Installing over an installed pack keeps the first fallback: uninstall goes back to it"
+
+	| first second |
+	first := MaterialThemeIcons install.
+	second := MaterialThemeIcons installColor: Color blue.
+	self deny: second identicalTo: first.
+	self assert: second fallback identicalTo: previous.
+	MaterialThemeIcons uninstall.
+	self assert: ThemeIcons current identicalTo: previous
+]
+
+{ #category : 'tests' }
+MaterialThemeIconsTest >> testMappedKeys [
+	"Mapped keys are Material, at the size the previous pack draws them"
+
+	| pack |
+	pack := MaterialThemeIcons install.
+	self
+		assert: (pack iconNamed: #add) bits
+		equals: (MaterialIcons rounded formNamed: #add scale: 1 color: pack effectiveColor) bits.
+	self deny: (pack iconNamed: #add) bits equals: (previous iconNamed: #add) bits.
+	MaterialThemeIconsArt entries do: [ :entry |
+		MaterialIcons scales with: MaterialIcons pixelSizes do: [ :scale :side |
+			| form expected |
+			form := (pack iconsPerScale at: scale) at: entry first.
+			expected := (entry third * scale) rounded.
+			self assert: form extent equals: expected @ expected.
+			((previous iconsPerScale at: scale) at: entry first ifAbsent: [ nil ])
+				ifNotNil: [ :old | self assert: form extent equals: old extent ] ] ]
+]
+
+{ #category : 'tests' }
+MaterialThemeIconsTest >> testMaterialKeys [
+
+	| pack |
+	pack := MaterialThemeIcons install.
+	self assert: (Smalltalk ui icons iconNamed: #material_10k) extent equals: 16 @ 16.
+	self assert: (pack materialIconNamed: #cloud_sync) extent equals: 16 @ 16.
+	self
+		assert: (pack iconNamed: #material_home) bits
+		equals: (MaterialIcons rounded formNamed: #home scale: 1 color: pack effectiveColor) bits.
+	self assert: ((pack iconFormSetNamed: #material_home) asFormAtScale: 2) extent equals: 32 @ 32.
+	self assert: (pack allIconNames includes: #material_arrow_back).
+	self assert: (pack allIconNames includes: #add).
+	self assert: (pack iconNamed: #material_no_such_icon ifNone: [ #none ]) equals: #none
+]
+
+{ #category : 'tests' }
+MaterialThemeIconsTest >> testThemeChange [
+	"A pack in the colour of the theme is redrawn when the theme changes"
+
+	| pack |
+	pack := MaterialThemeIcons install.
+	pack color: Color red.
+	pack build.
+	pack color: nil.
+	MaterialThemeIcons themeChanged: nil.
+	self
+		assert: (pack iconNamed: #add) bits
+		equals: (MaterialIcons rounded formNamed: #add scale: 1 color: MaterialIcons rounded themeColor) bits
+]
