@@ -15,11 +15,11 @@ MaterialIcons rounded search: 'trash'.			""by name and by tag""
 MaterialIcons rounded entryNamed: #home.		""a MaterialIcon: category, codepoint, tags""
 ```
 
-The icons are drawn in my `color`: by default (nil) the text colour of the current UI theme, so that they read on a light and on a dark theme alike; `color: aColor` fixes it, `color: nil` follows the theme again.
+The icons are drawn in my `color`: by default (nil) the text colour of the current UI theme, so that they read on a light and on a dark theme alike; `color: aColor` fixes it, `color: nil` follows the theme again. `MaterialIcons rounded` is one instance shared by every client, so `color:` changes the colour for all of them: a client that wants its own colour passes it, `formNamed:scale:color:` and `formSetNamed:color:` (nil there too means the colour of the theme).
 
 The scales are 1, 1.5 and 2 (16, 24 and 32 pixels), those of the Pharo icon packs. A FormSet holds the three, so that a canvas scaled for HiDPI picks the sharp one.
 
-I decode an icon the first time it is asked for, and keep its Form, per name, scale and colour, until `flushCache` or the next start of the image. My index of names is built at the first use and rebuilt by `MaterialIcons reset`.
+I decode an icon the first time it is asked for, and keep its Form, per name, scale and colour, until `flushCache` or the next start of the image. Nothing else empties the cache: every new colour adds Forms to it (MaterialThemeIcons flushes it when the UI theme changes). My index of names is built at the first use and rebuilt by `MaterialIcons reset`.
 
 My icons do not change the icons of Pharo's UI: `MaterialThemeIcons install` (package MaterialIcons-ThemePack) does.
 "
@@ -236,9 +236,10 @@ MaterialIcons >> formNamed: aName scale: aScale [
 
 { #category : 'forms' }
 MaterialIcons >> formNamed: aName scale: aScale color: aColor [
-	"The icon aName at aScale (1, 1.5 or 2: 16, 24 or 32 pixels) in aColor"
+	"The icon aName at aScale (1, 1.5 or 2: 16, 24 or 32 pixels) in aColor (nil: my colour)"
 
 	| mask |
+	aColor ifNil: [ ^ self formNamed: aName scale: aScale ].
 	mask := self maskNamed: aName scale: aScale.
 	^ self
 		  cached: {
@@ -257,7 +258,7 @@ MaterialIcons >> formSetNamed: aName [
 
 { #category : 'forms' }
 MaterialIcons >> formSetNamed: aName color: aColor [
-	"A FormSet of the icon aName in aColor, 16x16 with the Forms of the three scales, for HiDPI"
+	"A FormSet of the icon aName in aColor (nil: my colour), 16x16 with the Forms of the three scales, for HiDPI"
 
 	^ FormSet
 		  extent: self class pixelSizes first asPoint
@@ -298,7 +299,7 @@ MaterialIcons >> iconNamesInCategory: aString [
 { #category : 'testing' }
 MaterialIcons >> includesIcon: aName [
 
-	^ (aName isString or: [ aName isSymbol ]) and: [
+	^ aName isString and: [
 		  self entries includesKey: aName asSymbol ]
 ]
 
@@ -315,7 +316,7 @@ MaterialIcons >> indexOfScale: aNumber [
 
 { #category : 'forms' }
 MaterialIcons >> maskNamed: aName scale: aScale [
-	"The shape of the icon aName at aScale: black, with the alpha of the icon"
+	"The shape of the icon aName at aScale: black, with the alpha of the icon. Its key in the cache ends with #mask, where the others end with a Color"
 
 	| entry index |
 	entry := self entryNamed: aName.
@@ -324,7 +325,7 @@ MaterialIcons >> maskNamed: aName scale: aScale [
 		  cached: {
 				  entry name.
 				  aScale asFloat.
-				  nil }
+				  #mask }
 		  ifAbsentPut: [
 		  self class formFromBase64PNG: (entry base64PNGAt: index) ]
 ]

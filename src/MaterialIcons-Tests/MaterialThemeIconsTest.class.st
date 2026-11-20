@@ -1,12 +1,14 @@
 "
-I test `MaterialThemeIcons`, the Material icon pack of the UI: install and uninstall restore the previous pack, mapped keys are Material at the size of the previous pack, the others are those of the previous pack, the keys material_<name>, HiDPI, the zip for the Settings. I leave the UI's pack as I found it.
+I test `MaterialThemeIcons`, the Material icon pack of the UI: install and uninstall restore the previous pack, mapped keys are Material at the size of the previous pack, the others are those of the previous pack, the keys material_<name>, HiDPI, the zip for the Settings. I leave the UI's pack as I found it: a Material pack installed before the tests is put aside and made current again after each of them.
 "
 Class {
 	#name : 'MaterialThemeIconsTest',
 	#superclass : 'TestCase',
 	#instVars : [
 		'previous',
-		'exported'
+		'exported',
+		'installedBefore',
+		'lastFallbackBefore'
 	],
 	#category : 'MaterialIcons-Tests',
 	#package : 'MaterialIcons-Tests'
@@ -22,6 +24,9 @@ MaterialThemeIconsTest >> defaultTimeLimit [
 MaterialThemeIconsTest >> setUp [
 
 	super setUp.
+	installedBefore := MaterialThemeIcons installed.
+	lastFallbackBefore := MaterialThemeIcons instVarNamed: #lastFallback.
+	MaterialThemeIcons uninstall.
 	previous := ThemeIcons current.
 	exported := OrderedCollection new
 ]
@@ -31,6 +36,10 @@ MaterialThemeIconsTest >> tearDown [
 
 	MaterialThemeIcons unsubscribeFromThemeChanges.
 	ThemeIcons current == previous ifFalse: [ previous beCurrent ].
+	MaterialThemeIcons instVarNamed: #lastFallback put: lastFallbackBefore.
+	installedBefore ifNotNil: [
+		installedBefore beCurrent.
+		MaterialThemeIcons subscribeToThemeChanges ].
 	exported do: [ :each | each ensureDelete ].
 	super tearDown
 ]
@@ -81,6 +90,16 @@ MaterialThemeIconsTest >> testExportZip [
 	MaterialThemeIcons exportPack: pack to: file.
 	self assert: file exists.
 	self assert: ((ThemeIcons availablePacks collect: [ :each | each name ]) includes: name).
+	file binaryReadStreamDo: [ :stream |
+		| archive |
+		archive := ZipArchive new readFrom: stream.
+		self
+			assert: (archive memberNamed: name , '/LICENSE-material-icons') contents asString
+			equals: MaterialThemeIconsArt licenseText withUnixLineEndings.
+		self
+			assert: (archive memberNamed: name , '/NOTICE') contents asString
+			equals: MaterialThemeIconsArt noticeText withUnixLineEndings.
+		self deny: ((archive memberNamed: name , '/NOTICE') contents asString includes: Character cr) ].
 	loaded := ThemeIcons named: name.
 	loaded loadIconsFromUrl.
 	self
@@ -152,6 +171,39 @@ MaterialThemeIconsTest >> testInstallTwice [
 ]
 
 { #category : 'tests' }
+MaterialThemeIconsTest >> testInstallOverSnapshot [
+	"A pack read from materialRound.zip (chosen in the Settings) is not taken as the fallback: install goes over the pack replaced before"
+
+	| first snapshot second |
+	first := MaterialThemeIcons install.
+	snapshot := ThemeIcons named: MaterialThemeIcons packName.
+	snapshot
+		instVarNamed: #iconsPerScale put: first iconsPerScale copy;
+		instVarNamed: #scale put: 1.
+	ThemeIcons current: snapshot.
+	self deny: MaterialThemeIcons isInstalled.
+	second := MaterialThemeIcons install.
+	self assert: second fallback identicalTo: previous.
+	MaterialThemeIcons uninstall.
+	self assert: ThemeIcons current identicalTo: previous
+]
+
+{ #category : 'tests' }
+MaterialThemeIconsTest >> testLicence [
+	"The licence and the attribution exported in the zip, and the provenance of the generated classes"
+
+	| commit |
+	commit := MaterialIconsRoundedCategory upstreamCommit.
+	self assert: commit size equals: 40.
+	self assert: (MaterialIconsRoundedCategory upstreamDescription includesSubstring: commit).
+	self assert: (MaterialIconsRoundedCategory comment includesSubstring: commit).
+	self assert: (MaterialThemeIconsArt comment includesSubstring: commit).
+	self assert: (MaterialThemeIconsArt noticeText includesSubstring: commit).
+	self assert: (MaterialThemeIconsArt licenseText includesSubstring: 'Apache License').
+	self assert: (MaterialThemeIconsArt licenseText includesSubstring: 'Version 2.0')
+]
+
+{ #category : 'tests' }
 MaterialThemeIconsTest >> testMappedKeys [
 	"Mapped keys are Material, at the size the previous pack draws them"
 
@@ -188,6 +240,21 @@ MaterialThemeIconsTest >> testMaterialKeys [
 ]
 
 { #category : 'tests' }
+MaterialThemeIconsTest >> testSettings [
+	"Stored settings record the fallback, a pack that a new image can restore, not materialRound, whose zip it could not download"
+
+	| pack factory stored |
+	pack := MaterialThemeIcons install.
+	factory := StoredSettingsFactory new.
+	pack acceptSettings: factory.
+	stored := factory instVarNamed: #storedSetting.
+	self assert: stored name equals: previous name.
+	self assert: stored url equals: previous url.
+	self deny: stored name equals: MaterialThemeIcons packName.
+	self assert: stored realValue name equals: previous name
+]
+
+{ #category : 'tests' }
 MaterialThemeIconsTest >> testThemeChange [
 	"A pack in the colour of the theme is redrawn when the theme changes"
 
@@ -200,4 +267,16 @@ MaterialThemeIconsTest >> testThemeChange [
 	self
 		assert: (pack iconNamed: #add) bits
 		equals: (MaterialIcons rounded formNamed: #add scale: 1 color: MaterialIcons rounded themeColor) bits
+]
+
+{ #category : 'tests' }
+MaterialThemeIconsTest >> testThemeChangeAfterAnotherPack [
+	"When another pack has been made current, a theme change unsubscribes the class"
+
+	MaterialThemeIcons install.
+	self assert: (MaterialThemeIcons codeSupportAnnouncer hasSubscriber: MaterialThemeIcons).
+	previous beCurrent.
+	MaterialThemeIcons themeChanged: nil.
+	self deny: (MaterialThemeIcons codeSupportAnnouncer hasSubscriber: MaterialThemeIcons).
+	self assert: ThemeIcons current identicalTo: previous
 ]

@@ -42,6 +42,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 MANIFEST = os.path.join(HERE, 'manifest.json')
 MAPPING = os.path.join(HERE, 'pharo-mapping.tsv')
+ICON_LICENSE = os.path.join(ROOT, 'LICENSE-material-icons')
 
 REPOSITORY = 'google/material-design-icons'
 COMMIT = '3912baecc97388955ce39f5e26bfb786a70cbe48'
@@ -145,10 +146,19 @@ def pin(cache):
         for icon, digest in zip(manifest['icons'], pool.map(hash_of, manifest['icons'])):
             icon['sha256'] = digest
     manifest['metadata'] = {
-        'url': METADATA_URL, 'family': FAMILY, 'sha256': sha256(raw),
+        'url': METADATA_URL, 'family': FAMILY, 'round_subset_sha256': round_subset_sha256(entries),
         'retrieved': datetime.date.today().isoformat(), 'icons': len(manifest['icons'])}
     write_manifest(manifest)
     print(f'{len(manifest["icons"])} icons pinned at {COMMIT}')
+
+
+def round_subset_sha256(entries):
+    """The SHA-256 of what the pin takes from the metadata: the icons of FAMILY, sorted by name,
+    with their name, categories, codepoint, version and tags, as compact JSON of sorted keys.
+    The raw response cannot be hashed: its popularity counters change from one fetch to the next."""
+    keys = ('name', 'categories', 'codepoint', 'version', 'tags')
+    subset = [{key: each[key] for key in keys} for each in sorted(entries, key=lambda e: e['name'])]
+    return sha256(json.dumps(subset, sort_keys=True, separators=(',', ':')).encode('utf-8'))
 
 
 def write_manifest(manifest):
@@ -317,6 +327,11 @@ def png_array(pngs):
     return '\t^ #( ' + ' '.join(st_string(base64.b64encode(p).decode('ascii')) for p in pngs) + ' )'
 
 
+def source_of(manifest):
+    upstream = manifest['upstream']
+    return f'https://github.com/{upstream["repository"]} at commit {upstream["commit"]}, {upstream["path"]}'
+
+
 def generate(manifest, sources, rasterizer):
     """path relative to ROOT -> text of every generated file."""
     files = {}
@@ -325,8 +340,7 @@ def generate(manifest, sources, rasterizer):
     categories = sorted({icon['category'] for icon in icons})
     upstream = manifest['upstream']
     files[f'{pkg}/package.st'] = f"Package {{ #name : '{PACKAGE}' }}\n"
-    source = (f'https://github.com/{upstream["repository"]} at commit {upstream["commit"]}, '
-              f'{upstream["path"]}')
+    source = source_of(manifest)
     counts = ' '.join(f'#( {st_string(c)} {sum(1 for i in icons if i["category"] == c)} )' for c in categories)
     files[f'{pkg}/{ROOT_CLASS}.class.st'] = tonel_class(
         ROOT_CLASS, 'MaterialIconsCategory', PACKAGE,
@@ -379,6 +393,36 @@ def read_mapping():
     return rows
 
 
+def icon_license(manifest):
+    """The text of LICENSE-material-icons, checked against the SHA-256 of the upstream LICENSE in the pin."""
+    with open(ICON_LICENSE, 'rb') as stream:
+        data = stream.read()
+    expected = manifest['upstream']['license']['sha256']
+    if sha256(data) != expected:
+        raise RuntimeError(f'{ICON_LICENSE}: SHA-256 {sha256(data)}, expected {expected} (the pinned upstream LICENSE)')
+    return data.decode('utf-8')
+
+
+def notice_text(manifest, rasterizer):
+    upstream = manifest['upstream']
+    return '\n'.join([
+        'This icon pack includes Material Icons by Google:',
+        '',
+        '  Material Icons Rounded (the family "Material Icons Round")',
+        f'  https://github.com/{upstream["repository"]}',
+        f'  commit {upstream["commit"]},',
+        f'  {upstream["path"]}',
+        '  Licensed under the Apache License, Version 2.0 (see LICENSE-material-icons).',
+        '',
+        'Its PNG files of the Material icons are modified forms of those SVG files:',
+        f'rasterized by material-icons.st (scripts/generate.py, {rasterizer.description}),',
+        'then painted in one colour in Pharo by MaterialThemeIcons.',
+        'The other PNG files are those of the icon pack it was built over',
+        '(by default svgPack, https://github.com/pharo-project/pharo-icon-packs),',
+        'under the licence of that pack.',
+        ''])
+
+
 def generate_art(manifest, sources, rasterizer):
     names = {icon['name'] for icon in manifest['icons']}
     rows = read_mapping()
@@ -398,11 +442,21 @@ def generate_art(manifest, sources, rasterizer):
         '\tcolour of the UI theme). The keys of side 16 use the Material icons themselves; the others',
         '\thave their own pixels, art_<name>_<side>, at that side times 1, 1.5 and 2 (rounded)"',
         '', '\t^ #(', *entries, '\t)']))
+    source = source_of(manifest)
+    methods.append((True, 'licenseText', 'licence', [
+        '\t"The Apache License 2.0 of Material Icons (LICENSE-material-icons, the LICENSE of the upstream',
+        '\trepository at the pinned commit): MaterialThemeIcons class >> exportPack:to: puts it in the zip"',
+        '', '\t^ ' + st_string(icon_license(manifest))]))
+    methods.append((True, 'noticeText', 'licence', [
+        '\t"The attribution that MaterialThemeIcons class >> exportPack:to: puts in the zip, as NOTICE"',
+        '', '\t^ ' + st_string(notice_text(manifest, rasterizer))]))
     text = tonel_class(
         ART_CLASS, 'Object', THEME_PACKAGE,
         f'I hold the mapping of {len(rows)} Pharo icon keys to Material Icons Rounded for MaterialThemeIcons '
         '(scripts/pharo-mapping.tsv), and the pixels of the keys that svgPack, the default pack, does not draw '
-        'at 16 pixels, rendered at their own size so that the rows and menus keep their layout.\n\n'
+        'at 16 pixels, rendered at their own size so that the rows and menus keep their layout. '
+        '`licenseText` and `noticeText` go into the zip that MaterialThemeIcons exports.\n\n'
+        f'Source: {source}, Apache License 2.0 (Google). Rasterized by {rasterizer.description}.\n\n'
         'Generated by scripts/generate.py: do not edit, regenerate.',
         methods)
     return {f'src/{THEME_PACKAGE}/{ART_CLASS}.class.st': text}

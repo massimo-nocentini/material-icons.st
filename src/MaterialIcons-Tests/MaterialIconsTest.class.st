@@ -77,6 +77,26 @@ MaterialIconsTest >> testColor [
 ]
 
 { #category : 'tests' }
+MaterialIconsTest >> testColorNil [
+	"nil as the colour of a call means my colour, as elsewhere, and never the black shape (the mask)"
+
+	| form |
+	form := icons formNamed: #home scale: 2 color: nil.	"before the shape is in the cache"
+	self assert: form bits equals: (icons formNamed: #home scale: 2) bits.
+	icons color: Color red.
+	form := icons formNamed: #home scale: 1 color: nil.
+	self deny: form identicalTo: (icons maskNamed: #home scale: 1).
+	self assert: (self opaquePixelsOf: form) asArray equals: { Color red }.
+	self
+		assert: ((icons formSetNamed: #home color: nil) asFormAtScale: 2) bits
+		equals: (icons formNamed: #home scale: 2 color: Color red) bits.
+	icons color: nil.
+	self
+		assert: (icons formNamed: #home scale: 1.5 color: nil) bits
+		equals: (icons formNamed: #home scale: 1.5 color: icons themeColor) bits
+]
+
+{ #category : 'tests' }
 MaterialIconsTest >> testDigitLedNames [
 
 	self assert: (icons includesIcon: #'10k').

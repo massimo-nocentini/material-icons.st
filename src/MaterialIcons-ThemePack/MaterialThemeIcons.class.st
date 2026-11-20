@@ -13,9 +13,11 @@ MaterialThemeIcons installColor: Color gray.	""a fixed colour instead of that of
 MaterialThemeIcons exportToIconPacks.	""list me in Settings > Appearance (see below)""
 ```
 
-Loading the package changes nothing: only `install` does. `install` keeps the current pack as my fallback (installing again keeps the first one), and `uninstall` makes it current again; both go through `ThemeIcons current:`, so the tools of Pharo 12 and 15 (Morphic, Spec, Commander) pick the new icons in the windows they open next. The icons are in the colour of the UI theme (`MaterialIcons rounded themeColor`), redrawn when the theme changes, except the keys of fixed colour (green, red, amber and blue for the tests, errors, warnings and information).
+Loading the package changes nothing: only `install` does. `install` keeps the current pack as my fallback (installing again keeps the first one), and `uninstall` makes it current again; both go through `ThemeIcons current:`, so the tools of Pharo 12 and 15 (Morphic, Spec, Commander) pick the new icons in the windows they open next. The icons are in the colour of the UI theme (`MaterialIcons rounded themeColor`), redrawn when the theme changes, except the status keys, of fixed colour: tests, errors, warnings, information, breakpoint and confirm (green, red, amber, blue, red and green; see `MaterialThemeIconsArt entries`).
 
-The Settings of Pharo (the Icon Set of Pharo 12, the Icons Pack Manager of Pharo 15) list the current pack and the zips of `ThemeIcons destinationPath`. `exportToIconPacks` writes me there as such a zip (`materialRound.zip`, the layout of pharo-project/pharo-icon-packs: png-scale1.0, png-scale1.5, png-scale2.0), and my fallback too when its zip is missing, so that both can be chosen there, offline. A pack chosen there is a plain ThemeIcons read from the zip: a snapshot of me, without the `material_` keys.
+Saving the Settings of Pharo while I am installed records my fallback as the icon pack, not me: a pack restored from stored settings is read from a zip named after it, which only `exportToIconPacks` writes, so a new image could not restore me. To get me at every start, put `MaterialThemeIcons install` in a startup script.
+
+The Settings of Pharo (the Icon Set of Pharo 12, the Icons Pack Manager of Pharo 15) list the current pack and the zips of `ThemeIcons destinationPath`. `exportToIconPacks` writes me there as such a zip (`materialRound.zip`, the layout of pharo-project/pharo-icon-packs: png-scale1.0, png-scale1.5, png-scale2.0), and my fallback too when its zip is missing, so that both can be chosen there, offline. A pack chosen there is a plain ThemeIcons read from the zip: a snapshot of me, without the `material_` keys. `install` over such a snapshot takes the pack that I replaced before (or the default pack, svgPack) as the fallback, not the snapshot. The zip holds the Apache License 2.0 of the icons and a NOTICE (`MaterialThemeIconsArt licenseText` and `noticeText`) next to the PNGs.
 "
 Class {
 	#name : 'MaterialThemeIcons',
@@ -24,24 +26,34 @@ Class {
 		'fallback',
 		'color'
 	],
+	#classInstVars : [
+		'lastFallback'
+	],
 	#category : 'MaterialIcons-ThemePack',
 	#package : 'MaterialIcons-ThemePack'
 }
 
 { #category : 'exporting' }
 MaterialThemeIcons class >> exportPack: aThemeIcons to: aFileReference [
-	"Write aThemeIcons as an icon pack zip that ThemeIcons loads: <name>/png-scale<scale>/<key>.png"
+	"Write aThemeIcons as an icon pack zip that ThemeIcons loads: <name>/png-scale<scale>/<key>.png. A Material pack also gets <name>/LICENSE-material-icons and <name>/NOTICE, which ThemeIcons does not read (it reads the *.png files of the png-scale* directories), with LF line ends"
 
 	| archive |
 	archive := ZipArchive new.
-	(aThemeIcons iconsPerScale keys asArray sort: [ :a :b | a <= b ]) do: [ :scale |
+	aThemeIcons iconsPerScale keys sorted do: [ :scale |
 		| icons |
 		icons := aThemeIcons iconsPerScale at: scale.
-		(icons keys asArray sort: [ :a :b | a <= b ]) do: [ :key |
+		icons keys sorted do: [ :key |
 			key = #notFound ifFalse: [
 				archive
 					addDeflateString: (self pngBytesOf: (icons at: key))
 					as: aThemeIcons name , '/png-scale' , scale asFloat printString , '/' , key , '.png' ] ] ].
+	(aThemeIcons isKindOf: self) ifTrue: [
+		archive
+			addDeflateString: MaterialThemeIconsArt licenseText withUnixLineEndings
+			as: aThemeIcons name , '/LICENSE-material-icons'.
+		archive
+			addDeflateString: MaterialThemeIconsArt noticeText withUnixLineEndings
+			as: aThemeIcons name , '/NOTICE' ].
 	aFileReference parent ensureCreateDirectory.
 	aFileReference ensureDelete.
 	aFileReference binaryWriteStreamDo: [ :stream | archive writeTo: stream ].
@@ -77,9 +89,8 @@ MaterialThemeIcons class >> installColor: aColorOrNil [
 	"Make a Material pack the icons of the UI, in aColorOrNil (nil: the colour of the UI theme), over the current pack, or over the fallback of the installed one. Answer it"
 
 	| previous pack |
-	previous := self installed
-		            ifNil: [ ThemeIcons current ]
-		            ifNotNil: [ :installed | installed fallback ].
+	previous := self fallbackForInstall.
+	lastFallback := previous.
 	pack := self new
 		        fallback: previous;
 		        color: aColorOrNil;
@@ -91,8 +102,31 @@ MaterialThemeIcons class >> installColor: aColorOrNil [
 ]
 
 { #category : 'installing' }
+MaterialThemeIcons class >> defaultPackName [
+	"The name of Pharo's default icon pack"
+
+	^ (ThemeIcons respondsTo: #defaultIconsPack)
+		  ifTrue: [ ThemeIcons defaultIconsPack ]
+		  ifFalse: [ 'svgPack' ]
+]
+
+{ #category : 'installing' }
+MaterialThemeIcons class >> fallbackForInstall [
+	"The pack that a new Material pack goes over: the fallback of the installed one; else the current pack, unless it is a snapshot of a Material pack read from materialRound.zip (chosen in the Settings): then the pack replaced by the last install, or the default pack"
+
+	| current |
+	self installed ifNotNil: [ :installed | ^ installed fallback ].
+	current := ThemeIcons current.
+	current name = self packName ifFalse: [ ^ current ].
+	^ lastFallback ifNil: [
+		  (ThemeIcons named: self defaultPackName)
+			  loadIconsFromUrl;
+			  yourself ]
+]
+
+{ #category : 'installing' }
 MaterialThemeIcons class >> installed [
-	"The installed pack, or nil"
+	"The installed pack, or nil. ThemeIcons current is not used here: when no pack is current yet, it loads the default one (ThemeIcons class >> loadDefault, which may download svgPack.zip) as a side effect"
 
 	| current |
 	current := ThemeIcons classVarNamed: #Current.
@@ -150,12 +184,14 @@ MaterialThemeIcons class >> subscribeToThemeChanges [
 
 { #category : 'installing' }
 MaterialThemeIcons class >> themeChanged: anAnnouncement [
-	"Redraw the installed pack in the colours of the new UI theme"
+	"Redraw the installed pack in the colours of the new UI theme, dropping the Forms of the old colours from the cache of the icons. When another pack has been made current (in the Settings), stop listening"
 
-	self installed ifNotNil: [ :pack |
-		pack followsTheme ifTrue: [
-			pack build.
-			pack beCurrent ] ]
+	| pack |
+	pack := self installed ifNil: [ ^ self unsubscribeFromThemeChanges ].
+	pack followsTheme ifTrue: [
+		pack provider flushCache.
+		pack build.
+		pack beCurrent ]
 ]
 
 { #category : 'installing' }
@@ -172,6 +208,14 @@ MaterialThemeIcons class >> uninstall [
 MaterialThemeIcons class >> unsubscribeFromThemeChanges [
 
 	self codeSupportAnnouncer unsubscribe: self
+]
+
+{ #category : 'settings' }
+MaterialThemeIcons >> acceptSettings: aVisitor [
+	"The stored settings record my fallback: a pack is restored from them as a plain ThemeIcons of that name, read from <name>.zip (ThemeIcons destinationPath) or downloaded from its url, and there is no materialRound.zip to download"
+
+	^ (fallback ifNil: [ ThemeIcons named: self class defaultPackName ])
+		  acceptSettings: aVisitor
 ]
 
 { #category : 'private' }

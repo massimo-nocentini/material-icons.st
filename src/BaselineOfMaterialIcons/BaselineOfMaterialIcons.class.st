@@ -8,9 +8,11 @@ I load Material Icons Rounded (fonts.google.com/icons, icon.set=Material+Icons, 
 ```
 Metacello new
 	baseline: 'MaterialIcons';
-	repository: 'github://massimo-nocentini/material-icons.st:master/src';
+	repository: 'tonel:///path/to/material-icons.st/src';	""a local clone""
 	load
 ```
+
+Once the repository is pushed to GitHub, `repository: 'github://massimo-nocentini/material-icons.st:master/src'` loads it without a clone.
 
 `load: 'Core'` loads the icons alone, `load: #( 'Core' 'ThemePack' )` without the tests.
 "

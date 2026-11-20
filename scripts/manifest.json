@@ -1,6 +1,6 @@
 {
  "upstream": {"commit": "3912baecc97388955ce39f5e26bfb786a70cbe48", "license": {"path": "LICENSE", "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"}, "path": "src/{category}/{name}/materialiconsround/24px.svg", "repository": "google/material-design-icons"},
- "metadata": {"family": "Material Icons Round", "icons": 2127, "retrieved": "2026-11-20", "sha256": "17dbf750d82a1ff0a60339db600df974026f4d83cc95b575634953899bbae743", "url": "https://fonts.google.com/metadata/icons?key=material_symbols&incomplete=true"},
+ "metadata": {"family": "Material Icons Round", "icons": 2127, "retrieved": "2026-11-20", "round_subset_sha256": "43269cf2f4d795c3dabd77196eb18e506d41c317bc3758f60ac610d157038fcf", "url": "https://fonts.google.com/metadata/icons?key=material_symbols&incomplete=true"},
  "icons": [
   {"category": "av", "codepoint": 59729, "name": "10k", "sha256": "0abb188230f22647f36d0f6d74127ba02cfe3fb2e758c6ae5dcab55da0d94d51", "tags": ["10000", "10K", "alphabet", "character", "digit", "display", "font", "letters", "numbers", "pixel", "pixels", "resolution", "symbol", "text", "type", "video"], "version": 10},
   {"category": "image", "codepoint": 59730, "name": "10mp", "sha256": "0d3f330e58d62bce3bbaf2fef074516a8cc60b74eef56134e64a105a2efbf5ca", "tags": ["10", "camera", "digits", "font", "image", "letters", "megapixel", "megapixels", "mp", "numbers", "pixel", "pixels", "quality", "resolution", "symbol", "text", "type"], "version": 10},
