@@ -220,6 +220,13 @@ MaterialThemeIcons class >> uninstall [
 		pack provider flushCache ]
 ]
 
+{ #category : 'class initialization' }
+MaterialThemeIcons class >> unload [
+	"Before the class is removed (MaterialIcons-ThemePack unloaded): give the UI back the pack that the installed one replaced, so that ThemeIcons current is never an obsolete class"
+
+	self uninstall
+]
+
 { #category : 'event handling' }
 MaterialThemeIcons class >> unsubscribeFromThemeChanges [
 
