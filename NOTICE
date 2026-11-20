@@ -1,0 +1,16 @@
+material-icons.st
+Copyright (c) 2026 Massimo Nocentini (the code: MIT licence, see LICENSE)
+
+This repository includes Material Icons by Google:
+
+  Material Icons Rounded (the family "Material Icons Round")
+  https://github.com/google/material-design-icons
+  commit 3912baecc97388955ce39f5e26bfb786a70cbe48,
+  src/<category>/<name>/materialiconsround/24px.svg
+  Licensed under the Apache License, Version 2.0 (see LICENSE-material-icons).
+
+The package MaterialIcons-Rounded and the class MaterialThemeIconsArt of the
+package MaterialIcons-ThemePack hold PNG renderings of those icons, at 10 to 64
+pixels, made from the SVG files by scripts/generate.py (CairoSVG): they are
+modified forms (rasterized) of the original files.  The upstream repository has
+no NOTICE file.
