@@ -1,5 +1,5 @@
 "
-I test `MaterialThemeIcons`, the Material icon pack of the UI: install and uninstall restore the previous pack, mapped keys are Material at the size of the previous pack, the others are those of the previous pack, the keys material_<name>, HiDPI, the zip for the Settings. I leave the UI's pack as I found it: a Material pack installed before the tests is put aside and made current again after each of them.
+I test `MaterialThemeIcons`, the Material icon pack of the UI: install and uninstall restore the previous pack, mapped keys are Material at the size of the previous pack, the others are those of the previous pack, the keys material_<name>, HiDPI, the zip for the Settings. I leave the UI's pack as I found it: a Material pack (of Material Icons or of Material Symbols) installed before the tests is put aside and made current again after each of them.
 "
 Class {
 	#name : 'MaterialThemeIconsTest',
@@ -23,10 +23,14 @@ MaterialThemeIconsTest >> defaultTimeLimit [
 { #category : 'running' }
 MaterialThemeIconsTest >> setUp [
 
+	| current |
 	super setUp.
-	installedBefore := MaterialThemeIcons installed.
+	current := ThemeIcons classVarNamed: #Current.
+	installedBefore := (current isKindOf: MaterialAbstractThemeIcons)
+		                   ifTrue: [ current ]
+		                   ifFalse: [ nil ].
 	lastFallbackBefore := MaterialThemeIcons instVarNamed: #lastFallback.
-	MaterialThemeIcons uninstall.
+	installedBefore ifNotNil: [ installedBefore class uninstall ].
 	previous := ThemeIcons current.
 	exported := OrderedCollection new
 ]
@@ -39,7 +43,7 @@ MaterialThemeIconsTest >> tearDown [
 	MaterialThemeIcons instVarNamed: #lastFallback put: lastFallbackBefore.
 	installedBefore ifNotNil: [
 		installedBefore beCurrent.
-		MaterialThemeIcons subscribeToThemeChanges ].
+		installedBefore class subscribeToThemeChanges ].
 	exported do: [ :each | each ensureDelete ].
 	super tearDown
 ]

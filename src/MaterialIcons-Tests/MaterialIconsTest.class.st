@@ -1,5 +1,5 @@
 "
-I test the facade `MaterialIcons`: Forms and FormSets by name, scales, colours, the cache, the index (categories, tags, search, codepoints).
+I test the facade `MaterialIcons` on Material Icons Rounded: Forms and FormSets by name, scales, sizes (from the masters), colours, the cache, the index (categories, tags, search, codepoints), and the resampling of the masters.
 "
 Class {
 	#name : 'MaterialIconsTest',
@@ -144,6 +144,46 @@ MaterialIconsTest >> testFormSet [
 ]
 
 { #category : 'tests' }
+MaterialIconsTest >> testFormNamedSize [
+	"16, 24 and 32 pixels are the icons drawn ahead, any other size comes from the master"
+
+	| red |
+	MaterialIcons scales with: MaterialIcons pixelSizes do: [ :scale :side |
+		self
+			assert: (icons formNamed: #home size: side)
+			identicalTo: (icons formNamed: #home scale: scale) ].
+	#( 1 10 20 48 64 100 128 191 192 256 512 ) do: [ :side |
+		| form |
+		form := icons formNamed: #home size: side.
+		self assert: form extent equals: side @ side.
+		self assert: form depth equals: 32.
+		self assert: (icons formNamed: #home size: side) identicalTo: form ].
+	red := icons formNamed: #home size: 64 color: Color red.
+	self assert: (self opaquePixelsOf: red) asArray equals: { Color red }.
+	self
+		assert: (icons formNamed: #home size: 64 color: nil) bits
+		equals: (icons formNamed: #home size: 64 color: icons color) bits.
+	"no clash in the cache between a size and a scale of the same value"
+	self assert: (icons formNamed: #home size: 2) extent equals: 2 @ 2.
+	self assert: (icons formNamed: #home scale: 2) extent equals: 32 @ 32
+]
+
+{ #category : 'tests' }
+MaterialIconsTest >> testDerivedSizesAreClose [
+	"The master averaged down to 16, 24 and 32 pixels is close to the icons drawn ahead from the SVG: the same shapes"
+
+	#( #home #delete #search #'10k' #settings ) do: [ :name |
+		MaterialIcons scales with: MaterialIcons pixelSizes do: [ :scale :side |
+			| derived drawn difference |
+			derived := MaterialIcons resample: (icons masterMaskNamed: name) to: side.
+			drawn := icons maskNamed: name scale: scale.
+			difference := 0.
+			derived bits with: drawn bits do: [ :a :b |
+				difference := difference + ((a bitShift: -24) - (b bitShift: -24)) abs ].
+			self assert: difference / (side * side) < 4 ] ]
+]
+
+{ #category : 'tests' }
 MaterialIconsTest >> testIconNamesAndStyles [
 
 	| names |
@@ -153,6 +193,45 @@ MaterialIconsTest >> testIconNamesAndStyles [
 	self assert: (names allSatisfy: [ :each | each isSymbol ]).
 	self assert: (MaterialIcons styles includes: #rounded).
 	self assert: MaterialIcons rounded identicalTo: MaterialIcons rounded
+]
+
+{ #category : 'tests' }
+MaterialIconsTest >> testMasters [
+
+	| form bytes |
+	self assert: icons hasMasters.
+	self assert: icons masterSize equals: 192.
+	form := icons masterFormNamed: #home.
+	self assert: form extent equals: 192 @ 192.
+	self assert: (icons formNamed: #home size: 192) identicalTo: form.
+	self assert: (icons masterMaskNamed: #home) extent equals: 192 @ 192.
+	self assert: ((icons masterFormNamed: #home color: Color blue) colorAt: 0 @ 0) alpha equals: 0.
+	self assert: ((icons masterFormNamed: #stop color: Color blue) colorAt: 96 @ 96) equals: Color blue.
+	bytes := icons masterPNGBytesNamed: #home.
+	self assert: (bytes first: 8) equals: #[ 137 80 78 71 13 10 26 10 ].
+	self
+		assert: bytes
+		equals: ((MaterialIcons rounded entryNamed: #home) source perform: #master_home) base64Decoded
+]
+
+{ #category : 'tests' }
+MaterialIconsTest >> testResampling [
+	"The weights of a box filter add up to 1; a full square stays full, an empty one empty"
+
+	| full |
+	#( #( 192 16 ) #( 192 24 ) #( 192 100 ) #( 32 7 ) #( 192 192 ) #( 192 300 ) #( 32 48 ) ) do: [ :pair |
+		(MaterialIcons resamplingWeightsFrom: pair first to: pair second) do: [ :each |
+			self assert: ((each second inject: 0 into: [ :sum :weight | sum + weight ]) - 1) abs < 1e-9.
+			self assert: each first >= 1.
+			self assert: each first + each second size - 1 <= pair first ] ].
+	full := Form extent: 192 @ 192 depth: 32.
+	full fillColor: Color black.
+	#( 16 50 192 256 ) do: [ :side |
+		| resized |
+		resized := MaterialIcons resample: full to: side.
+		self assert: resized extent equals: side @ side.
+		self assert: (resized bits allSatisfy: [ :pixel | pixel = 16rFF000000 ]) ].
+	self assert: ((MaterialIcons resample: (Form extent: 192 @ 192 depth: 32) to: 20) bits allSatisfy: [ :pixel | pixel = 0 ])
 ]
 
 { #category : 'tests' }
