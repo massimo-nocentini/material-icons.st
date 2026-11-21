@@ -1,16 +1,25 @@
-material-icons.st
 Copyright (c) 2026 Massimo Nocentini (the code: MIT licence, see LICENSE)
 
-This repository includes Material Icons by Google:
+This repository includes Material Icons and Material Symbols by Google,
+from https://github.com/google/material-design-icons, licensed under the
+Apache License, Version 2.0 (see LICENSE-material-icons, the LICENSE of that
+repository, the same file at both commits below):
 
   Material Icons Rounded (the family "Material Icons Round")
-  https://github.com/google/material-design-icons
   commit 3912baecc97388955ce39f5e26bfb786a70cbe48,
-  src/<category>/<name>/materialiconsround/24px.svg
-  Licensed under the Apache License, Version 2.0 (see LICENSE-material-icons).
+  src/<category>/<name>/materialiconsround/24px.svg and
+  android/<category>/<name>/materialiconsround/black/res/drawable-xxxhdpi/round_<name>_black_48.png
 
-The package MaterialIcons-Rounded and the class MaterialThemeIconsArt of the
-package MaterialIcons-ThemePack hold PNG renderings of those icons, at 10 to 64
-pixels, made from the SVG files by scripts/generate.py (CairoSVG): they are
-modified forms (rasterized) of the original files.  The upstream repository has
-no NOTICE file.
+  Material Symbols Rounded (the family "Material Symbols Rounded")
+  commit 10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7,
+  symbols/web/<name>/materialsymbolsrounded/<name>_<variant>.svg
+  (variants 24px, 48px, fill1_24px, fill1_48px, grad200_24px, grad200fill1_24px)
+
+The packages MaterialIcons-Rounded, MaterialSymbols-Rounded,
+MaterialSymbols-Rounded-192, MaterialSymbols-Rounded-Filled,
+MaterialSymbols-Rounded-Filled-192, and the classes MaterialThemeIconsArt and
+MaterialSymbolsThemeIconsArt hold PNG renderings of those SVG files, at 7 to
+512 pixels, made by scripts/generate.py (CairoSVG): they are modified forms
+(rasterized) of the original files.  The package MaterialIcons-Rounded-192
+holds the PNG files of the android tree above unmodified (in Base64).  The
+upstream repository has no NOTICE file.
