@@ -1,5 +1,5 @@
 "
-I test `MaterialSymbolsThemeIcons`, the Material Symbols icon pack of the UI: install and uninstall restore the previous pack, every mapped key is a key of the previous pack drawn at its sizes, the status keys keep their colours, the keys symbol_<name>, the zip for the Settings, and the swap with MaterialThemeIcons when both packages are loaded. I leave the UI's pack as I found it: a Material pack installed before the tests is put aside and made current again after each of them.
+I test `MaterialSymbolsThemeIcons`, the Material Symbols icon pack of the UI: install and uninstall restore the previous pack, every mapped key is a key of the previous pack drawn at its sizes, the status keys keep their colours, the buttons of inactive windows are grey, the small trimmed keys fill their key, the keys symbol_<name>, the zip for the Settings, and the swap with MaterialThemeIcons when both packages are loaded. I leave the UI's pack as I found it: a Material pack installed before the tests is put aside and made current again after each of them.
 "
 Class {
 	#name : 'MaterialSymbolsThemeIconsTest',
@@ -139,6 +139,17 @@ MaterialSymbolsThemeIconsTest >> testFallbackKeys [
 ]
 
 { #category : 'tests' }
+MaterialSymbolsThemeIconsTest >> testInactiveWindowButtons [
+	"The buttons of inactive windows keep the passive look of svgPack: grey, not the colour of the theme"
+
+	| inactive |
+	inactive := MaterialSymbolsThemeIconsArt entries select: [ :each |
+		            (each first beginsWith: 'window') and: [ each first includesSubstring: 'Inactive' ] ].
+	self assert: inactive size equals: 8.
+	inactive do: [ :each | self assert: each fifth equals: '9E9E9E' ]
+]
+
+{ #category : 'tests' }
 MaterialSymbolsThemeIconsTest >> testInstallAndUninstall [
 
 	| pack |
@@ -233,6 +244,24 @@ MaterialSymbolsThemeIconsTest >> testThemeChange [
 		equals: (MaterialIcons
 				 tint: (MaterialIcons formFromBase64PNG: (MaterialSymbolsThemeIconsArt perform: (self entryOf: #add) sixth) first)
 				 color: MaterialIcons symbolsRounded themeColor) bits
+]
+
+{ #category : 'tests' }
+MaterialSymbolsThemeIconsTest >> testTrimmedKeys [
+	"The small keys whose symbol would be a speck in Material's padding are trimmed (scripts/symbols-mapping.tsv, column trim): their ink spans the width of the key at every scale, as svgPack's does"
+
+	| pack |
+	pack := MaterialSymbolsThemeIcons install.
+	#( #arrowDown #arrowUp #play #go #checkBoxOff #checkBoxOn ) do: [ :key |
+		self assert: ((self entryOf: key) sixth includesSubstring: '_trim').
+		MaterialIcons scales do: [ :scale |
+			| form inked |
+			form := (pack iconsPerScale at: scale) at: key.
+			form unhibernate.
+			inked := (0 to: form width - 1) select: [ :x |
+				         (0 to: form height - 1) anySatisfy: [ :y |
+					         ((form pixelValueAt: x @ y) bitShift: -24) > 8 ] ].
+			self assert: inked size >= (form width * 0.65) ] ]
 ]
 
 { #category : 'tests' }

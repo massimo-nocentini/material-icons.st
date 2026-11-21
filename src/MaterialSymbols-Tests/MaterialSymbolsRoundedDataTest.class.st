@@ -1,5 +1,5 @@
 "
-I check the generated data of Material Symbols Rounded (packages MaterialSymbols-Rounded and MaterialSymbols-Rounded-192, and the filled variant when its packages are loaded): the count of the source (3929 icons: the 3944 that the family Material Symbols Rounded supports in the metadata of Google Fonts, but the 15 that the pinned commit does not have yet; scripts/manifest-symbols.json), unique names, one method and one master per icon, and that every PNG decodes to a Form of 16, 24, 32 and 192 pixels.
+I check the generated data of Material Symbols Rounded (packages MaterialSymbols-Rounded and MaterialSymbols-Rounded-192, and the filled variant when its packages are loaded): the count of the source (3944 icons: all that the family Material Symbols Rounded supports in the metadata of Google Fonts, 15 of them from fonts.gstatic.com because the pinned commit does not have them yet; scripts/manifest-symbols.json), unique names, one method and one master per icon, and that every PNG decodes to a Form of 16, 24, 32 and 192 pixels.
 "
 Class {
 	#name : 'MaterialSymbolsRoundedDataTest',
@@ -90,19 +90,21 @@ MaterialSymbolsRoundedDataTest >> testCategories [
 
 { #category : 'tests' }
 MaterialSymbolsRoundedDataTest >> testCount [
-	"The count of the source: the icons that the family Material Symbols Rounded supports in the metadata of fonts.google.com/icons, but those not in the repository yet at the pinned commit"
+	"The count of the source: every icon that the family Material Symbols Rounded supports in the metadata of fonts.google.com/icons; the 15 that the repository does not have yet at the pinned commit come from fonts.gstatic.com"
 
-	self assert: MaterialSymbolsRoundedCategory iconCount equals: 3929.
-	self assert: self allRows size equals: 3929.
+	self assert: MaterialSymbolsRoundedCategory iconCount equals: 3944.
+	self assert: self allRows size equals: 3944.
 	self
 		assert: (MaterialSymbolsRoundedCategory categoryCounts
 				 inject: 0
 				 into: [ :sum :pair | sum + pair second ])
-		equals: 3929.
-	self assert: MaterialIcons symbolsRounded size equals: 3929.
-	self assert: MaterialSymbolsRoundedCategory missingIcons size equals: 15.
-	self deny: (MaterialSymbolsRoundedCategory missingIcons anySatisfy: [ :each |
-			 MaterialIcons symbolsRounded includesIcon: each ])
+		equals: 3944.
+	self assert: MaterialIcons symbolsRounded size equals: 3944.
+	self assert: MaterialSymbolsRoundedCategory missingIcons isEmpty.
+	self assert: MaterialSymbolsRoundedCategory fallbackIcons size equals: 15.
+	self assert: (MaterialSymbolsRoundedCategory fallbackIcons allSatisfy: [ :each |
+			 MaterialIcons symbolsRounded includesIcon: each ]).
+	self assert: (MaterialSymbolsRoundedCategory fallbackDescription beginsWith: 'https://fonts.gstatic.com/')
 ]
 
 { #category : 'tests' }
@@ -137,7 +139,7 @@ MaterialSymbolsRoundedDataTest >> testFilledVariant [
 		equals: ((self categoryClassesOf: #symbolsRounded) collect: [ :each | each materialCategory ]).
 	filled := MaterialIcons symbolsRoundedFilled.
 	default := MaterialIcons symbolsRounded.
-	self assert: filled size equals: 3929.
+	self assert: filled size equals: 3944.
 	self assert: filled iconNames equals: default iconNames.
 	self assert: (filled tagsOf: #home) equals: (default tagsOf: #home).
 	self deny: (filled pngBytesNamed: #home scale: 1) equals: (default pngBytesNamed: #home scale: 1).

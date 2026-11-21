@@ -2,7 +2,7 @@
 I give the Material icons of one style as Forms, by their Material names:
 
 - `MaterialIcons rounded`: Material Icons Rounded (fonts.google.com/icons, icon.set=Material+Icons, icon.style=Rounded), 2127 icons;
-- `MaterialIcons symbolsRounded`: Material Symbols Rounded (icon.set=Material+Symbols, icon.style=Rounded), 3929 icons, in their default variant (FILL 0, wght 400, GRAD 0);
+- `MaterialIcons symbolsRounded`: Material Symbols Rounded (icon.set=Material+Symbols, icon.style=Rounded), 3944 icons, in their default variant (FILL 0, wght 400, GRAD 0);
 - `MaterialIcons symbolsRoundedFilled`: the same icons filled (FILL 1), when the optional group SymbolsRoundedFilled is loaded.
 
 ```

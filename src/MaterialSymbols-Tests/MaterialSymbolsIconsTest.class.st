@@ -74,7 +74,7 @@ MaterialSymbolsIconsTest >> testIconNamesAndStyles [
 
 	| names |
 	names := icons iconNames.
-	self assert: names size equals: 3929.
+	self assert: names size equals: 3944.
 	self assert: names first equals: #'10k'.
 	self assert: (MaterialIcons styles includes: #symbolsRounded).
 	self assert: MaterialIcons symbolsRounded identicalTo: MaterialIcons symbolsRounded.
@@ -110,6 +110,7 @@ MaterialSymbolsIconsTest >> testSearch [
 MaterialSymbolsIconsTest >> testUnknownIcon [
 
 	self deny: (icons includesIcon: #noSuchIcon).
-	self deny: (icons includesIcon: #pull_request).	"listed by fonts.google.com, not at the pinned commit"
+	self assert: (icons includesIcon: #pull_request).	"not at the pinned commit: from fonts.gstatic.com"
+	self assert: (icons iconNamed: #pull_request) extent equals: 16 @ 16.
 	self should: [ icons iconNamed: #noSuchIcon ] raise: KeyNotFound
 ]

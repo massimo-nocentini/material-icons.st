@@ -1,5 +1,5 @@
 "
-I am the root of the categories of Material Symbols Rounded, the icons of the family Material Symbols Rounded (fonts.google.com/icons, icon.set=Material+Symbols, icon.style=Rounded), in their default variant (FILL 0, wght 400, GRAD 0). Each subclass holds the icons of one category: one class-side method per icon, `icon_<name>`, answering its PNGs at 16, 24 and 32 pixels (scales 1, 1.5 and 2) in Base64, drawn from the optical size 24, and `iconTable`, the name, codepoint and tags (one String, comma-separated) of each. The package MaterialSymbols-Rounded-192 adds `master_<name>`, the icon at 192 pixels drawn from the optical size 48; the packages MaterialSymbols-Rounded-Filled and MaterialSymbols-Rounded-Filled-192 hold the filled variant.
+I am the root of the categories of Material Symbols Rounded, the icons of the family Material Symbols Rounded (fonts.google.com/icons, icon.set=Material+Symbols, icon.style=Rounded), in their default variant (FILL 0, wght 400, GRAD 0). Each subclass holds the icons of one category: one class-side method per icon, `icon_<name>`, answering its PNGs at 16, 24 and 32 pixels (scales 1, 1.5 and 2) in Base64, drawn from the optical size 24, and `iconTable`, the name, codepoint and tags (one String, comma-separated) of each. The package MaterialSymbols-Rounded-192 adds `master_<name>`, the icon at 192 pixels drawn from the optical size 48; the packages MaterialSymbols-Rounded-Filled and MaterialSymbols-Rounded-Filled-192 hold the filled variant. The 15 `fallbackIcons`, which the repository does not have yet at the pinned commit, are drawn from the same SVGs served by fonts.gstatic.com.
 
 Source: https://github.com/google/material-design-icons at commit 10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7, symbols/web/{name}/materialsymbolsrounded/{name}_24px.svg (optical size 24, FILL 0, wght 400, GRAD 0), Apache License 2.0 (Google), whose text is `licenseText`. Rasterized by CairoSVG 2.9.1 on cairo 1.18.6.
 
@@ -16,14 +16,29 @@ Class {
 MaterialSymbolsRoundedCategory class >> categoryCounts [
 	"The number of icons of each category"
 
-	^ #( #( 'Actions' 271 ) #( 'Activities' 127 ) #( 'Android' 273 ) #( 'Audio&Video' 229 ) #( 'Business' 181 ) #( 'Communicate' 172 ) #( 'Hardware' 271 ) #( 'Home' 125 ) #( 'Household' 189 ) #( 'Images' 296 ) #( 'Maps' 175 ) #( 'Privacy' 45 ) #( 'Social' 384 ) #( 'Text' 522 ) #( 'Transit' 127 ) #( 'Travel' 94 ) #( 'UI actions' 448 ) )
+	^ #( #( 'Actions' 272 ) #( 'Activities' 127 ) #( 'Android' 273 ) #( 'Audio&Video' 230 ) #( 'Business' 181 ) #( 'Communicate' 173 ) #( 'Hardware' 273 ) #( 'Home' 125 ) #( 'Household' 189 ) #( 'Images' 299 ) #( 'Maps' 175 ) #( 'Privacy' 45 ) #( 'Social' 384 ) #( 'Text' 527 ) #( 'Transit' 127 ) #( 'Travel' 94 ) #( 'UI actions' 450 ) )
+]
+
+{ #category : 'accessing' }
+MaterialSymbolsRoundedCategory class >> fallbackDescription [
+	"Where the SVGs of fallbackIcons come from (unversioned URLs, pinned by SHA-256)"
+
+	^ 'https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsrounded/{name}/{style}/{size}.svg'
+]
+
+{ #category : 'accessing' }
+MaterialSymbolsRoundedCategory class >> fallbackIcons [
+	"The icons that the upstream repository does not have yet at the pinned commit: their SVGs
+	come from fonts.gstatic.com instead (fallbackDescription), each pinned by its SHA-256"
+
+	^ #( 'contrast_auto' 'contrast_inverse' 'contrast_inverse_auto' 'devices_2' 'document_share_off' 'frame_person_2' 'input_search' 'mail_person' 'mirror_stack' 'print_landscape_long' 'print_landscape_short' 'print_portrait_long' 'print_portrait_short' 'pull_request' 'touch_double_2_hold' )
 ]
 
 { #category : 'accessing' }
 MaterialSymbolsRoundedCategory class >> iconCount [
 	"The number of icons of the style, over all its categories"
 
-	^ 3929
+	^ 3944
 ]
 
 { #category : 'licence' }
@@ -244,10 +259,10 @@ MaterialSymbolsRoundedCategory class >> materialStyle [
 
 { #category : 'accessing' }
 MaterialSymbolsRoundedCategory class >> missingIcons [
-	"The icons that fonts.google.com lists for Material Symbols Rounded but that the upstream
-	repository does not have yet at the pinned commit: they come with a later pin"
+	"The icons that fonts.google.com lists for Material Symbols Rounded but that are not here:
+	neither the upstream repository at the pinned commit nor fonts.gstatic.com has them"
 
-	^ #( 'contrast_auto' 'contrast_inverse' 'contrast_inverse_auto' 'devices_2' 'document_share_off' 'frame_person_2' 'input_search' 'mail_person' 'mirror_stack' 'print_landscape_long' 'print_landscape_short' 'print_portrait_long' 'print_portrait_short' 'pull_request' 'touch_double_2_hold' )
+	^ #( )
 ]
 
 { #category : 'accessing' }

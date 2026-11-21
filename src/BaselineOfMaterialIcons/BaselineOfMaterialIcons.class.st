@@ -3,7 +3,7 @@ I load Material Icons Rounded and Material Symbols Rounded (fonts.google.com/ico
 
 - group `Core`: `MaterialIcons-Core` and `MaterialIcons-Rounded`, `MaterialIcons rounded`, the 2127 icons of Material Icons Rounded by their Material names, as Forms and FormSets at 16, 24 and 32 pixels, in any colour, with their categories, codepoints and tags;
 - group `IconsRounded`: `Core` and `MaterialIcons-Rounded-192`, the 192-pixel master of each icon (Google's own PNGs), so that `formNamed:size:` draws any size from it;
-- group `SymbolsRounded`: `MaterialIcons-Core`, `MaterialSymbols-Rounded` and `MaterialSymbols-Rounded-192`, `MaterialIcons symbolsRounded`, the 3929 icons of Material Symbols Rounded (FILL 0, wght 400, GRAD 0) at 16, 24 and 32 pixels and their masters at 192; `SymbolsRoundedSmall` without the masters;
+- group `SymbolsRounded`: `MaterialIcons-Core`, `MaterialSymbols-Rounded` and `MaterialSymbols-Rounded-192`, `MaterialIcons symbolsRounded`, the 3944 icons of Material Symbols Rounded (FILL 0, wght 400, GRAD 0) at 16, 24 and 32 pixels and their masters at 192; `SymbolsRoundedSmall` without the masters;
 - group `SymbolsRoundedFilled` (not in `default`): `MaterialSymbols-Rounded-Filled` and `MaterialSymbols-Rounded-Filled-192`, `MaterialIcons symbolsRoundedFilled`, the same icons filled (FILL 1);
 - group `ThemePack`: `MaterialIcons-ThemePack`, `MaterialThemeIcons`, an icon pack of Pharo's UI drawn with Material Icons Rounded, over the current pack;
 - group `SymbolsThemePack`: `MaterialSymbols-ThemePack`, `MaterialSymbolsThemeIcons`, the same with Material Symbols Rounded;

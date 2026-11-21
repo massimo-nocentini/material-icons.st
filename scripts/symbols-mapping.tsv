@@ -1,21 +1,29 @@
 # Pharo icon key -> Material Symbols Rounded, for MaterialSymbolsThemeIcons (scripts/generate.py reads it).
 # Tab-separated. Lines that begin with # are comments; the first other line is the header. Columns (by name, in any order):
 #   pharoKey    a key of svgPack (scripts/pharo-icon-keys.tsv), mapped at most once
-#   symbolName  a Material Symbols Rounded icon at the pinned commit (scripts/manifest-symbols.json)
+#   symbolName  a Material Symbols Rounded icon of the pin (scripts/manifest-symbols.json)
 #   fill        0 (outlined) or 1 (filled)
 #   grade       0, or 200: heavier strokes, the same size (closer to the weight of svgPack)
 #   colour      RRGGBB for a fixed colour (the status keys), or - for the text colour of the UI theme
+#   trim        optional: - (or empty) to keep Material's padding, or a margin M of 0 to 480 units of the 960 grid of
+#               the symbol: its viewBox becomes the bounds of its ink (alpha above 8 at 960 px) plus M on each side,
+#               widened or heightened about the centre to the aspect of the key, so the glyph fills the key
 #   size        optional: WIDTHxHEIGHT at scale 1, or -; when given it must be that of scripts/pharo-icon-keys.tsv
 #   note        optional, free text; any other column is ignored too (here: confidence, high/medium/low)
 # Each key is drawn from the optical size 24 at the sizes svgPack draws it at (scales 1, 1.5 and 2), the symbol
-# centred at the side of the shorter edge when the key is not square. Keys left out keep the icon of the previous pack.
+# centred at the side of the shorter edge when the key is not square (a trimmed key fills all of it). Keys left out
+# keep the icon of the previous pack.
 # The generator stops on any unknown key or name, or wrong value, and lists every wrong line.
 #
 # 375 of the 377 keys of svgPack are mapped. Chosen from the senders of each key in Pharo 12 and 15 and from
 # svgPack's pictures, checked side by side with the symbols. The conventions:
 #   - outlined symbols take grade 200 (closer to svgPack's weight); filled ones grade 0
-#   - fixed colours only for status: tests, errors, warnings, information and questions, breakpoint and halt,
-#     and the coloured dots (red, green, grey); everything else follows the UI theme
+#   - fixed colours only for status: tests, errors, warnings, information, questions and confirm, breakpoint and
+#     halt, uncommentedClass (red), the coloured dots (red, green, grey) and the buttons of inactive windows
+#     (*Inactive*, grey 9E9E9E, the passive look of svgPack); everything else follows the UI theme
+#   - trimmed (trim): the keys of 10 px or less whose symbol would be a speck in Material's padding (the small
+#     triangles, expandBox, removeCross, haloCollapse), go/glamorousGo/smallDoIt (13 px), greenArrowUpAndDown,
+#     every 12x12 check box (a crisp box of the full 12 px), and the rules separator and protocolNone
 #   - keys that Pharo 15 renamed (glamorousX -> x) and keys whose only difference is the state or the theme
 #     (Inactive, Inverted, Dark, Pressed...) map to the same symbol
 #   - brand logos (Pharo, git, GitHub, GitLab, Bitbucket) have no Material counterpart: the nearest symbol, low
@@ -23,379 +31,379 @@
 #   blank   transparent 16x1 spacer, the default icon of commands without one (CmUICommandGroup, IceTipCommand):
 #           any glyph would be drawn on all of them
 #   empty   transparent 12x12 spacer (Epicea, FastTable), for the same reason
-pharoKey	symbolName	fill	grade	colour	confidence	note
-abstract	frame_source	0	200	-	low	abstract methods; the same symbol as classAbstract (one concept), a dashed frame of code; format_italic stays for smallItalic
-accept	check	0	200	-	high	Accept (Rubric/FileList menu: accept edits); Pharo look is a green check, same image and meaning as smallOk
-add	add	0	200	-	high	Green plus used by 45 "add/new" commands (Spec, Syc, Iceberg, file browser); plain plus, same look and meaning
-addCross	add_circle	0	200	-	medium	Grey plus used by Iceberg 'load more'; same plus concept as add, circled variant keeps it distinct from add (green plus, mapped to add)
-alarm	alarm	0	200	-	high	Pharo art is a window stack with a clock badge (GT alarm, no sender left); alarm clock carries both the name and the clock
-announcement	campaign	0	200	-	medium	Announcement class>>systemIconName (icon of the Announcement hierarchy); Pharo draws a speech bubble but the concept is announcing an event, which campaign (megaphone) says best; chat_bubble would match the look but reads as comments/chat
-arrowDoubleDown	arrow_drop_down	0	200	-	high	7x7 single down triangle of the number spinner (SpMorphicNumberInputFieldAdapter decrement); same shape as Pharo's
-arrowDoubleUp	arrow_drop_up	0	200	-	high	7x7 up triangle on the increment button of SpMorphicNumberInputFieldAdapter; arrow_drop_up is the same small solid triangle (name says double but the image is a single triangle)
-arrowDown	arrow_drop_down	0	200	-	high	7px solid down triangle for menu-button dropdowns and descending sort; same symbol as dropDown (only the size differs)
-arrowUp	arrow_drop_up	0	200	-	high	Small 7px up triangle (overridden-methods/superclass marker, coverage); arrow_drop_up is the same triangle shape
-arrowUpAndDown	unfold_more	0	200	-	high	6x7 up/down triangles drawn by FTUnsortedSortingState>>#sortingIcon (column not sorted); unfold_more is the standard both-ways sort affordance; kept distinct from greenArrowUpAndDown (height)
-autoReload	update	0	200	-	high	Process browser 'Auto update' toggle; Pharo draws a circular arrow with a clock badge, update is exactly a circular arrow around clock hands (timed refresh); kept distinct from refresh/autorenew
-autoReloadDark	update	0	200	-	medium	no senders; circular arrow with clock = automatic reload; Dark is only the dark-theme colouring, so the same symbol as autoReload
-back	arrow_back	0	200	-	high	Navigate back (Calypso history, file browser, reverse dependency); Pharo look is a left arrow
-bitbucket	bucket_check	0	200	-	low	Bitbucket brand logo (Iceberg Bitbucket panel); Material Symbols has no brand marks, so a bucket keeps it recognisable and distinct from github/gitlab in the clone-provider list
-book	library_books	0	200	-	medium	art is two stacked document sheets; used for files (IceFileDefinition), Documents/tmp bookmarks, Finder selector results and copy-commitish: library_books keeps the stacked-sheets look and the book name (menu_book is the plain-book alternative)
-bookmark	bookmark	0	200	-	medium	Iceberg Create tag and repository groups (Pharo 15 name of glamorousBookmark): the bookmark ribbon, as the key says
-bottom	vertical_align_bottom	0	200	-	high	move/align to bottom (halo, button icon position); arrow onto a bar keeps it distinct from 'down' (arrow_downward)
-box	box	0	200	-	medium	svgPack draws a cardboard box (Spec test only): box, distinct from package (package_2)
-branch	call_split	0	200	-	medium	Iceberg git branch (15 senders); Symbols has no git-branch glyph, call_split is the usual branching sign and pairs with merge; fork_right is the alternative
-breakpoint	flag	1	0	E53935	medium	Legacy (no senders) orange flag marking a breakpoint; filled flag matches the look and the 'marker' meaning
-browse	open_in_browser	0	200	-	medium	Calypso/Iceberg 'browse' commands open a browser on the item (Pharo 15 name of glamorousBrowse)
-bug	bug_report	0	200	-	high	Debug points browser, Roassal 'Debug step action', deprecate class command; Pharo draws a green beetle, the same picture as smallDebug, so both map to bug_report
-calendar	calendar_month	0	200	-	high	date picker icon of SpDatePresenter; month grid with day dots like Pharo's
-cancel	cancel	0	200	-	high	Cancel buttons of dialogs, Rubric cancel edits, Iceberg cancel branch; Pharo look is a red X; cancel (circled X, FILL 0) keeps it distinct from close (window close) and from testRed (error FILL 1); suggest red tint
-catalog	menu_book	0	200	-	low	project catalog (Spec tests only); library_books stays for book
-changeAdd	add_box	0	200	-	high	Epicea/diff addition: the boxed family of the change keys (add_box, indeterminate_check_box, edit_square, check_box_outline_blank)
-changeBlock	block	0	200	-	medium	merge choice 'local/right chosen': the incoming change is blocked and the current version kept (IceOperationMerge pairs it with #forward, PSMC conflict wrappers); block says 'change blocked'; art is a grey left arrow, arrow_back is the look alternative
-changeEmpty	check_box_outline_blank	0	200	-	medium	Monticello change wrapper icon when there is no change (P12); Pharo draws a plain white square; an empty box, consistent with changeAdd -> add_box of the same change-icon family
-changeRemove	indeterminate_check_box	0	200	-	medium	Epicea/diff removal: the boxed minus, pair of changeAdd (the same glyph as partialCheckedBox, in another context)
-changeSorter	sort_by_alpha	0	200	-	medium	Old Change Sorter tool, now used by the debugger stack-filter toggle and file browser change list; Pharo image is literally a down arrow with a/z, which sort_by_alpha reproduces
-changeUpdate	edit_square	0	200	-	medium	Epicea/diff modification: boxed pencil, the family of changeAdd and changeRemove; edit_note stays for workspace
-checkboxMarker	check	0	200	-	high	Check mark drawn inside a checkbox (UITheme checkboxMarkerForm); bare check, not the boxed one
-checkBoxOff	check_box_outline_blank	0	200	-	high	12x12 empty checkbox of ThreePhaseButtonMorph class>>#checkBox; exact match
-checkBoxOn	check_box	1	0	-	high	ThreePhaseButtonMorph checkBox on-state; filled check_box like checkedBox / checkboxSelected
-checkBoxPressed	square	1	0	-	medium	svgPack draws a solid inner square in a box while the box is pressed
-checkboxSelected	check_box	1	0	-	high	Selected checkbox state (UITheme checkboxSelectedFormSet, Iceberg select all); FILL 1 is the Material checked-checkbox convention and distinguishes it from unselected (check_box_outline_blank)
-checkboxUnselected	check_box_outline_blank	0	200	-	high	12px empty checkbox used for "select none" commands; same symbol as uncheckedBox (same concept and size)
-checkedBox	check_box	1	0	-	high	Ticked checkbox (tree node check state, 'select all' commands); FILL 1 is Material's checked-box state, distinct from check_box_outline_blank
-class	data_object	0	200	-	medium	generic class/object icon (Object>>#systemIconName, default window and command icon, class definitions); Pharo draws a C in a circle, no letter-C symbol exists without meaning copyright; data_object keeps continuity with the Material Icons pack; must stay distinct from classAbstract/uncommentedClass/trait (other chunks)
-classAbstract	frame_source	0	200	-	low	abstract classes (Behavior>>systemIconName), next to class (data_object) in Calypso: a dashed frame, related but distinct
-classVarsPressed	data_object	0	200	-	low	no senders; old browser class-variables toggle '{c}' (pressed state); curly braces = variables/data; same symbol as classVars if mapped, pressed is only a state
-classVarsSelected	data_object	0	200	-	medium	Class variables toggle ({c} in braces), used for pool dictionary dependency nodes; data_object is curly braces (shared dictionary/class vars); instVars* use variables, collection uses data_array to stay distinct; Selected/Unselected/Pressed differ only by colour in Pharo
-classVarsUnselected	data_object	0	200	-	low	22px {c} toggle button (class variables) of the old browser, no senders; braces = variables; family proposal: classVars* -> data_object, instVars* -> data_array, Selected/Pressed states differ by theme colour since these glyphs have no fill
-clearField	backspace	0	200	-	high	Grey backspace-with-X in search fields; backspace is the identical shape
-close	close	0	200	-	high	tab, notebook page and window close buttons; exact match
-cloud	cloud	0	200	-	high	No sender (legacy); black cloud
-cloudPaused	cloud_off	0	200	-	low	no senders; no cloud_pause symbol exists, cloud_off is the closest 'cloud sync not running' concept (pause_circle loses the cloud)
-collection	data_array	0	200	-	medium	Collection class>>systemIconName (Pharo draws { } braces); data_array ([ ]) means array/collection and stays distinct from classVars (data_object)
-comments	comment	0	200	-	high	Class/package comment editor tab and table decorator; speech bubble with lines = comment
-config	settings	0	200	-	high	Settings/configuration (Epicea dashboard settings, debugger extension settings, finder); gear
-configDirty	settings_alert	0	200	-	medium	Metacello configuration with unsaved changes (package folder with a red star); settings_alert = configuration + changed/alert; avoids deployed_code_alert which suits dirtyPackage
-configLoaded	folder_check	0	200	-	low	No sender (legacy Metacello 'configuration loaded'); Pharo draws a folder with blue blocks; folder_check says 'loaded package folder'; deployed_code would collide with package-like keys
-configNew	folder	0	200	-	high	StFileBrowserIconColumn uses it for directories (files get #page); plain folder
-configuration	settings	0	200	-	high	Settings commands (Iceberg settings, debugger settings, file browser, icon packs, Pulse); gear+wrench look, gear is the Material settings symbol
-confirm	check_circle	1	0	43A047	medium	MenuMorph confirm: dialog icon and dependency-analyser node; the Pharo "!" disk would duplicate smallInformation/info, check_circle conveys "confirm"; FILL 1 matches Pharo's filled disk (alternative priority_high)
-database	database	0	200	-	high	Database cylinder, exact concept and look (legacy, no senders)
-databaseAdd	database_upload	0	200	-	medium	no database_add symbol exists; database_upload keeps the database cylinder with a badge meaning 'put into the database' and stays distinct from the plain database key; legacy, no sender
-delete	delete	0	200	-	high	Delete branch/remote (Iceberg), remove empty method tags, menu title close, breakpoint removal; Pharo draws a red X but every sender means delete/remove, so the trash can, as smallDelete/trash/remove
-diff	difference	0	200	-	high	Iceberg diff page, method diff tool, Rubric diff menu: document with +/- is Material's diff symbol
-dirtyMonticelloPackage	deployed_code_alert	0	200	-	low	Monticello package with unsaved changes (folder with explosion, no sender found); deployed_code_alert = package with ! badge conveys modified/dirty package; no folder-with-alert symbol exists
-dirtyPackage	deployed_code_alert	0	200	-	medium	Package with star burst = modified/dirty package (no senders); deployed_code box with alert badge, assuming the package family maps to deployed_code
-disable	toggle_off	0	200	-	high	Pharo image is a switch in off position; used for disabled buttons/toggles in Spec, profiler, IconPacks; toggle_off matches meaning and look (enable should be toggle_on)
-diveAllRight	keyboard_double_arrow_right	0	200	-	medium	GT 'dive all the way right' (legacy, no sender); double chevron distinguishes it from diveRight (single arrow) while keeping direction
-diveRight	chevron_right	0	200	-	medium	same picture as glamorousDiveRight; single chevron, keyboard_double_arrow_right for diveAllRight
-down	arrow_downward	0	200	-	high	push down method/variable, Iceberg pull, move down; plain down arrow like Pharo's blue arrow
-downArrow	arrow_downward	0	200	-	high	Big black down arrow (no sender found); arrow_downward is the same glyph
-dropDown	arrow_drop_down	0	200	-	high	16px grey down triangle (no senders); same concept as arrowDown, only the size differs
-edit	edit	0	200	-	high	Pencil for rename/edit commands
-editThiner	stylus	0	200	-	low	legacy pencil variant (no sender), 'thinner edit'; stylus is the thin pen and stays distinct from edit (pencil)
-emptyPackage	package	0	200	-	medium	Calypso empty-package decoration and Iceberg directory definition; Material 'package' is a flat empty-looking box, related to but distinct from a full package symbol (package_2/deployed_code)
-enable	toggle_on	1	0	-	high	Selected/enabled icon pack in SpIconPacksFetchPresenter; Pharo look is a switch in the on position; FILL 1 reads as on
-error	error	1	0	E53935	high	Red "!" disk for errors/validation (Spec, Commander, breakpoints); FILL 1 = solid disk like Pharo's
-example	lightbulb	0	200	-	high	Lightbulb with exclamation marks Spec/Morphic example methods; lightbulb matches look and the 'try this' idea
-exception	bolt	1	0	-	medium	Exception class>>#systemIconName, broken-critique and Finder exception classes; Pharo art is a lightning bolt in an orange disc, filled bolt keeps that look and stays distinct from error/warning/report
-expandBox	expand_content	0	200	-	medium	Debugger 'Expand the diff view' (maximize) and finder 'Expand all'; Pharo draws two overlapping boxes (old zoom box); expand_content conveys enlarge/expand for both uses (unfold_more would only fit the tree case, open_in_full is haloScale)
-eyedropper	colorize	0	200	-	high	colour picker button of ColorSelectorDialogWindow; eyedropper
-flag	flag	1	0	-	high	Methods flagged with self flag: (Calypso decorator/query, FlagIconStyler); Pharo draws an orange ! circle but the concept is a flag; FILL 1 reads better as a marker at 16px; suggest orange tint
-folder	folder	0	200	-	high	Closed folder in file browser and Iceberg branch items; exact match (smallOpen gets folder_open)
-forward	arrow_forward	0	200	-	high	Blue right arrow for history navigation forward (Calypso, file browser); pairs with back -> arrow_back
-fullscreen	fullscreen	0	200	-	high	same name and corner-bracket look
-git	commit	0	200	-	low	the git logo: commit, the git concept; the same for komitter and versionControl
-github	hub	0	200	-	low	brand logo, Material has no brand marks: hub (GitHub); the same for githubLight
-githubLight	hub	0	200	-	low	same logo as github, for dark backgrounds: same symbol
-gitlab	pets	0	200	-	low	GitLab brand logo (tanuki) for the Iceberg GitLab panel; no brand marks in Symbols, a paw evokes the animal logo and keeps it distinct from github/bitbucket
-glamorousAccept	check	0	200	-	high	Green check (Glamour-style accept); same concept as accept
-glamorousAdd	add	0	200	-	high	plus sign, same as add/smallAdd (only style differs)
-glamorousAlarm	alarm	0	200	-	medium	No sender (legacy Glamour); windows with a clock badge; alarm (alarm clock)
-glamorousBookmark	bookmark	0	200	-	medium	same senders and picture as bookmark (Pharo 12 name)
-glamorousBrowse	open_in_browser	0	200	-	medium	same senders and picture as browse (Pharo 12 name)
-glamorousBug	bug_report	0	200	-	high	Green bug for debug points browser; exact concept
-glamorousCancel	cancel	0	200	-	medium	Red X used as a cancel button; same look and concept as smallCancel (both cancel), circled X keeps it distinct from windowClose (close)
-glamorousClose	close	0	200	-	high	close cross of headers and the protocol editor reset button; same concept as close
-glamorousCloud	cloud	0	200	-	high	No sender (legacy); the same black cloud as cloud, only the theme differs
-glamorousCloudPaused	cloud_off	0	200	-	low	glamorous duplicate of cloudPaused (same image style); same reasoning
-glamorousDiveAllRight	keyboard_double_arrow_right	0	200	-	medium	Dive all the way right (GT legacy, no sender); double chevron distinguishes it from diveRight (single arrow)
-glamorousDiveRight	chevron_right	0	200	-	medium	Glamour/Spotter "dive in" arrow (no senders); chevron reads as drill-in and stays distinct from smallForward (arrow_forward); should match diveRight
-glamorousDown	arrow_downward	0	200	-	high	Blue down arrow for a toolbar 'pop' action; plain down arrow
-glamorousDropDown	arrow_drop_down	0	200	-	high	grey down triangle opening the Sindarin commands menu; exact match
-glamorousEdit	edit	0	200	-	high	Scopes presenter toolbar edit button (P12); pencil
-glamorousExample	lightbulb	0	200	-	high	example methods (SpExampleMethodNode); Pharo draws a lightbulb too
-glamorousFolder	folder	0	200	-	high	Folder (Iceberg repair: locate repository); same look
-glamorousGo	play_arrow	1	0	-	high	13px green triangle for evaluate/do-it (playground, inspector, profiler); FILL 1 = solid triangle like Pharo's (FILL 0 is an outline); same as smallDoIt (same meaning and size)
-glamorousGrayCircle	fiber_manual_record	1	0	9E9E9E	high	same picture as grayCircle (renamed key)
-glamorousGrayCircleEmpty	circle	0	200	9E9E9E	medium	same picture as grayCircleEmpty (renamed key)
-glamorousGreenCircle	fiber_manual_record	1	0	43A047	high	same picture as greenCircle (renamed key)
-glamorousHelp	help	0	200	-	high	question mark help entry (Roassal world menu); circled ? is Material help; same as help
-glamorousInspect	eyeglasses	0	200	-	high	Inspect (Iceberg inspect, profiler, inspect variable); Pharo's inspector icon is literally a pair of glasses
-glamorousInto	step_into	0	200	-	high	Debugger step-into (Sindarin step bytecode); exact debugger concept, arrow into a point
-glamorousLargeGrayCircleEmphasized	adjust	0	200	9E9E9E	medium	same picture as largeGrayCircleEmphasized (renamed key)
-glamorousLeft	arrow_back	0	200	-	medium	green left arrow with a shaft (legacy GT navigation); arrow_back matches the arrow shape, chevron_left is the lighter alternative
-glamorousLeftSide	keyboard_tab_rtl	0	200	-	low	No sender (legacy Glamour); Pharo draws a blue arrow pointing left into the left side of a box; keyboard_tab_rtl (arrow to a left bar) is the nearest look/meaning, first_page is the alternative
-glamorousMore	menu_open	0	200	-	medium	same senders and picture as more (Pharo 12 name)
-glamorousOpen	folder_open	0	200	-	high	Open (legacy, no sender); Pharo look is an open folder
-glamorousOpenFromUrl	file_open	0	200	-	medium	same picture as openFromUrl (renamed key), no senders
-glamorousOver	step_over	0	200	-	high	Sindarin debugger 'step over' command; step_over is the exact debugger concept
-glamorousPlay	play_arrow	1	0	-	high	solid green play triangle; filled play_arrow matches
-glamorousPreferences	tune	0	200	-	medium	No sender (legacy); gear + wrench; preferences -> tune like preferences in chunk 2 (settings is used by configuration)
-glamorousRedCircle	fiber_manual_record	1	0	E53935	high	same picture as redCircle (renamed key)
-glamorousRedo	redo	0	200	-	high	Profiler 'show as root'/redo; Pharo look is the purple curved redo arrow; same concept as redo
-glamorousRefresh	refresh	0	200	-	high	Circling arrows for refresh commands (Iceberg, inspector, file browser); same concept as refresh (sync matches the two-arrow look but means synchronise)
-glamorousRemove	close	0	200	-	medium	10x10 X: close_small is unreadable at 10 px
-glamorousRestart	restart_alt	0	200	-	high	same senders and picture as restart (Pharo 12 name)
-glamorousRight	arrow_forward	0	200	-	medium	Roassal transition inspector 'Next frame' (P12); blue right arrow, same as right
-glamorousRightSide	keyboard_tab	0	200	-	medium	debugger 'run to selection' / Sindarin skip-to-selection and step-to-return: arrow running up to a bar (->|); login has the same look but means sign-in
-glamorousSave	save	0	200	-	high	Save (legacy, no sender); Pharo look is a floppy disk, as is save
-glamorousSaveToUrl	cloud_upload	0	200	-	medium	Arrow out of a box, used for Playground "publish" (save to a paste URL); cloud_upload pairs with cloud_download
-glamorousSearch	search	0	200	-	high	Magnifying glass for search
-glamorousSpawn	open_in_new	0	200	-	high	spawn = open the selection in a new window/pane; arrow leaving a box
-glamorousTable	table	0	200	-	high	Playground bindings command; a grid/table picture
-glamorousThrough	step	0	200	-	medium	debugger step through (debuggerStepThrough); Material has step_into/step_over/step_out for the siblings, 'step' (arrow through to a point) keeps through distinct from into
-glamorousTrash	delete	0	200	-	high	Remove package from repository, clear transcript/scopes; trash can look = delete
-glamorousUndo	undo	0	200	-	high	Purple back-curving arrow, undo; exact concept
-glamorousUp	arrow_upward	0	200	-	high	Blue up arrow for a toolbar 'push' action; plain up arrow
-glamorousZoomIn	zoom_in	0	200	-	high	magnifier with plus; exact match
-glamorousZoomOut	zoom_out	0	200	-	high	No sender; magnifier with minus
-glamorousZoomToFit	fit_screen	0	200	-	high	no senders; zoom to fit, frame corners like Pharo's
-go	play_arrow	1	0	-	high	Evaluate / Do it (playground, example browser, profiler run); green play triangle in Pharo; FILL 1 matches the solid triangle
-grayCircle	fiber_manual_record	1	0	9E9E9E	high	small status dot like svgPack's (about a third of the box); same symbol as the other coloured dots
-grayCircleEmpty	circle	0	200	9E9E9E	medium	grey ring; Material has no small ring, so it is the full-size circle outline
-greenArrowUpAndDown	height	0	200	-	high	green double-headed vertical arrow (legacy); height is the same double-headed arrow, kept distinct from arrowUpAndDown (unfold_more)
-greenCircle	fiber_manual_record	1	0	43A047	high	small green status dot, the family of grayCircle and redCircle
-group	dataset	0	200	-	medium	generic grouping (Iceberg extension definitions, Syc protect variable, file previewers); Pharo draws a grid of squares in parentheses, dataset is a grid of squares in a frame; Material 'group' means people, so avoided
-haloCollapse	collapse_content	0	200	-	medium	Halo handle that collapses the morph; collapse_content (inward corners) keeps it distinct from windowMinimize (minimize)
-haloDebug	build	0	200	-	medium	Morphic halo debug handle drawn as a wrench; build (wrench) matches the look, bug_report is kept for glamorousBug
-haloDismiss	disabled_by_default	0	200	-	medium	Halo handle that deletes the morph (bold X); X in a square fits a halo handle and stays distinct from windowClose (close) and cancel
-haloDrag	drag_pan	0	200	-	medium	Morphic halo handle to drag (move) the morph; four-way move arrows (open_with is the same idea)
-haloDup	content_copy	0	200	-	high	Halo 'duplicate' handle; Pharo draws two overlapping rectangles, content_copy is the duplicate glyph
-haloFontEmph	format_bold	0	200	-	medium	halo handle that changes font emphasis (bold/italic); Pharo shows bold and plain F
-haloFontSize	format_size	0	200	-	high	Halo handle to change font size; Pharo look is two Fs of different size, format_size is two Ts of different size
-haloFontStyle	font_download	0	200	-	medium	Morphic halo handle choosing the text style/font ("FF"); boxed A = font selection; distinct from format_bold/size keys
-haloGrab	back_hand	0	200	-	medium	Halo 'pick up' handle; grabbing hand conveys pick up, distinct from haloDrag (move)
-haloHelp	question_mark	0	200	-	high	halo help handle draws a bare '?'; question_mark keeps it distinct from smallHelp (help, circled)
-haloMenu	menu	0	200	-	high	Halo 'menu' handle; Pharo draws a solid box with lines; menu (hamburger)
-haloPaint	brush	0	200	-	high	halo paint/repaint handle; brush like Pharo's pen tip
-haloRecolor	palette	0	200	-	medium	Halo handle to change the morph colour; Pharo draws a pipette, but palette (choose a colour) keeps it distinct from the eyedropper key (colorize)
-haloRot	rotate_90_degrees_cw	0	200	-	medium	Morphic halo rotation handle (circular arrows around a shape); rotating a shape, distinct from the generic rotate key
-haloScale	open_in_full	0	200	-	medium	Halo scale handle (resize-corner image), also a zoom/scale toggle in the color picker; diagonal expand arrows convey scaling
-haloView	visibility	0	200	-	high	eye: window profile visibility and method watch decoration; exact match
-halt	report	1	0	E53935	medium	Halt/breakpoint gutter styler, Calypso halt decorator, 'Debugging' source-code menu; Pharo draws a red circle with '!'; report (stop-sign octagon with '!') FILL 1 says 'halt here' and keeps the alert look while staying distinct from error (smallError/testRed), stop (stop_circle) and haloGrab (back_hand); suggest red tint
-help	help	0	200	-	high	help/ question buttons in Spec, world menu, Roassal; circled question mark
-hierarchy	account_tree	0	200	-	high	ClyFullVisibilityLevel (show inherited methods / class hierarchy); Pharo look is a small tree of nodes, as is account_tree
-history	history	0	200	-	high	Clock with back arrow for method versions, playground versions, watch points; exact concept
-home	home	0	200	-	high	House for home folder bookmark and world/desktop
-image	image	0	200	-	medium	used for the image bookmark of the file browser (the Pharo image directory) and for Spec image/progress demos showing pictures; art is four coloured squares (same as paint); image keeps the name and the picture meaning
-info	info	1	0	1E88E5	high	Alert dialog / MessageDialogWindow 32px icon; Pharo draws a solid green diamond with 'i'; info FILL 1 like smallInfo
-inspect	eyeglasses	0	200	-	high	inspect object/variable; Pharo's inspector icon is glasses, Material has eyeglasses; keeps it distinct from search/smallFind
-instVarsPressed	data_array	0	200	-	low	old browser button {i}, no senders: the three instVars states share one symbol, data_array, as classVars share data_object
-instVarsSelected	data_array	0	200	-	low	old browser button {i}, no senders: same symbol for the three states
-instVarsUnselected	data_array	0	200	-	low	old browser button {i}, no senders: same symbol for the three states
-into	step_into	0	200	-	high	Sindarin debugger step commands (step, step bytecode, to method entry); Material has the exact debugger step_into
-jigsaw	extension	0	200	-	high	Rewriter match tool; puzzle piece
-jigsawIcon	extension	0	200	-	high	rewriter match tool; puzzle piece
-jump	jump_to_element	0	200	-	medium	Jump to test class (Calypso); Pharo look is a green dot; jump_to_element (arrow into a framed element) means navigate to; kept distinct from redo
-keymapBrowser	keyboard	0	200	-	high	Keymap/shortcut browser (ESC key picture); keyboard = shortcuts; keyboard_command_key is an alternative
-komitter	commit	0	200	-	medium	Komitter (Monticello commit tool) logo, legacy; commit node glyph conveys committing
-komitterGemstoneRemote	diamond	0	200	-	low	Komitter remote of type GemStone/S 3 (art 's3', legacy); diamond = gemstone, distinct from the other komitter remotes
-komitterNewSlice	folder_special	0	200	-	low	File browser bookmarks 'Image directory' and working directory; Pharo draws the Pharo lighthouse logo in a blue circle; meaning first: a special folder (folder_special); the logo itself would be siren as for pharo/smallPharo
-komitterSmalltalkhubRemote	inventory_2	0	200	-	low	actually the Iceberg window/taskbar and method-versions icon (a crate); archive box = repository store; Material has no Iceberg/git-repository logo
-komitterSqueakSourceRemote	dns	0	200	-	low	Komitter remote of type SqueakSource (grumpy face image, no sender); dns (server rack) = a hosted remote repository; distinct from the Smalltalkhub remote and the plain cloud remote
-largeGrayCircleEmphasized	adjust	0	200	9E9E9E	medium	grey disc with a ring: the ring-and-dot of adjust
-left	arrow_back	0	200	-	medium	same picture as glamorousLeft and back; the pair of right (arrow_forward)
-leftSide	keyboard_tab_rtl	0	200	-	low	legacy GT 'left side' (blue arrow pointing left into a bracket); keyboard_tab_rtl is the arrow-to-left-edge look; first_page is the alternative
-lock	lock	0	200	-	high	Deny dialog, halo lock handle, iconic list items, file browser; padlock
-magnitude	functions	0	200	-	medium	Magnitude class>>systemIconName; Pharo shows Sigma, functions is Sigma; straighten (ruler) would be the meaning-only alternative
-menuPin	keep	0	200	-	medium	Pin a menu (black dot image, no sender); keep is the push pin, same concept as smallPushpin
-merge	merge	0	200	-	high	Iceberg merge and Syc merge-variable; exact concept, pairs with branch -> call_split
-monticelloPackage	deployed_code	0	200	-	medium	Monticello package (commit package command): the deployed_code family of dirtyMonticelloPackage and newerPackagesAvailable; inventory_2 stays for SmalltalkHub
-more	menu_open	0	200	-	medium	playground pages command; svgPack draws a drop-down triangle by menu lines
-morph	widgets	0	200	-	medium	Morph class>>systemIconName, taskbar tasks, file browser 'Desktop' bookmark; Pharo draws a window with a toolbar; widgets (UI components) is the Morph concept
-nautilus	browse	0	200	-	medium	system browser launcher (Spec demo, Epicea, critics browse button); multi-pane layout with browse meaning, like Pharo's pane grid
-newerPackagesAvailable	deployed_code_update	0	200	-	medium	Newer package versions available (no sender); deployed_code_update = package with down-arrow badge (update available)
-notFound	broken_image	0	200	-	medium	ThemeIcons>>notFoundIcon, the red square shown for a missing icon; broken_image says "image not found" (alternative indeterminate_question_box)
-objects	graph_3	0	200	-	medium	Three connected coloured nodes for dependency analyzer, baseline map and rewriter scope; graph_3 is a node graph of the same shape
-open	folder_open	0	200	-	high	opened folder: file browser, Spec examples, Iceberg location; same look and meaning
-openFromUrl	file_open	0	200	-	medium	only sender: the settings browser's Load button (a file); same picture as glamorousOpenFromUrl
-over	step_over	0	200	-	high	Sindarin step over (debuggerStepOver); exact Material debugger symbol; distinct from redo
-overlayAdd	add_box	0	200	-	high	9x9 badge: svgPack draws a plus in a box
-overlayDirty	asterisk	0	200	-	medium	8px star overlay badge marking dirty/unsaved items (no senders); asterisk is the usual "modified" mark
-overlayModification	edit_square	0	200	-	medium	modification badge: the same symbol as changeUpdate (a modification)
-overlayRemove	indeterminate_check_box	0	200	-	high	9x9 badge: svgPack draws a minus in a box, the pair of overlayAdd
-package	package_2	0	200	-	medium	Pharo package in browsers/Iceberg/method nodes (22 senders); Pharo draws a folder with a blue dot; package_2 is the canonical package glyph (box also maps to it; packageColored maps to folder_data in chunk 2, align if a single family is wanted)
-packageAdd	box_add	0	200	-	medium	no senders; add package; box with plus pairs with emptyPackage=package
-packageColored	folder_data	0	200	-	medium	Project/package manifest (ClyProjectIconTableDecorator, PackageManifest systemIconName, Microdown file resource); Pharo look is a folder with coloured squares; folder_data (folder with nodes) matches look and keeps it distinct from package and box
-packageDelete	delete_forever	0	200	-	low	Package delete (red X, no senders); no package+delete symbol in Symbols, delete_forever (bin with X) keeps it distinct from plain delete
-page	draft	0	200	-	high	Blank page with folded corner (file browser file icon, finder results); draft is the empty dog-eared page, distinct from description (page with lines)
-paint	palette	0	200	-	medium	legacy 12x12 paint icon (four colour squares); palette conveys colours/painting
-painting	palette	0	200	-	low	No sender (legacy 21x20); Pharo draws a green left arrow on magenta; name only says painting, so palette (as smallPaint)
-partialCheckedBox	indeterminate_check_box	0	200	-	high	tri-state tree checkbox, partially checked
-pause	pause	1	0	-	high	the outlined pause draws hollow bars at 16 px; filled bars as svgPack
-pauseDark	pause	1	0	-	high	same as pause, only svgPack's colour differs
-pharo	cell_tower	0	200	-	low	the lighthouse logo: Material has no lighthouse; cell_tower is a tower sending beams, the nearest silhouette. Same symbol for the three Pharo logos
-pharoBig	cell_tower	0	200	-	low	the lighthouse logo (OS window icon, welcome browser): same symbol as pharo and smallPharo
-play	play_arrow	1	0	-	high	Process browser 'Signal' action; green right triangle; play_arrow FILL 1 like go
-pointersTo	zoom_in_map	0	200	-	medium	browse pointers to an object: four arrows converging on the centre like Pharo's arrows-to-red-dot; link was the old choice but reads as hyperlink
-preferences	tune	0	200	-	medium	Preferences (no sender found; same gear+wrench image as configuration); tune (sliders) = preferences and keeps it distinct from configuration (settings); settings would also be acceptable
-processBrowser	memory	0	200	-	medium	Process Browser window/taskbar icon; CPU chip = processes (task-manager idiom); alternatives view_list, stacks
-protocolExtension	extension	0	200	-	high	Extension-method protocol (Calypso); puzzle piece is the extension concept
-protocolNone	horizontal_rule	0	200	-	low	16x1 blank strip: 'no protocol' placeholder, effectively no icon; horizontal_rule is the most neutral glyph
-protocolPrivate	lock_person	0	200	-	medium	Calypso 'private' protocol decoration, Pulse loading presenter; Pharo draws a red square; private -> lock_person, distinct from lock and from protocolPublic -> public (public_off is an alternative pairing)
-protocolProtected	shield	0	200	-	medium	the protected protocol mark (Calypso uses it for initialization/release protocols): shield, the family of public and lock_person
-protocolPublic	public	0	200	-	medium	Public protocol in the debugger implementor presenter; public (globe) means public/visible to all; Pharo look is a small green ring
-publish	publish	0	200	-	medium	Publish (two green forward arrows, no senders); publish symbol (arrow up to a bar) is Material's publish concept; send/share are alternatives
-question	help	1	0	1E88E5	high	32px question dialog icon (blue filled box with ?); filled help disc matches the dialog emphasis, distinct from help key (outline)
-radioButtonMarker	fiber_manual_record	1	0	-	high	the dot drawn inside a selected radio button (UITheme>>#radioButtonMarkerForm); filled small dot with margin, not the full-size circle
-radioButtonOff	radio_button_unchecked	0	200	-	high	ThreePhaseButtonMorph radioButton off-state; like radioButtonUnselected
-radioButtonOn	radio_button_checked	0	200	-	high	ThreePhaseButtonMorph radio button selected state
-radioButtonPressed	radio_button_checked	1	0	-	medium	Mouse-down state of ThreePhaseButtonMorph radioButton; Pharo draws concentric rings; radio_button_checked FILL 1 renders a thick ring, distinct from the FILL 0 dot used for radioButtonSelected/On
-radioButtonSelected	radio_button_checked	0	200	-	high	Selected radio button (finder environment, Spec option, UITheme radio form); exact
-radioButtonUnselected	radio_button_unchecked	0	200	-	high	Empty radio button ring; exact concept
-recentMessages	overview	0	200	-	medium	profiler 'Full Report' button (art is a document with a pencil), name means recently visited messages; overview = document + clock covers report and 'recent'; distinct from history
-recoverLostChanges	settings_backup_restore	0	200	-	medium	Epicea code changes browser taskbar icon, FFI method decorators, Iceberg; Pharo draws a window with a green arrow going into a box; settings_backup_restore (restore arrow) says recover changes and stays distinct from history
-redCircle	fiber_manual_record	1	0	E53935	high	small red status dot, the family of grayCircle and greenCircle
-redo	redo	0	200	-	high	Redo (Rubric code menu, profiler); same look and meaning as glamorousRedo
-references	link	0	200	-	medium	Message browser / Finder "References" (senders and references); link conveys references; lan matches the node-tree look and is the alternative
-refresh	refresh	0	200	-	high	Refresh/reload (Iceberg checkout, cycle nodes, finder); circular arrow
-refreshCircling	autorenew	0	200	-	medium	refresh with circling arrows (inspector refresh, window profile reset, method browser); autorenew is two circling arrows, distinct from refresh and glamorousRestart
-remote	language	0	200	-	medium	Iceberg 'Remotes' group of the repository tree; Pharo draws an Earth globe; language (meridian globe) keeps the globe look and stays distinct from protocolPublic -> public and komitterSqueakSourceRemote -> dns
-remotesManagerAddRemote	add_link	0	200	-	medium	no senders; Iceberg add remote (a URL); link with plus is more specific than plain add
-remotesManagerEditRemote	edit	0	200	-	medium	Edit a remote in the old remotes manager (asterisk image, no sender); siblings add/remove remote are plus/minus, edit is the pencil
-remotesManagerRemoveRemote	link_off	0	200	-	medium	pair of remotesManagerAddRemote (add_link)
-remove	delete	0	200	-	high	Pharo image is a trash can; used for remove class/method commands; delete (trash) matches look and meaning
-removeCross	close	0	200	-	medium	10x10 X: close_small is unreadable at 10 px
-repair	construction	0	200	-	medium	Iceberg repair/calculate dirty packages, critique 'fix' commands, debugger; Pharo draws a hammer and wrench, which construction is exactly (build, the single wrench, is the alternative)
-restart	restart_alt	0	200	-	high	Extract method, critique update, Roassal transitions (Pharo 15 name of glamorousRestart): green circular arrow
-right	arrow_forward	0	200	-	medium	Right/next (halo, button icon on the right, docking bar submenu, ProfStef next lesson); Pharo look is a blue right arrow
-rightSide	keyboard_tab	0	200	-	medium	Green arrow to a right bar: Sindarin skip-to-selection / step-to-return and Iceberg write-to-files; keyboard_tab (arrow to bar) is the same picture; leftSide would be keyboard_tab_rtl
-rotate	rotate_right	0	200	-	medium	Halo simple rotate handle (24x22); circular arrow rotation
-save	save	0	200	-	high	floppy disk; exact match
-saveToUrl	cloud_upload	0	200	-	high	Playground 'Publish' (to the remote paste service); Pharo draws an arrow leaving a box; cloud_upload, distinct from smallPublish (publish) and smallExport (file_export)
-scale	open_in_full	0	200	-	medium	halo scale/resize handle and scale menu item (the Pharo image is a blank 22x21 placeholder); diagonal double arrow = scale up/down
-scriptManager	contract_edit	0	200	-	medium	Startup scripts manager, class-side <script> methods (ClyClassScript), method editor tool; Pharo look is a document with check and pencil; contract_edit (scroll with pencil) = edit a script
-search	search	0	200	-	high	Magnifier for search fields and previews; exact
-separator	horizontal_rule	0	200	-	high	24x5 menu separator line; horizontal_rule is a plain rule
-smallAdd	add	0	200	-	high	green plus for add commands; exact match
-smallAuthoringTools	code	0	200	-	medium	'Source Code' refactoring sub-menu and open-source-code command; Pharo draws a yellow dome (legacy); code (<>) is the source-code concept
-smallBack	arrow_back	0	200	-	high	back / previous conflict / left tab; left arrow
-smallBarcode	barcode	0	200	-	high	Barcode (no sender); same look
-smallBold	format_bold	0	200	-	high	Bold text "B"; exact
-smallCancel	cancel	0	200	-	high	Red X for cancel actions (merge conflicts, refactoring preview, color picker); circled X is Material cancel, distinct from windowClose (close)
-smallCentered	format_align_center	0	200	-	high	centered text alignment; exact match
-smallCogInitialState	settings	0	200	-	medium	one frame of the cog animation (debug point icon styler): every frame is the same cog, outlined, so the animation does not flicker between fills
-smallCogState2	settings	0	200	-	medium	a frame of the cog animation: the same cog as smallCogInitialState
-smallCogState3	settings	0	200	-	medium	a frame of the cog animation: the same cog as smallCogInitialState
-smallConfiguration	settings	0	200	-	high	Gear+wrench for Settings browser and configure commands; settings gear is the standard
-smallCopy	content_copy	0	200	-	high	Two overlapping sheets for copy to clipboard
-smallCut	content_cut	0	200	-	high	scissors: cut; exact match
-smallDebug	bug_report	0	200	-	high	Debug commands everywhere (34 senders: breakpoints, debug test, process browser 'Debug'); green beetle, the same picture as bug
-smallDebugIt	bug_report	0	200	-	high	Debug it (finder, debugger extension commands); bug
-smallDelete	delete	0	200	-	high	Delete/remove buttons (file dialog, bindings, breakpoints, watches); Pharo look is a trash can
-smallDoIt	play_arrow	1	0	-	high	13px green triangle for Do it / run script / examples; FILL 1 = solid triangle like Pharo's; same as glamorousGo (same meaning and size)
-smallError	error	1	0	E53935	high	Red filled disc with exclamation; error FILL 1 is the identical glyph
-smallExpert	bomb	1	0	-	medium	art is a lit green bomb (expert = dangerous); bomb exists, FILL 1 matches the solid look; only used by ClassListNodeExample/ClassTreeNodeExample
-smallExport	file_export	0	200	-	high	Morph 'export...' (BMP/GIF/JPEG/PNG), Roassal world menu, debugger file-out method; Pharo draws an arrow leaving a box; file_export
-smallFind	search	0	200	-	high	find/search/implementors; magnifier
-smallFonts	font_download	0	200	-	medium	Fonts (SettingDeclaration default icon); Pharo look is a letter A; font_download is an A in a box, distinct from haloFontSize (format_size)
-smallForward	arrow_forward	0	200	-	high	Blue right arrow for forward/next (merge next conflict, spotter, welcome); exact
-smallFullscreen	fullscreen	0	200	-	high	Four outward corners for fullscreen editor
-smallHelp	help	0	200	-	high	circled question mark: help items and potential dependencies; haloHelp uses question_mark to stay distinct
-smallHierarchyBrowser	account_tree	0	200	-	high	Browse class/method hierarchy (Iceberg snapshot browser, finder); tree diagram; account_tree like hierarchy (chunk 2)
-smallHome	home	0	200	-	high	no senders; house
-smallInfo	info	1	0	1E88E5	high	Information (dialogs, doc comment styler, disabled breakpoint, critiques, About); Pharo look is a filled blue circle; FILL 1 matches it; suggest blue tint
-smallInformation	info	1	0	1E88E5	high	Blue "!" information disk; info with FILL 1 = solid disk like Pharo's
-smallInspectIt	eyeglasses	0	200	-	high	Pharo inspect-it icon is a pair of glasses; eyeglasses matches the look; inspect concept
-smallItalic	format_italic	0	200	-	high	italic text style; also reused by Sindarin 'jump to caret', which jump keys cover separately
-smallJump	jump_to_element	0	200	-	medium	No sender; green dot as jump; size-only variant of jump (chunk 2 jump_to_element), distinct from redo
-smallJustified	format_align_justify	0	200	-	high	format source code command and patch changes menu; justified lines
-smallLanguage	send	0	200	-	low	Used only for message-send dependency nodes (DAMessageSendNode, StMessageSendNode); send (paper plane) = message send; the name suggests language but no sender uses it so
-smallLeftFlush	format_align_left	0	200	-	medium	Left-aligned lines; used as the generic text-file icon in file dialogs/Microdown and for alignment; keeps the align family (smallRightFlush, smallCentered, smallJustified); description would be the pure file meaning
-smallLoadProject	download	0	200	-	medium	Arrow into a tray: load project/baseline, load script, menu entries that load tools; download conveys loading in
-smallLock	lock	0	200	-	high	padlock: Metacello baseline lock and deny dialog; exact match
-smallNew	fiber_new	0	200	-	medium	New branch/repository (Iceberg), Sindarin step to next instance creation, Spec example 'new'; Pharo draws an orange starburst (a 'new!' badge); fiber_new is the 'new' badge and stays distinct from addCross (add_circle) / add / note_add
-smallObjects	graph_3	0	200	-	medium	object-centric breakpoints/watchpoints, reflectivity and metalink menus; Pharo draws three connected balls (object graph); share has the same look but means sharing
-smallOk	check	0	200	-	high	OK/accept buttons (Spec, Iceberg commit, accept changes); Pharo look is a green check; same as accept
-smallOpen	folder_open	0	200	-	high	Open folder for file dialogs and open-directory commands; exact, distinct from folder
-smallPaint	palette	0	200	-	high	Colour swatches for color picker and paint settings; palette
-smallPaste	content_paste	0	200	-	high	clipboard: paste; exact match
-smallPharo	cell_tower	0	200	-	low	the lighthouse logo: same symbol as pharo and pharoBig
-smallPrint	print	0	200	-	high	printer (ClassListExample); print
-smallPrintIt	chat	0	200	-	medium	print it shows its result in a balloon; chat_bubble draws an empty rectangle at 13 px
-smallProfile	timer_play	0	200	-	high	Stopwatch with play triangle for Profile it; timer_play is the same picture and meaning
-smallPublish	publish	0	200	-	medium	Legacy green split arrows going out (publish); publish arrow-to-bar glyph
-smallPushpin	keep	0	200	-	high	push pin (scopes, Roassal pinned transitions); Material Symbols name the push pin 'keep' (push_pin does not exist)
-smallQA	verified	1	0	-	medium	Critique browser (quality assistant); Pharo draws a black badge with a white check; verified FILL 1 matches look and meaning (passed QA)
-smallQuestion	question_mark	0	200	-	medium	question dialogs, critique details, Iceberg info; Pharo draws a bare '?', question_mark is a bare ?, kept distinct from help (circled)
-smallQuit	logout	0	200	-	high	Quit Pharo (World menu, menu bar example); Pharo look is an arrow leaving through a door, as logout
-smallRedo	redo	0	200	-	medium	Purple forward-curving arrow; Rubric redo, but most senders reuse it for "move to" refactorings; kept as redo, distinct from jump keys
-smallRemoteOpen	open_in_new	0	200	-	medium	Window with arrow, DrTests button that opens/browses in another tool; open_in_new conveys opening elsewhere
-smallRightFlush	format_align_right	0	200	-	high	right-flush text lines; also reused for inline method/temp and 'select next conflict', but the art is right alignment
-smallSave	save	0	200	-	high	Save (Epicea, file system, Iceberg, debugger); floppy disk
-smallSaveAs	save_as	0	200	-	high	save version as / save scope as; floppy with pencil like Pharo's
-smallScreenshot	screenshot_monitor	0	200	-	high	Take a screenshot (Screenshot command); Pharo draws a camera; screenshot_monitor names the action
-smallSelect	select	0	200	-	low	Blue-bordered square, no senders; select (dashed selection square) carries the "select" name and differs from the checkbox
-smallStrikeOut	strikethrough_s	0	200	-	high	Struck-out S for strikethrough text style
-smallSystemBrowser	browse	0	200	-	medium	system browser (Calypso taskbar icon, World menu, browse commands): a multi-pane browser window; Material 'browse' is a multi-pane layout, distinct from the browse key (open_in_browser)
-smallUnderline	format_underlined	0	200	-	high	No sender; underlined U
-smallUndo	undo	0	200	-	high	undo in editors and refactoring change manager; curved back arrow
-smallUpdate	refresh	0	200	-	high	Update/refresh/fetch (browser update, Iceberg fetch and load, debug points, notifications); Pharo look is a circular arrow, as refresh
-smallVolume	volume_up	0	200	-	high	Speaker with waves; exact
-smallWarning	warning	1	0	FFB300	high	Orange filled warning triangle (critics, alert dialog, doc comment styler); FILL 1 matches the filled status look
-smallWindow	web_asset	0	200	-	high	window with title bar: taskbar/presenter window icon, open natively, grab window
-solidMenu	menu	0	200	-	high	Halo fallback graphical handle (solidMenuIcon); hamburger menu, same as haloMenu/tinyMenu (size only differs)
-spawn	open_in_new	0	200	-	medium	no senders; spawn a new browser/window on the selection
-stop	stop_circle	1	0	-	medium	Stop/interrupt (job interrupt button, stop logger, breakpoint/debug point styler); Pharo draws a red circled X; stop_circle FILL 1 keeps it distinct from cancel and testRed; suggest red tint
-string	format_paragraph	0	200	-	medium	Pilcrow, the icon of String class (systemIconName); format_paragraph is the same pilcrow and means text; abc is the alternative
-system	computer	0	200	-	medium	Blue disc with C for system settings and system files; computer conveys 'system' (look is a copyright-like C, no meaningful match)
-table	table	0	200	-	high	spreadsheet grid: playground bindings, cell mode, lesson choice; exact match
-testGreen	check_circle	1	0	43A047	high	Passing test / success status (Iceberg PR status, Calypso test decorations, FT examples, Epicea); Pharo green dot; check_circle FILL 1, distinct from testRed (error), testYellow (circle), testNotRun; suggest green tint
-testNotRun	circle	1	0	9E9E9E	high	filled grey disc, as in the Material Icons pack: not the empty ring of a radio button (MaterialSymbolsThemeIconsTest>>testStatusKeys)
-testRed	cancel	1	0	E53935	high	SUnit error: red X disc, as in the Material Icons pack; error (!) stays for error/smallError and amber error for testYellow
-testRunner	labs	0	200	-	high	Test tubes for DrTests/test runner; labs is the same test-tube picture, distinct from test status keys
-testYellow	error	1	0	FFB300	high	SUnit failure: amber ! disc, as in the Material Icons pack; distinct from warning (triangle)
-through	step	0	200	-	medium	debugger 'step through' (into blocks, over messages; legacy here); step is the generic debugger step, distinct from step_into (into) and step_over (over)
-thumbsDown	thumb_down	1	0	-	high	No sender; solid red thumb down; FILL 1 to match the solid Pharo picture (thumbsUp should use the same fill)
-thumbsUp	thumb_up	1	0	-	high	no senders; Pharo draws a solid green thumb, FILL 1
-tinyMenu	menu	0	200	-	medium	Tiny menu button (no sender); Pharo look is a hamburger, as menu
-tools	handyman	0	200	-	high	Crossed hammer and wrench for the Tools menu and settings group; handyman is the same picture
-top	vertical_align_top	0	200	-	medium	Red up arrow: 'move to top' in editable lists and 'top' icon position; vertical_align_top conveys to-top, distinct from glamorousUp (arrow_upward)
-trait	layers	0	200	-	medium	trait = composable layer of behaviour (Pharo draws a T in a green disc, no letter-T symbol); layers keeps continuity with the Material Icons pack; must differ from class (data_object) and jigsaw/extension
-traitRequiredMethod	line_end_circle	0	200	-	low	No sender; Pharo draws a UML required-interface socket (half circle on a stem); line_end_circle (a stem ending in a circle, the UML ball/socket notation) is the closest look; no 'required method' concept exists (priority_high is already uncommentedClass)
-transcript	article	0	200	-	medium	Transcript taskbar/world-menu entry: a window of text output; article (page of text lines) matches Pharo's window-with-text; terminal would suggest a shell
-trash	delete	0	200	-	high	Remove package, profile deletion, scopes; trash can look, same as glamorousTrash/smallDelete
-uncheckedBox	check_box_outline_blank	0	200	-	high	12px empty checkbox of MorphTreeNodeMorph; same concept and size as checkboxUnselected
-uncommentedClass	priority_high	0	200	-	medium	Red exclamation warning that a class lacks a comment (also generic Calypso warning); priority_high is the same bare '!'; comments_disabled was the more literal alternative
-undo	undo	0	200	-	high	purple undo arrow; exact match
-up	arrow_upward	0	200	-	high	Push/pull-up commands, Iceberg push, process priority, file browser parent; blue up arrow
-upAndDownArrow	height	0	200	-	high	no senders; vertical double-headed arrow, exactly Pharo's look
-upArrow	arrow_upward	0	200	-	high	Big black up arrow (no sender); arrow_upward is the same glyph
-user	person	0	200	-	high	User avatar (no senders); person silhouette
-userFemale	person_3	0	200	-	high	Female user avatar (legacy); person_3 is the person silhouette with long hair
-userProfile	account_circle	0	200	-	medium	Pharo 15 window-profile switching items (a person silhouette); account_circle = user's profile
-versionControl	commit	0	200	-	medium	same picture as komitter (Iceberg snapshot browser, version control group); history stays for the history key
-volume	volume_up	0	200	-	high	no senders; speaker with waves
-warning	warning	1	0	FFB300	high	Warning (alert dialog, rename previews, semantic warnings, critiques); Pharo look is a filled orange triangle; FILL 1 matches; suggest amber tint
-window	web_asset	0	200	-	high	Generic Spec/Iceberg window icon (window with title bar); web_asset is a framed window with title bar (Symbols' window is a house window)
-windowClose	close	0	200	-	high	Window close button (black X); close
-windowCloseInactive	close	0	200	-	high	close button of an inactive window, also clear-search and notebook tab close; same symbol as close, only the state colour differs
-windowCloseInactiveInverted	close	0	200	-	high	No sender; grey X of the inactive inverted window close button; same as windowClose (only colour differs)
-windowCloseInverted	close	0	200	-	high	dark-theme window close button; inverted is only the light-on-dark colouring, same X as windowClose
-windowMaximize	crop_square	0	200	-	medium	Window maximize button (UITheme form set, window menu); the square is the usual maximize glyph and matches Pharo's; open_in_full/fullscreen are kept for the fullscreen keys
-windowMaximizeInactive	crop_square	0	200	-	medium	Title-bar maximise button, inactive state (square); same symbol as windowMaximize, inactive is only a colour; crop_square = classic maximise square
-windowMaximizeInactiveInverted	crop_square	0	200	-	medium	Legacy maximize button, inactive inverted state (grey square outline); same symbol as windowMaximize should get, only state/colour differs
-windowMaximizeInverted	crop_square	0	200	-	medium	dark-theme maximize title-bar button (a square); crop_square is the title-bar maximize square (Material 'maximize' is a top bar, not this)
-windowMenu	arrow_drop_down	0	200	-	high	Window menu button (UITheme windowMenuFormSet), profiler 'Expand All' and selected toolbar item; black down triangle, as windowMenuInactiveInverted
-windowMenuInactive	arrow_drop_down	0	200	-	high	svgPack draws the same triangle as windowMenu, greyed: same symbol for the four windowMenu keys
-windowMenuInactiveInverted	arrow_drop_down	0	200	-	high	Window menu button, inactive inverted variant (only colour differs from windowMenu); Pharo look is a down triangle, as arrow_drop_down
-windowMenuInverted	arrow_drop_down	0	200	-	high	the dark theme's window menu triangle (PharoDarkTheme): same symbol for the four windowMenu keys
-windowMinimize	minimize	0	200	-	high	Window minimize bar (also collapse in profiler and Iceberg 'load less'); minimize
-windowMinimizeInactive	minimize	0	200	-	high	minimize title-bar button of an inactive window; minimize, only the state differs
-windowMinimizeInactiveInverted	minimize	0	200	-	high	No sender; grey bar of the inactive inverted minimize button; same as windowMinimize (only colour differs)
-windowMinimizeInverted	minimize	0	200	-	high	dark-theme window minimize button; same symbol as windowMinimize
-workspace	edit_note	0	200	-	medium	Playground window icon and rewriter rule editor; Pharo look is a window with text lines; edit_note = lines of text being edited (scratch code)
-zoomIn	zoom_in	0	200	-	high	Magnifier with plus; exact
-zoomOut	zoom_out	0	200	-	high	Magnifier with minus; zoom_out
-zoomToFit	fit_screen	0	200	-	high	zoom to fit the content (legacy); fit_screen keeps it distinct from fullscreen
+pharoKey	symbolName	fill	grade	colour	trim	confidence	note
+abstract	frame_source	0	200	-	-	low	abstract methods: a dashed frame of code; format_italic stays for smallItalic, and Calypso shows abstract methods in italics anyway
+accept	check	0	200	-	-	high	Accept (Rubric/FileList menu: accept edits); Pharo look is a green check, same image and meaning as smallOk
+add	add	0	200	-	-	high	Green plus used by 45 "add/new" commands (Spec, Syc, Iceberg, file browser); plain plus, same look and meaning
+addCross	add_circle	0	200	-	-	medium	Grey plus used by Iceberg 'load more'; same plus concept as add, circled variant keeps it distinct from add (green plus, mapped to add)
+alarm	alarm	0	200	-	-	high	Pharo art is a window stack with a clock badge (GT alarm, no sender left); alarm clock carries both the name and the clock
+announcement	campaign	0	200	-	-	medium	Announcement class>>systemIconName (icon of the Announcement hierarchy); Pharo draws a speech bubble but the concept is announcing an event, which campaign (megaphone) says best; chat_bubble would match the look but reads as comments/chat
+arrowDoubleDown	arrow_drop_down	0	200	-	48	high	7x7 single down triangle of the number spinner (SpMorphicNumberInputFieldAdapter decrement); same shape as Pharo's; trimmed: the glyph fills the key instead of keeping Material's padding (7 px triangle in 7)
+arrowDoubleUp	arrow_drop_up	0	200	-	48	high	7x7 up triangle on the increment button of SpMorphicNumberInputFieldAdapter; arrow_drop_up is the same small solid triangle (name says double but the image is a single triangle); trimmed: the glyph fills the key instead of keeping Material's padding (7 px triangle in 7)
+arrowDown	arrow_drop_down	0	200	-	48	high	7px solid down triangle for menu-button dropdowns and descending sort; same symbol as dropDown (only the size differs); trimmed: the glyph fills the key instead of keeping Material's padding (7 px triangle in 7)
+arrowUp	arrow_drop_up	0	200	-	48	high	Small 7px up triangle (overridden-methods/superclass marker, coverage); arrow_drop_up is the same triangle shape; trimmed: the glyph fills the key instead of keeping Material's padding (7 px triangle in 7)
+arrowUpAndDown	unfold_more	0	200	-	48	high	6x7 up/down triangles drawn by FTUnsortedSortingState>>#sortingIcon (column not sorted); unfold_more is the standard both-ways sort affordance; kept distinct from greenArrowUpAndDown (height); trimmed: the glyph fills the key instead of keeping Material's padding
+autoReload	update	0	200	-	-	high	Process browser 'Auto update' toggle; Pharo draws a circular arrow with a clock badge, update is exactly a circular arrow around clock hands (timed refresh); kept distinct from refresh/autorenew
+autoReloadDark	update	0	200	-	-	medium	no senders; circular arrow with clock = automatic reload; Dark is only the dark-theme colouring, so the same symbol as autoReload
+back	arrow_back	0	200	-	-	high	Navigate back (Calypso history, file browser, reverse dependency); Pharo look is a left arrow
+bitbucket	bucket_check	0	200	-	-	low	Bitbucket brand logo (Iceberg Bitbucket panel); Material Symbols has no brand marks, so a bucket keeps it recognisable and distinct from github/gitlab in the clone-provider list
+book	library_books	0	200	-	-	medium	art is two stacked document sheets; used for files (IceFileDefinition), Documents/tmp bookmarks, Finder selector results and copy-commitish: library_books keeps the stacked-sheets look and the book name (menu_book is the plain-book alternative)
+bookmark	bookmark	0	200	-	-	medium	Iceberg Create tag and repository groups (Pharo 15 name of glamorousBookmark): the bookmark ribbon, as the key says
+bottom	vertical_align_bottom	0	200	-	-	high	move/align to bottom (halo, button icon position); arrow onto a bar keeps it distinct from 'down' (arrow_downward)
+box	box	0	200	-	-	medium	svgPack draws a cardboard box (Spec test only): box, distinct from package (package_2)
+branch	call_split	0	200	-	-	medium	Iceberg git branch (15 senders); Symbols has no git-branch glyph, call_split is the usual branching sign and pairs with merge; fork_right is the alternative
+breakpoint	flag	1	0	E53935	-	medium	Legacy (no senders) orange flag marking a breakpoint; filled flag matches the look and the 'marker' meaning
+browse	open_in_browser	0	200	-	-	medium	Calypso/Iceberg 'browse' commands open a browser on the item (Pharo 15 name of glamorousBrowse)
+bug	bug_report	0	200	-	-	high	Debug points browser, Roassal 'Debug step action', deprecate class command; Pharo draws a green beetle, the same picture as smallDebug, so both map to bug_report
+calendar	calendar_month	0	200	-	-	high	date picker icon of SpDatePresenter; month grid with day dots like Pharo's
+cancel	cancel	0	200	-	-	high	Cancel buttons of dialogs, Rubric cancel edits, Iceberg cancel branch; Pharo look is a red X; cancel (circled X, FILL 0) keeps it distinct from close (window close) and from testRed (error FILL 1); suggest red tint
+catalog	menu_book	0	200	-	-	low	project catalog (Spec tests only); library_books stays for book
+changeAdd	add_box	0	200	-	-	high	Epicea/diff addition: the boxed family of the change keys (add_box, indeterminate_check_box, edit_square, check_box_outline_blank)
+changeBlock	block	0	200	-	-	medium	merge choice 'local/right chosen': the incoming change is blocked and the current version kept (IceOperationMerge pairs it with #forward, PSMC conflict wrappers); block says 'change blocked'; art is a grey left arrow, arrow_back is the look alternative
+changeEmpty	check_box_outline_blank	0	200	-	48	medium	Monticello change wrapper icon when there is no change (P12); Pharo draws a plain white square; an empty box, consistent with changeAdd -> add_box of the same change-icon family; trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
+changeRemove	indeterminate_check_box	0	200	-	-	medium	Epicea/diff removal: the boxed minus, pair of changeAdd (the same glyph as partialCheckedBox, in another context)
+changeSorter	sort_by_alpha	0	200	-	-	medium	Old Change Sorter tool, now used by the debugger stack-filter toggle and file browser change list; Pharo image is literally a down arrow with a/z, which sort_by_alpha reproduces
+changeUpdate	edit_square	0	200	-	-	medium	Epicea/diff modification: boxed pencil, the family of changeAdd and changeRemove; edit_note stays for workspace
+checkboxMarker	check	0	200	-	-	high	Check mark drawn inside a checkbox (UITheme checkboxMarkerForm); bare check, not the boxed one
+checkBoxOff	check_box_outline_blank	0	200	-	48	high	12x12 empty checkbox of ThreePhaseButtonMorph class>>#checkBox; exact match; trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
+checkBoxOn	check_box	1	0	-	48	high	ThreePhaseButtonMorph checkBox on-state; filled check_box like checkedBox / checkboxSelected; trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
+checkBoxPressed	square	1	0	-	48	medium	svgPack draws a solid inner square in a box while the box is pressed; trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
+checkboxSelected	check_box	1	0	-	48	high	Selected checkbox state (UITheme checkboxSelectedFormSet, Iceberg select all); FILL 1 is the Material checked-checkbox convention and distinguishes it from unselected (check_box_outline_blank); trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
+checkboxUnselected	check_box_outline_blank	0	200	-	48	high	12px empty checkbox used for "select none" commands; same symbol as uncheckedBox (same concept and size); trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
+checkedBox	check_box	1	0	-	48	high	Ticked checkbox (tree node check state, 'select all' commands); FILL 1 is Material's checked-box state, distinct from check_box_outline_blank; trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
+class	copyright	0	200	-	-	medium	generic class icon (Object>>#systemIconName, default window and command icon, class definitions); svgPack draws a C in a circle, and copyright is that circled C; data_object stays for the class variables
+classAbstract	copyright	0	0	-	-	low	abstract classes (Behavior>>systemIconName), next to class in Calypso: the circled C of class at grade 0, lighter
+classVarsPressed	data_object	0	200	-	-	low	no senders; old browser class-variables toggle '{c}' (pressed state); curly braces = variables/data; same symbol as classVars if mapped, pressed is only a state
+classVarsSelected	data_object	0	200	-	-	medium	Class variables toggle ({c} in braces), used for pool dictionary dependency nodes; data_object is curly braces (shared dictionary/class vars); instVars* use variables, collection uses data_array to stay distinct; Selected/Unselected/Pressed differ only by colour in Pharo
+classVarsUnselected	data_object	0	200	-	-	low	22px {c} toggle button (class variables) of the old browser, no senders; braces = variables; family proposal: classVars* -> data_object, instVars* -> data_array, Selected/Pressed states differ by theme colour since these glyphs have no fill
+clearField	backspace	0	200	-	-	high	Grey backspace-with-X in search fields; backspace is the identical shape
+close	close	0	200	-	-	high	tab, notebook page and window close buttons; exact match
+cloud	cloud	0	200	-	-	high	No sender (legacy); black cloud
+cloudPaused	cloud_off	0	200	-	-	low	no senders; no cloud_pause symbol exists, cloud_off is the closest 'cloud sync not running' concept (pause_circle loses the cloud)
+collection	data_array	0	200	-	-	medium	Collection class>>systemIconName (Pharo draws { } braces); data_array ([ ]) means array/collection and stays distinct from classVars (data_object)
+comments	comment	0	200	-	-	high	Class/package comment editor tab and table decorator; speech bubble with lines = comment
+config	folder_managed	0	200	-	-	high	Metacello configuration (svgPack: a folder with blue boxes); folder_managed is a folder with a gear, in the family of configNew (folder) and configLoaded (folder_check), and distinct from configuration and smallConfiguration (settings)
+configDirty	settings_alert	0	200	-	-	medium	Metacello configuration with unsaved changes (package folder with a red star); settings_alert = configuration + changed/alert; avoids deployed_code_alert which suits dirtyPackage
+configLoaded	folder_check	0	200	-	-	low	No sender (legacy Metacello 'configuration loaded'); Pharo draws a folder with blue blocks; folder_check says 'loaded package folder'; deployed_code would collide with package-like keys
+configNew	folder	0	200	-	-	high	StFileBrowserIconColumn uses it for directories (files get #page); plain folder
+configuration	settings	0	200	-	-	high	Settings commands (Iceberg settings, debugger settings, file browser, icon packs, Pulse); gear+wrench look, gear is the Material settings symbol
+confirm	error	1	0	1E88E5	-	medium	MenuMorph confirm:trueChoice:falseChoice: dialog and DependencyAnalyser node; svgPack draws a blue disc with !: error (a disc with !), filled, in the blue of info and question; a green check read as success
+database	database	0	200	-	-	high	Database cylinder, exact concept and look (legacy, no senders)
+databaseAdd	database_upload	0	200	-	-	medium	no database_add symbol exists; database_upload keeps the database cylinder with a badge meaning 'put into the database' and stays distinct from the plain database key; legacy, no sender
+delete	delete	0	200	-	-	high	Delete branch/remote (Iceberg), remove empty method tags, menu title close, breakpoint removal; Pharo draws a red X but every sender means delete/remove, so the trash can, as smallDelete/trash/remove
+diff	difference	0	200	-	-	high	Iceberg diff page, method diff tool, Rubric diff menu: document with +/- is Material's diff symbol
+dirtyMonticelloPackage	deployed_code_alert	0	200	-	-	low	Monticello package with unsaved changes (folder with explosion, no sender found); deployed_code_alert = package with ! badge conveys modified/dirty package; no folder-with-alert symbol exists
+dirtyPackage	deployed_code_alert	0	200	-	-	medium	Package with star burst = modified/dirty package (no senders); deployed_code box with alert badge, assuming the package family maps to deployed_code
+disable	toggle_off	0	200	-	-	high	Pharo image is a switch in off position; used for disabled buttons/toggles in Spec, profiler, IconPacks; toggle_off matches meaning and look (enable should be toggle_on)
+diveAllRight	keyboard_double_arrow_right	0	200	-	-	medium	GT 'dive all the way right' (legacy, no sender); double chevron distinguishes it from diveRight (single arrow) while keeping direction
+diveRight	chevron_right	0	200	-	-	medium	same picture as glamorousDiveRight; single chevron, keyboard_double_arrow_right for diveAllRight
+down	arrow_downward	0	200	-	-	high	push down method/variable, Iceberg pull, move down; plain down arrow like Pharo's blue arrow
+downArrow	arrow_downward	0	200	-	-	high	Big black down arrow (no sender found); arrow_downward is the same glyph
+dropDown	arrow_drop_down	0	200	-	-	high	16px grey down triangle (no senders); same concept as arrowDown, only the size differs
+edit	edit	0	200	-	-	high	Pencil for rename/edit commands
+editThiner	stylus	0	200	-	-	low	legacy pencil variant (no sender), 'thinner edit'; stylus is the thin pen and stays distinct from edit (pencil)
+emptyPackage	package_2	0	0	-	-	medium	Calypso empty-package decoration and Iceberg directory definition; package_2 at grade 0, the lighter form of package (package_2, grade 200): an empty package; Material package looked exactly like the floppy disk of save
+enable	toggle_on	1	0	-	-	high	Selected/enabled icon pack in SpIconPacksFetchPresenter; Pharo look is a switch in the on position; FILL 1 reads as on
+error	error	1	0	E53935	-	high	Red "!" disk for errors/validation (Spec, Commander, breakpoints); FILL 1 = solid disk like Pharo's
+example	lightbulb	0	200	-	-	high	Lightbulb with exclamation marks Spec/Morphic example methods; lightbulb matches look and the 'try this' idea
+exception	bolt	1	0	-	-	medium	Exception class>>#systemIconName, broken-critique and Finder exception classes; Pharo art is a lightning bolt in an orange disc, filled bolt keeps that look and stays distinct from error/warning/report
+expandBox	expand_content	0	200	-	48	medium	Debugger 'Expand the diff view' (maximize) and finder 'Expand all'; Pharo draws two overlapping boxes (old zoom box); expand_content conveys enlarge/expand for both uses (unfold_more would only fit the tree case, open_in_full is haloScale); trimmed: the glyph fills the key instead of keeping Material's padding
+eyedropper	colorize	0	200	-	-	high	colour picker button of ColorSelectorDialogWindow; eyedropper
+flag	flag	1	0	-	-	high	Methods flagged with self flag: (Calypso decorator/query, FlagIconStyler); Pharo draws an orange ! circle but the concept is a flag; FILL 1 reads better as a marker at 16px; suggest orange tint
+folder	folder	0	200	-	-	high	Closed folder in file browser and Iceberg branch items; exact match (smallOpen gets folder_open)
+forward	arrow_forward	0	200	-	-	high	Blue right arrow for history navigation forward (Calypso, file browser); pairs with back -> arrow_back
+fullscreen	fullscreen	0	200	-	-	high	same name and corner-bracket look
+git	commit	0	200	-	-	low	the git logo: commit, the git concept; the same for komitter and versionControl
+github	hub	0	200	-	-	low	brand logo, Material has no brand marks: hub (GitHub); the same for githubLight
+githubLight	hub	0	200	-	-	low	same logo as github, for dark backgrounds: same symbol
+gitlab	pets	0	200	-	-	low	GitLab brand logo (tanuki) for the Iceberg GitLab panel; no brand marks in Symbols, a paw evokes the animal logo and keeps it distinct from github/bitbucket
+glamorousAccept	check	0	200	-	-	high	Green check (Glamour-style accept); same concept as accept
+glamorousAdd	add	0	200	-	-	high	plus sign, same as add/smallAdd (only style differs)
+glamorousAlarm	alarm	0	200	-	-	medium	No sender (legacy Glamour); windows with a clock badge; alarm (alarm clock)
+glamorousBookmark	bookmark	0	200	-	-	medium	same senders and picture as bookmark (Pharo 12 name)
+glamorousBrowse	open_in_browser	0	200	-	-	medium	same senders and picture as browse (Pharo 12 name)
+glamorousBug	bug_report	0	200	-	-	high	Green bug for debug points browser; exact concept
+glamorousCancel	cancel	0	200	-	-	medium	Red X used as a cancel button; same look and concept as smallCancel (both cancel), circled X keeps it distinct from windowClose (close)
+glamorousClose	close	0	200	-	-	high	close cross of headers and the protocol editor reset button; same concept as close
+glamorousCloud	cloud	0	200	-	-	high	No sender (legacy); the same black cloud as cloud, only the theme differs
+glamorousCloudPaused	cloud_off	0	200	-	-	low	glamorous duplicate of cloudPaused (same image style); same reasoning
+glamorousDiveAllRight	keyboard_double_arrow_right	0	200	-	-	medium	Dive all the way right (GT legacy, no sender); double chevron distinguishes it from diveRight (single arrow)
+glamorousDiveRight	chevron_right	0	200	-	-	medium	Glamour/Spotter "dive in" arrow (no senders); chevron reads as drill-in and stays distinct from smallForward (arrow_forward); should match diveRight
+glamorousDown	arrow_downward	0	200	-	-	high	Blue down arrow for a toolbar 'pop' action; plain down arrow
+glamorousDropDown	arrow_drop_down	0	200	-	-	high	grey down triangle opening the Sindarin commands menu; exact match
+glamorousEdit	edit	0	200	-	-	high	Scopes presenter toolbar edit button (P12); pencil
+glamorousExample	lightbulb	0	200	-	-	high	example methods (SpExampleMethodNode); Pharo draws a lightbulb too
+glamorousFolder	folder	0	200	-	-	high	Folder (Iceberg repair: locate repository); same look
+glamorousGo	play_arrow	1	0	-	60	high	13px green triangle for evaluate/do-it (playground, inspector, profiler); FILL 1 = solid triangle like Pharo's (FILL 0 is an outline); same as smallDoIt (same meaning and size); trimmed: the glyph fills the key instead of keeping Material's padding (9x11 triangle in 13, as big as the other menu icons)
+glamorousGrayCircle	fiber_manual_record	1	0	9E9E9E	-	high	same picture as grayCircle (renamed key)
+glamorousGrayCircleEmpty	fiber_manual_record	0	200	9E9E9E	-	medium	same picture as grayCircleEmpty (renamed key)
+glamorousGreenCircle	fiber_manual_record	1	0	43A047	-	high	same picture as greenCircle (renamed key)
+glamorousHelp	help	0	200	-	-	high	question mark help entry (Roassal world menu); circled ? is Material help; same as help
+glamorousInspect	eyeglasses	0	200	-	-	high	Inspect (Iceberg inspect, profiler, inspect variable); Pharo's inspector icon is literally a pair of glasses
+glamorousInto	step_into	0	200	-	-	high	Debugger step-into (Sindarin step bytecode); exact debugger concept, arrow into a point
+glamorousLargeGrayCircleEmphasized	adjust	0	200	9E9E9E	-	medium	same picture as largeGrayCircleEmphasized (renamed key)
+glamorousLeft	arrow_back	0	200	-	-	medium	green left arrow with a shaft (legacy GT navigation); arrow_back matches the arrow shape, chevron_left is the lighter alternative
+glamorousLeftSide	keyboard_tab_rtl	0	200	-	-	low	No sender (legacy Glamour); Pharo draws a blue arrow pointing left into the left side of a box; keyboard_tab_rtl (arrow to a left bar) is the nearest look/meaning, first_page is the alternative
+glamorousMore	menu_open	0	200	-	-	medium	same senders and picture as more (Pharo 12 name)
+glamorousOpen	folder_open	0	200	-	-	high	Open (legacy, no sender); Pharo look is an open folder
+glamorousOpenFromUrl	file_open	0	200	-	-	medium	same picture as openFromUrl (renamed key), no senders
+glamorousOver	step_over	0	200	-	-	high	Sindarin debugger 'step over' command; step_over is the exact debugger concept
+glamorousPlay	play_arrow	1	0	-	48	high	solid green play triangle; filled play_arrow matches; trimmed: the glyph fills the key instead of keeping Material's padding (7x8 triangle in 7x10)
+glamorousPreferences	tune	0	200	-	-	medium	No sender (legacy); gear + wrench; preferences -> tune like preferences in chunk 2 (settings is used by configuration)
+glamorousRedCircle	fiber_manual_record	1	0	E53935	-	high	same picture as redCircle (renamed key)
+glamorousRedo	redo	0	200	-	-	high	Profiler 'show as root'/redo; Pharo look is the purple curved redo arrow; same concept as redo
+glamorousRefresh	refresh	0	200	-	-	high	Circling arrows for refresh commands (Iceberg, inspector, file browser); same concept as refresh (sync matches the two-arrow look but means synchronise)
+glamorousRemove	close	0	200	-	96	medium	10x10 X: close_small is unreadable at 10 px; trimmed: the glyph fills the key instead of keeping Material's padding, with a wider margin (an 8 px X in 10)
+glamorousRestart	restart_alt	0	200	-	-	high	same senders and picture as restart (Pharo 12 name)
+glamorousRight	arrow_forward	0	200	-	-	medium	Roassal transition inspector 'Next frame' (P12); blue right arrow, same as right
+glamorousRightSide	keyboard_tab	0	200	-	-	medium	debugger 'run to selection' / Sindarin skip-to-selection and step-to-return: arrow running up to a bar (->|); login has the same look but means sign-in
+glamorousSave	save	0	200	-	-	high	Save (legacy, no sender); Pharo look is a floppy disk, as is save
+glamorousSaveToUrl	cloud_upload	0	200	-	-	medium	Arrow out of a box, used for Playground "publish" (save to a paste URL); cloud_upload pairs with cloud_download
+glamorousSearch	search	0	200	-	-	high	Magnifying glass for search
+glamorousSpawn	open_in_new	0	200	-	-	high	spawn = open the selection in a new window/pane; arrow leaving a box
+glamorousTable	grid_on	0	200	-	-	high	Playground bindings command; same as table (grid_on)
+glamorousThrough	step	0	200	-	-	medium	debugger step through (debuggerStepThrough); Material has step_into/step_over/step_out for the siblings, 'step' (arrow through to a point) keeps through distinct from into
+glamorousTrash	delete	0	200	-	-	high	Remove package from repository, clear transcript/scopes; trash can look = delete
+glamorousUndo	undo	0	200	-	-	high	Purple back-curving arrow, undo; exact concept
+glamorousUp	arrow_upward	0	200	-	-	high	Blue up arrow for a toolbar 'push' action; plain up arrow
+glamorousZoomIn	zoom_in	0	200	-	-	high	magnifier with plus; exact match
+glamorousZoomOut	zoom_out	0	200	-	-	high	No sender; magnifier with minus
+glamorousZoomToFit	fit_screen	0	200	-	-	high	no senders; zoom to fit, frame corners like Pharo's
+go	play_arrow	1	0	-	60	high	Evaluate / Do it (playground, example browser, profiler run); green play triangle in Pharo; FILL 1 matches the solid triangle; trimmed: the glyph fills the key instead of keeping Material's padding (9x11 triangle in 13, as big as the other menu icons)
+grayCircle	fiber_manual_record	1	0	9E9E9E	-	high	small status dot like svgPack's (about a third of the box); same symbol as the other coloured dots
+grayCircleEmpty	fiber_manual_record	0	200	9E9E9E	-	medium	grey ring: fiber_manual_record outlined, the same diameter as the filled grey dot (grayCircle); circle was a 14 px ring that read as a radio button
+greenArrowUpAndDown	height	0	200	-	48	high	green double-headed vertical arrow (legacy); height is the same double-headed arrow, kept distinct from arrowUpAndDown (unfold_more); trimmed: the glyph fills the key instead of keeping Material's padding (the full height of 15)
+greenCircle	fiber_manual_record	1	0	43A047	-	high	small green status dot, the family of grayCircle and redCircle
+group	dataset	0	200	-	-	medium	generic grouping (Iceberg extension definitions, Syc protect variable, file previewers); Pharo draws a grid of squares in parentheses, dataset is a grid of squares in a frame; Material 'group' means people, so avoided
+haloCollapse	remove	0	200	-	96	medium	Halo handle that collapses the morph; remove (a centred bar, trimmed to the width of the key): collapse_content drew two grey specks at 10x16
+haloDebug	build	0	200	-	-	medium	Morphic halo debug handle drawn as a wrench; build (wrench) matches the look, bug_report is kept for glamorousBug
+haloDismiss	disabled_by_default	0	200	-	-	medium	Halo handle that deletes the morph (bold X); X in a square fits a halo handle and stays distinct from windowClose (close) and cancel
+haloDrag	drag_pan	0	200	-	-	medium	Morphic halo handle to drag (move) the morph; four-way move arrows (open_with is the same idea)
+haloDup	content_copy	0	200	-	-	high	Halo 'duplicate' handle; Pharo draws two overlapping rectangles, content_copy is the duplicate glyph
+haloFontEmph	format_bold	0	200	-	-	medium	halo handle that changes font emphasis (bold/italic); Pharo shows bold and plain F
+haloFontSize	format_size	0	200	-	-	high	Halo handle to change font size; Pharo look is two Fs of different size, format_size is two Ts of different size
+haloFontStyle	font_download	0	200	-	-	medium	Morphic halo handle choosing the text style/font ("FF"); boxed A = font selection; distinct from format_bold/size keys
+haloGrab	back_hand	0	200	-	-	medium	Halo 'pick up' handle; grabbing hand conveys pick up, distinct from haloDrag (move)
+haloHelp	question_mark	0	200	-	-	high	halo help handle draws a bare '?'; question_mark keeps it distinct from smallHelp (help, circled)
+haloMenu	menu	0	200	-	-	high	Halo 'menu' handle; Pharo draws a solid box with lines; menu (hamburger)
+haloPaint	brush	0	200	-	-	high	halo paint/repaint handle; brush like Pharo's pen tip
+haloRecolor	palette	0	200	-	-	medium	Halo handle to change the morph colour; Pharo draws a pipette, but palette (choose a colour) keeps it distinct from the eyedropper key (colorize)
+haloRot	rotate_90_degrees_cw	0	200	-	-	medium	Morphic halo rotation handle (circular arrows around a shape); rotating a shape, distinct from the generic rotate key
+haloScale	open_in_full	0	200	-	-	medium	Halo scale handle (resize-corner image), also a zoom/scale toggle in the color picker; diagonal expand arrows convey scaling
+haloView	visibility	0	200	-	-	high	eye: window profile visibility and method watch decoration; exact match
+halt	report	1	0	E53935	-	medium	Halt/breakpoint gutter styler, Calypso halt decorator, 'Debugging' source-code menu; Pharo draws a red circle with '!'; report (stop-sign octagon with '!') FILL 1 says 'halt here' and keeps the alert look while staying distinct from error (smallError/testRed), stop (stop_circle) and haloGrab (back_hand); suggest red tint
+help	help	0	200	-	-	high	help/ question buttons in Spec, world menu, Roassal; circled question mark
+hierarchy	account_tree	0	200	-	-	high	ClyFullVisibilityLevel (show inherited methods / class hierarchy); Pharo look is a small tree of nodes, as is account_tree
+history	history	0	200	-	-	high	Clock with back arrow for method versions, playground versions, watch points; exact concept
+home	home	0	200	-	-	high	House for home folder bookmark and world/desktop
+image	image	0	200	-	-	medium	used for the image bookmark of the file browser (the Pharo image directory) and for Spec image/progress demos showing pictures; art is four coloured squares (same as paint); image keeps the name and the picture meaning
+info	info	1	0	1E88E5	-	high	Alert dialog / MessageDialogWindow 32px icon; Pharo draws a solid green diamond with 'i'; info FILL 1 like smallInfo
+inspect	eyeglasses	0	200	-	-	high	inspect object/variable; Pharo's inspector icon is glasses, Material has eyeglasses; keeps it distinct from search/smallFind
+instVarsPressed	data_array	0	200	-	-	low	old browser button {i}, no senders: the three instVars states share one symbol, data_array, as classVars share data_object
+instVarsSelected	data_array	0	200	-	-	low	old browser button {i}, no senders: same symbol for the three states
+instVarsUnselected	data_array	0	200	-	-	low	old browser button {i}, no senders: same symbol for the three states
+into	step_into	0	200	-	-	high	Sindarin debugger step commands (step, step bytecode, to method entry); Material has the exact debugger step_into
+jigsaw	extension	0	200	-	-	high	Rewriter match tool; puzzle piece
+jigsawIcon	extension	0	200	-	-	high	rewriter match tool; puzzle piece
+jump	jump_to_element	0	200	-	-	medium	Jump to test class (Calypso); Pharo look is a green dot; jump_to_element (arrow into a framed element) means navigate to; kept distinct from redo
+keymapBrowser	keyboard	0	200	-	-	high	Keymap/shortcut browser (ESC key picture); keyboard = shortcuts; keyboard_command_key is an alternative
+komitter	commit	0	200	-	-	medium	Komitter (Monticello commit tool) logo, legacy; commit node glyph conveys committing
+komitterGemstoneRemote	diamond	0	200	-	-	low	Komitter remote of type GemStone/S 3 (art 's3', legacy); diamond = gemstone, distinct from the other komitter remotes
+komitterNewSlice	folder_special	0	200	-	-	low	File browser bookmarks 'Image directory' and working directory; Pharo draws the Pharo lighthouse logo in a blue circle; meaning first: a special folder (folder_special); the logo itself would be siren as for pharo/smallPharo
+komitterSmalltalkhubRemote	inventory_2	0	200	-	-	low	actually the Iceberg window/taskbar and method-versions icon (a crate); archive box = repository store; Material has no Iceberg/git-repository logo
+komitterSqueakSourceRemote	dns	0	200	-	-	low	Komitter remote of type SqueakSource (grumpy face image, no sender); dns (server rack) = a hosted remote repository; distinct from the Smalltalkhub remote and the plain cloud remote
+largeGrayCircleEmphasized	adjust	0	200	9E9E9E	-	medium	grey disc with a ring: the ring-and-dot of adjust
+left	arrow_back	0	200	-	-	medium	same picture as glamorousLeft and back; the pair of right (arrow_forward)
+leftSide	keyboard_tab_rtl	0	200	-	-	low	legacy GT 'left side' (blue arrow pointing left into a bracket); keyboard_tab_rtl is the arrow-to-left-edge look; first_page is the alternative
+lock	lock	0	200	-	-	high	Deny dialog, halo lock handle, iconic list items, file browser; padlock
+magnitude	functions	0	200	-	-	medium	Magnitude class>>systemIconName; Pharo shows Sigma, functions is Sigma; straighten (ruler) would be the meaning-only alternative
+menuPin	keep	0	200	-	-	medium	Pin a menu (black dot image, no sender); keep is the push pin, same concept as smallPushpin
+merge	merge	0	200	-	-	high	Iceberg merge and Syc merge-variable; exact concept, pairs with branch -> call_split
+monticelloPackage	deployed_code	0	200	-	-	medium	Monticello package (commit package command): the deployed_code family of dirtyMonticelloPackage and newerPackagesAvailable; inventory_2 stays for SmalltalkHub
+more	menu_open	0	200	-	-	medium	playground pages command; svgPack draws a drop-down triangle by menu lines
+morph	widgets	0	200	-	-	medium	Morph class>>systemIconName, taskbar tasks, file browser 'Desktop' bookmark; Pharo draws a window with a toolbar; widgets (UI components) is the Morph concept
+nautilus	browse	0	200	-	-	medium	system browser launcher (Spec demo, Epicea, critics browse button); multi-pane layout with browse meaning, like Pharo's pane grid
+newerPackagesAvailable	deployed_code_update	0	200	-	-	medium	Newer package versions available (no sender); deployed_code_update = package with down-arrow badge (update available)
+notFound	broken_image	0	200	-	-	medium	ThemeIcons>>notFoundIcon, the red square shown for a missing icon; broken_image says "image not found" (alternative indeterminate_question_box)
+objects	graph_3	0	200	-	-	medium	Three connected coloured nodes for dependency analyzer, baseline map and rewriter scope; graph_3 is a node graph of the same shape
+open	folder_open	0	200	-	-	high	opened folder: file browser, Spec examples, Iceberg location; same look and meaning
+openFromUrl	file_open	0	200	-	-	medium	only sender: the settings browser's Load button (a file); same picture as glamorousOpenFromUrl
+over	step_over	0	200	-	-	high	Sindarin step over (debuggerStepOver); exact Material debugger symbol; distinct from redo
+overlayAdd	add_box	0	200	-	-	high	9x9 badge: svgPack draws a plus in a box
+overlayDirty	asterisk	0	200	-	-	medium	8px star overlay badge marking dirty/unsaved items (no senders); asterisk is the usual "modified" mark
+overlayModification	edit_square	0	200	-	-	medium	modification badge: the same symbol as changeUpdate (a modification)
+overlayRemove	indeterminate_check_box	0	200	-	-	high	9x9 badge: svgPack draws a minus in a box, the pair of overlayAdd
+package	package_2	0	200	-	-	medium	Pharo package in browsers/Iceberg/method nodes (22 senders); Pharo draws a folder with a blue dot; package_2 is the canonical package glyph (box also maps to it; packageColored maps to folder_data in chunk 2, align if a single family is wanted)
+packageAdd	box_add	0	200	-	-	medium	no senders; add package; box with plus pairs with emptyPackage=package
+packageColored	folder_data	0	200	-	-	medium	Project/package manifest (ClyProjectIconTableDecorator, PackageManifest systemIconName, Microdown file resource); Pharo look is a folder with coloured squares; folder_data (folder with nodes) matches look and keeps it distinct from package and box
+packageDelete	delete_forever	0	200	-	-	low	Package delete (red X, no senders); no package+delete symbol in Symbols, delete_forever (bin with X) keeps it distinct from plain delete
+page	draft	0	200	-	-	high	Blank page with folded corner (file browser file icon, finder results); draft is the empty dog-eared page, distinct from description (page with lines)
+paint	palette	0	200	-	-	medium	legacy 12x12 paint icon (four colour squares); palette conveys colours/painting
+painting	palette	0	200	-	-	low	No sender (legacy 21x20); Pharo draws a green left arrow on magenta; name only says painting, so palette (as smallPaint)
+partialCheckedBox	indeterminate_check_box	0	200	-	48	high	tri-state tree checkbox, partially checked; trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
+pause	pause	1	0	-	-	high	the outlined pause draws hollow bars at 16 px; filled bars as svgPack
+pauseDark	pause	1	0	-	-	high	same as pause, only svgPack's colour differs
+pharo	cell_tower	0	200	-	-	low	the lighthouse logo: Material has no lighthouse; cell_tower is a tower sending beams, the nearest silhouette. Same symbol for the three Pharo logos
+pharoBig	cell_tower	0	200	-	-	low	the lighthouse logo (OS window icon, welcome browser): same symbol as pharo and smallPharo
+play	play_arrow	1	0	-	48	high	Process browser 'Signal' action; green right triangle; play_arrow FILL 1 like go; trimmed: the glyph fills the key instead of keeping Material's padding (7x8 triangle in 7x10)
+pointersTo	zoom_in_map	0	200	-	-	medium	browse pointers to an object: four arrows converging on the centre like Pharo's arrows-to-red-dot; link was the old choice but reads as hyperlink
+preferences	tune	0	200	-	-	medium	Preferences (no sender found; same gear+wrench image as configuration); tune (sliders) = preferences and keeps it distinct from configuration (settings); settings would also be acceptable
+processBrowser	memory	0	200	-	-	medium	Process Browser window/taskbar icon; CPU chip = processes (task-manager idiom); alternatives view_list, stacks
+protocolExtension	extension	0	200	-	-	high	Extension-method protocol (Calypso); puzzle piece is the extension concept
+protocolNone	horizontal_rule	0	200	-	0	low	16x1 'no protocol' strip (no live icon sender); horizontal_rule trimmed to a 1 px rule of 8 px, centred: untrimmed it was invisible (max alpha 12), and a 1 px key cannot hold more of it
+protocolPrivate	lock_person	0	200	-	-	medium	Calypso 'private' protocol decoration, Pulse loading presenter; Pharo draws a red square; private -> lock_person, distinct from lock and from protocolPublic -> public (public_off is an alternative pairing)
+protocolProtected	shield	0	200	-	-	medium	the protected protocol mark (Calypso uses it for initialization/release protocols): shield, the family of public and lock_person
+protocolPublic	public	0	200	-	-	medium	Public protocol in the debugger implementor presenter; public (globe) means public/visible to all; Pharo look is a small green ring
+publish	publish	0	200	-	-	medium	Publish (two green forward arrows, no senders); publish symbol (arrow up to a bar) is Material's publish concept; send/share are alternatives
+question	help	1	0	1E88E5	-	high	32px question dialog icon (blue filled box with ?); filled help disc matches the dialog emphasis, distinct from help key (outline)
+radioButtonMarker	fiber_manual_record	1	0	-	-	high	the dot drawn inside a selected radio button (UITheme>>#radioButtonMarkerForm); filled small dot with margin, not the full-size circle
+radioButtonOff	radio_button_unchecked	0	200	-	-	high	ThreePhaseButtonMorph radioButton off-state; like radioButtonUnselected
+radioButtonOn	radio_button_checked	0	200	-	-	high	ThreePhaseButtonMorph radio button selected state
+radioButtonPressed	radio_button_checked	0	200	-	-	medium	Mouse-down state of ThreePhaseButtonMorph radioButton; svgPack draws concentric rings: radio_button_checked outlined, grade 200 (a ring and a dot); filled it was a bold ring without its dot, an unchecked radio button
+radioButtonSelected	radio_button_checked	0	200	-	-	high	Selected radio button (finder environment, Spec option, UITheme radio form); exact
+radioButtonUnselected	radio_button_unchecked	0	200	-	-	high	Empty radio button ring; exact concept
+recentMessages	overview	0	200	-	-	medium	profiler 'Full Report' button (art is a document with a pencil), name means recently visited messages; overview = document + clock covers report and 'recent'; distinct from history
+recoverLostChanges	settings_backup_restore	0	200	-	-	medium	Epicea code changes browser taskbar icon, FFI method decorators, Iceberg; Pharo draws a window with a green arrow going into a box; settings_backup_restore (restore arrow) says recover changes and stays distinct from history
+redCircle	fiber_manual_record	1	0	E53935	-	high	small red status dot, the family of grayCircle and greenCircle
+redo	redo	0	200	-	-	high	Redo (Rubric code menu, profiler); same look and meaning as glamorousRedo
+references	link	0	200	-	-	medium	Message browser / Finder "References" (senders and references); link conveys references; lan matches the node-tree look and is the alternative
+refresh	refresh	0	200	-	-	high	Refresh/reload (Iceberg checkout, cycle nodes, finder); circular arrow
+refreshCircling	autorenew	0	200	-	-	medium	refresh with circling arrows (inspector refresh, window profile reset, method browser); autorenew is two circling arrows, distinct from refresh and glamorousRestart
+remote	language	0	200	-	-	medium	Iceberg 'Remotes' group of the repository tree; Pharo draws an Earth globe; language (meridian globe) keeps the globe look and stays distinct from protocolPublic -> public and komitterSqueakSourceRemote -> dns
+remotesManagerAddRemote	add_link	0	200	-	-	medium	no senders; Iceberg add remote (a URL); link with plus is more specific than plain add
+remotesManagerEditRemote	edit	0	200	-	-	medium	Edit a remote in the old remotes manager (asterisk image, no sender); siblings add/remove remote are plus/minus, edit is the pencil
+remotesManagerRemoveRemote	link_off	0	200	-	-	medium	pair of remotesManagerAddRemote (add_link)
+remove	delete	0	200	-	-	high	Pharo image is a trash can; used for remove class/method commands; delete (trash) matches look and meaning
+removeCross	close	0	200	-	96	medium	10x10 X: close_small is unreadable at 10 px; trimmed: the glyph fills the key instead of keeping Material's padding, with a wider margin (an 8 px X in 10)
+repair	construction	0	200	-	-	medium	Iceberg repair/calculate dirty packages, critique 'fix' commands, debugger; Pharo draws a hammer and wrench, which construction is exactly (build, the single wrench, is the alternative)
+restart	restart_alt	0	200	-	-	high	Extract method, critique update, Roassal transitions (Pharo 15 name of glamorousRestart): green circular arrow
+right	arrow_forward	0	200	-	-	medium	Right/next (halo, button icon on the right, docking bar submenu, ProfStef next lesson); Pharo look is a blue right arrow
+rightSide	keyboard_tab	0	200	-	-	medium	Green arrow to a right bar: Sindarin skip-to-selection / step-to-return and Iceberg write-to-files; keyboard_tab (arrow to bar) is the same picture; leftSide would be keyboard_tab_rtl
+rotate	rotate_right	0	200	-	-	medium	Halo simple rotate handle (24x22); circular arrow rotation
+save	save	0	200	-	-	high	floppy disk; exact match
+saveToUrl	cloud_upload	0	200	-	-	high	Playground 'Publish' (to the remote paste service); Pharo draws an arrow leaving a box; cloud_upload, distinct from smallPublish (publish) and smallExport (file_export)
+scale	open_in_full	0	200	-	-	medium	halo scale/resize handle and scale menu item (the Pharo image is a blank 22x21 placeholder); diagonal double arrow = scale up/down
+scriptManager	contract_edit	0	200	-	-	medium	Startup scripts manager, class-side <script> methods (ClyClassScript), method editor tool; Pharo look is a document with check and pencil; contract_edit (scroll with pencil) = edit a script
+search	search	0	200	-	-	high	Magnifier for search fields and previews; exact
+separator	horizontal_rule	0	200	-	48	high	24x5 menu separator line (no live icon sender); horizontal_rule trimmed to an 18x2 rule: untrimmed it was a 3 px dash
+smallAdd	add	0	200	-	-	high	green plus for add commands; exact match
+smallAuthoringTools	code	0	200	-	-	medium	'Source Code' refactoring sub-menu and open-source-code command; Pharo draws a yellow dome (legacy); code (<>) is the source-code concept
+smallBack	arrow_back	0	200	-	-	high	back / previous conflict / left tab; left arrow
+smallBarcode	barcode	0	200	-	-	high	Barcode (no sender); same look
+smallBold	format_bold	0	200	-	-	high	Bold text "B"; exact
+smallCancel	cancel	0	200	-	-	high	Red X for cancel actions (merge conflicts, refactoring preview, color picker); circled X is Material cancel, distinct from windowClose (close)
+smallCentered	format_align_center	0	200	-	-	high	centered text alignment; exact match
+smallCogInitialState	settings	0	200	-	-	medium	one frame of the cog animation (debug point icon styler): every frame is the same cog, outlined, so the animation does not flicker between fills
+smallCogState2	settings	0	200	-	-	medium	a frame of the cog animation: the same cog as smallCogInitialState
+smallCogState3	settings	0	200	-	-	medium	a frame of the cog animation: the same cog as smallCogInitialState
+smallConfiguration	settings	0	200	-	-	high	Gear+wrench for Settings browser and configure commands; settings gear is the standard
+smallCopy	content_copy	0	200	-	-	high	Two overlapping sheets for copy to clipboard
+smallCut	content_cut	0	200	-	-	high	scissors: cut; exact match
+smallDebug	bug_report	0	200	-	-	high	Debug commands everywhere (34 senders: breakpoints, debug test, process browser 'Debug'); green beetle, the same picture as bug
+smallDebugIt	bug_report	0	200	-	-	high	Debug it (finder, debugger extension commands); bug
+smallDelete	delete	0	200	-	-	high	Delete/remove buttons (file dialog, bindings, breakpoints, watches); Pharo look is a trash can
+smallDoIt	play_arrow	1	0	-	60	high	13px green triangle for Do it / run script / examples; FILL 1 = solid triangle like Pharo's; same as glamorousGo (same meaning and size); trimmed: the glyph fills the key instead of keeping Material's padding (9x11 triangle in 13, as big as the other menu icons)
+smallError	error	1	0	E53935	-	high	Red filled disc with exclamation; error FILL 1 is the identical glyph
+smallExpert	bomb	1	0	-	-	medium	art is a lit green bomb (expert = dangerous); bomb exists, FILL 1 matches the solid look; only used by ClassListNodeExample/ClassTreeNodeExample
+smallExport	file_export	0	200	-	-	high	Morph 'export...' (BMP/GIF/JPEG/PNG), Roassal world menu, debugger file-out method; Pharo draws an arrow leaving a box; file_export
+smallFind	search	0	200	-	-	high	find/search/implementors; magnifier
+smallFonts	font_download	0	200	-	-	medium	Fonts (SettingDeclaration default icon); Pharo look is a letter A; font_download is an A in a box, distinct from haloFontSize (format_size)
+smallForward	arrow_forward	0	200	-	-	high	Blue right arrow for forward/next (merge next conflict, spotter, welcome); exact
+smallFullscreen	fullscreen	0	200	-	-	high	Four outward corners for fullscreen editor
+smallHelp	help	0	200	-	-	high	circled question mark: help items and potential dependencies; haloHelp uses question_mark to stay distinct
+smallHierarchyBrowser	account_tree	0	200	-	-	high	Browse class/method hierarchy (Iceberg snapshot browser, finder); tree diagram; account_tree like hierarchy (chunk 2)
+smallHome	home	0	200	-	-	high	no senders; house
+smallInfo	info	1	0	1E88E5	-	high	Information (dialogs, doc comment styler, disabled breakpoint, critiques, About); Pharo look is a filled blue circle; FILL 1 matches it; suggest blue tint
+smallInformation	info	1	0	1E88E5	-	high	Blue "!" information disk; info with FILL 1 = solid disk like Pharo's
+smallInspectIt	eyeglasses	0	200	-	-	high	Pharo inspect-it icon is a pair of glasses; eyeglasses matches the look; inspect concept
+smallItalic	format_italic	0	200	-	-	high	italic text style; also reused by Sindarin 'jump to caret', which jump keys cover separately
+smallJump	jump_to_element	0	200	-	-	medium	No sender; green dot as jump; size-only variant of jump (chunk 2 jump_to_element), distinct from redo
+smallJustified	format_align_justify	0	200	-	-	high	format source code command and patch changes menu; justified lines
+smallLanguage	send	0	200	-	-	low	Used only for message-send dependency nodes (DAMessageSendNode, StMessageSendNode); send (paper plane) = message send; the name suggests language but no sender uses it so
+smallLeftFlush	format_align_left	0	200	-	-	medium	Left-aligned lines; used as the generic text-file icon in file dialogs/Microdown and for alignment; keeps the align family (smallRightFlush, smallCentered, smallJustified); description would be the pure file meaning
+smallLoadProject	download	0	200	-	-	medium	Arrow into a tray: load project/baseline, load script, menu entries that load tools; download conveys loading in
+smallLock	lock	0	200	-	-	high	padlock: Metacello baseline lock and deny dialog; exact match
+smallNew	fiber_new	0	200	-	-	medium	New branch/repository (Iceberg), Sindarin step to next instance creation, Spec example 'new'; Pharo draws an orange starburst (a 'new!' badge); fiber_new is the 'new' badge and stays distinct from addCross (add_circle) / add / note_add
+smallObjects	graph_3	0	200	-	-	medium	object-centric breakpoints/watchpoints, reflectivity and metalink menus; Pharo draws three connected balls (object graph); share has the same look but means sharing
+smallOk	check	0	200	-	-	high	OK/accept buttons (Spec, Iceberg commit, accept changes); Pharo look is a green check; same as accept
+smallOpen	folder_open	0	200	-	-	high	Open folder for file dialogs and open-directory commands; exact, distinct from folder
+smallPaint	palette	0	200	-	-	high	Colour swatches for color picker and paint settings; palette
+smallPaste	content_paste	0	200	-	-	high	clipboard: paste; exact match
+smallPharo	cell_tower	0	200	-	-	low	the lighthouse logo: same symbol as pharo and pharoBig
+smallPrint	print	0	200	-	-	high	printer (ClassListExample); print
+smallPrintIt	chat	0	200	-	-	medium	print it shows its result in a balloon; chat_bubble draws an empty rectangle at 13 px
+smallProfile	timer_play	0	200	-	-	high	Stopwatch with play triangle for Profile it; timer_play is the same picture and meaning
+smallPublish	publish	0	200	-	-	medium	Legacy green split arrows going out (publish); publish arrow-to-bar glyph
+smallPushpin	keep	0	200	-	-	high	push pin (scopes, Roassal pinned transitions); Material Symbols name the push pin 'keep' (push_pin does not exist)
+smallQA	verified	1	0	-	-	medium	Critique browser (quality assistant); Pharo draws a black badge with a white check; verified FILL 1 matches look and meaning (passed QA)
+smallQuestion	question_mark	0	200	-	-	medium	question dialogs, critique details, Iceberg info; Pharo draws a bare '?', question_mark is a bare ?, kept distinct from help (circled)
+smallQuit	logout	0	200	-	-	high	Quit Pharo (World menu, menu bar example); Pharo look is an arrow leaving through a door, as logout
+smallRedo	redo	0	200	-	-	medium	Purple forward-curving arrow; Rubric redo, but most senders reuse it for "move to" refactorings; kept as redo, distinct from jump keys
+smallRemoteOpen	open_in_new	0	200	-	-	medium	Window with arrow, DrTests button that opens/browses in another tool; open_in_new conveys opening elsewhere
+smallRightFlush	format_align_right	0	200	-	-	high	right-flush text lines; also reused for inline method/temp and 'select next conflict', but the art is right alignment
+smallSave	save	0	200	-	-	high	Save (Epicea, file system, Iceberg, debugger); floppy disk
+smallSaveAs	save_as	0	200	-	-	high	save version as / save scope as; floppy with pencil like Pharo's
+smallScreenshot	screenshot_monitor	0	200	-	-	high	Take a screenshot (Screenshot command); Pharo draws a camera; screenshot_monitor names the action
+smallSelect	select	0	200	-	-	low	Blue-bordered square, no senders; select (dashed selection square) carries the "select" name and differs from the checkbox
+smallStrikeOut	strikethrough_s	0	200	-	-	high	Struck-out S for strikethrough text style
+smallSystemBrowser	browse	0	200	-	-	medium	system browser (Calypso taskbar icon, World menu, browse commands): a multi-pane browser window; Material 'browse' is a multi-pane layout, distinct from the browse key (open_in_browser)
+smallUnderline	format_underlined	0	200	-	-	high	No sender; underlined U
+smallUndo	undo	0	200	-	-	high	undo in editors and refactoring change manager; curved back arrow
+smallUpdate	refresh	0	200	-	-	high	Update/refresh/fetch (browser update, Iceberg fetch and load, debug points, notifications); Pharo look is a circular arrow, as refresh
+smallVolume	volume_up	0	200	-	-	high	Speaker with waves; exact
+smallWarning	warning	1	0	FFB300	-	high	Orange filled warning triangle (critics, alert dialog, doc comment styler); FILL 1 matches the filled status look
+smallWindow	web_asset	0	200	-	-	high	window with title bar: taskbar/presenter window icon, open natively, grab window
+solidMenu	menu	0	200	-	-	high	Halo fallback graphical handle (solidMenuIcon); hamburger menu, same as haloMenu/tinyMenu (size only differs)
+spawn	open_in_new	0	200	-	-	medium	no senders; spawn a new browser/window on the selection
+stop	stop_circle	1	0	-	-	medium	Stop/interrupt (job interrupt button, stop logger, breakpoint/debug point styler); Pharo draws a red circled X; stop_circle FILL 1 keeps it distinct from cancel and testRed; suggest red tint
+string	format_paragraph	0	200	-	-	medium	Pilcrow, the icon of String class (systemIconName); format_paragraph is the same pilcrow and means text; abc is the alternative
+system	computer	0	200	-	-	medium	Blue disc with C for system settings and system files; computer conveys 'system' (look is a copyright-like C, no meaningful match)
+table	grid_on	0	200	-	-	high	spreadsheet grid: playground bindings, cell mode, lesson choice; grid_on is the closest to svgPack's spreadsheet (table looked like a calculator at 16 px)
+testGreen	check_circle	1	0	43A047	-	high	Passing test / success status (Iceberg PR status, Calypso test decorations, FT examples, Epicea); Pharo green dot; check_circle FILL 1, distinct from testRed (error), testYellow (circle), testNotRun; suggest green tint
+testNotRun	circle	1	0	9E9E9E	-	high	filled grey disc, as in the Material Icons pack: not the empty ring of a radio button (MaterialSymbolsThemeIconsTest>>testStatusKeys)
+testRed	cancel	1	0	E53935	-	high	SUnit error: red X disc, as in the Material Icons pack; error (!) stays for error/smallError and amber error for testYellow
+testRunner	labs	0	200	-	-	high	Test tubes for DrTests/test runner; labs is the same test-tube picture, distinct from test status keys
+testYellow	error	1	0	FFB300	-	high	SUnit failure: amber ! disc, as in the Material Icons pack; distinct from warning (triangle)
+through	step	0	200	-	-	medium	debugger 'step through' (into blocks, over messages; legacy here); step is the generic debugger step, distinct from step_into (into) and step_over (over)
+thumbsDown	thumb_down	1	0	-	-	high	No sender; solid red thumb down; FILL 1 to match the solid Pharo picture (thumbsUp should use the same fill)
+thumbsUp	thumb_up	1	0	-	-	high	no senders; Pharo draws a solid green thumb, FILL 1
+tinyMenu	menu	0	200	-	-	medium	Tiny menu button (no sender); Pharo look is a hamburger, as menu
+tools	handyman	0	200	-	-	high	Crossed hammer and wrench for the Tools menu and settings group; handyman is the same picture
+top	vertical_align_top	0	200	-	-	medium	Red up arrow: 'move to top' in editable lists and 'top' icon position; vertical_align_top conveys to-top, distinct from glamorousUp (arrow_upward)
+trait	layers	0	200	-	-	medium	trait = composable layer of behaviour (Pharo draws a T in a green disc, no letter-T symbol); layers keeps continuity with the Material Icons pack; must differ from class (data_object) and jigsaw/extension
+traitRequiredMethod	line_end_circle	0	200	-	-	low	No sender; Pharo draws a UML required-interface socket (half circle on a stem); line_end_circle (a stem ending in a circle, the UML ball/socket notation) is the closest look; no 'required method' concept exists (priority_high is already uncommentedClass)
+transcript	article	0	200	-	-	medium	Transcript taskbar/world-menu entry: a window of text output; article (page of text lines) matches Pharo's window-with-text; terminal would suggest a shell
+trash	delete	0	200	-	-	high	Remove package, profile deletion, scopes; trash can look, same as glamorousTrash/smallDelete
+uncheckedBox	check_box_outline_blank	0	200	-	48	high	12px empty checkbox of MorphTreeNodeMorph; same concept and size as checkboxUnselected; trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
+uncommentedClass	priority_high	0	200	E53935	-	medium	Red exclamation warning that a class lacks a comment (also generic Calypso warning); priority_high is the same bare '!'; comments_disabled was the more literal alternative; red, as svgPack draws it (a warning of the class list)
+undo	undo	0	200	-	-	high	purple undo arrow; exact match
+up	arrow_upward	0	200	-	-	high	Push/pull-up commands, Iceberg push, process priority, file browser parent; blue up arrow
+upAndDownArrow	height	0	200	-	-	high	no senders; vertical double-headed arrow, exactly Pharo's look
+upArrow	arrow_upward	0	200	-	-	high	Big black up arrow (no sender); arrow_upward is the same glyph
+user	person	0	200	-	-	high	User avatar (no senders); person silhouette
+userFemale	person_3	0	200	-	-	high	Female user avatar (legacy); person_3 is the person silhouette with long hair
+userProfile	account_circle	0	200	-	-	medium	Pharo 15 window-profile switching items (a person silhouette); account_circle = user's profile
+versionControl	commit	0	200	-	-	medium	same picture as komitter (Iceberg snapshot browser, version control group); history stays for the history key
+volume	volume_up	0	200	-	-	high	no senders; speaker with waves
+warning	warning	1	0	FFB300	-	high	Warning (alert dialog, rename previews, semantic warnings, critiques); Pharo look is a filled orange triangle; FILL 1 matches; suggest amber tint
+window	web_asset	0	200	-	-	high	Generic Spec/Iceberg window icon (window with title bar); web_asset is a framed window with title bar (Symbols' window is a house window)
+windowClose	close	0	200	-	-	high	Window close button (black X); close
+windowCloseInactive	close	0	200	9E9E9E	-	high	close button of an inactive window, also clear-search and notebook tab close; same symbol as close, only the state colour differs; grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear)
+windowCloseInactiveInverted	close	0	200	9E9E9E	-	high	No sender; grey X of the inactive inverted window close button; same as windowClose (only colour differs); grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear)
+windowCloseInverted	close	0	200	-	-	high	dark-theme window close button; inverted is only the light-on-dark colouring, same X as windowClose
+windowMaximize	crop_square	0	200	-	-	medium	Window maximize button (UITheme form set, window menu); the square is the usual maximize glyph and matches Pharo's; open_in_full/fullscreen are kept for the fullscreen keys
+windowMaximizeInactive	crop_square	0	200	9E9E9E	-	medium	Title-bar maximise button, inactive state (square); same symbol as windowMaximize, inactive is only a colour; crop_square = classic maximise square; grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear)
+windowMaximizeInactiveInverted	crop_square	0	200	9E9E9E	-	medium	Legacy maximize button, inactive inverted state (grey square outline); same symbol as windowMaximize should get, only state/colour differs; grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear)
+windowMaximizeInverted	crop_square	0	200	-	-	medium	dark-theme maximize title-bar button (a square); crop_square is the title-bar maximize square (Material 'maximize' is a top bar, not this)
+windowMenu	arrow_drop_down	0	200	-	-	high	Window menu button (UITheme windowMenuFormSet), profiler 'Expand All' and selected toolbar item; black down triangle, as windowMenuInactiveInverted
+windowMenuInactive	arrow_drop_down	0	200	9E9E9E	-	high	svgPack draws the same triangle as windowMenu, greyed: same symbol for the four windowMenu keys; grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear)
+windowMenuInactiveInverted	arrow_drop_down	0	200	9E9E9E	-	high	Window menu button, inactive inverted variant (only colour differs from windowMenu); Pharo look is a down triangle, as arrow_drop_down; grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear)
+windowMenuInverted	arrow_drop_down	0	200	-	-	high	the dark theme's window menu triangle (PharoDarkTheme): same symbol for the four windowMenu keys
+windowMinimize	remove	0	200	-	-	high	Window minimize bar (also collapse in profiler and Iceberg 'load less'); minimize; remove, a centred bar in line with maximize and close (minimize sits on the baseline)
+windowMinimizeInactive	remove	0	200	9E9E9E	-	high	minimize title-bar button of an inactive window; minimize, only the state differs; remove, a centred bar in line with maximize and close (minimize sits on the baseline); grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear)
+windowMinimizeInactiveInverted	remove	0	200	9E9E9E	-	high	No sender; grey bar of the inactive inverted minimize button; same as windowMinimize (only colour differs); remove, a centred bar in line with maximize and close (minimize sits on the baseline); grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear)
+windowMinimizeInverted	remove	0	200	-	-	high	dark-theme window minimize button; same symbol as windowMinimize; remove, a centred bar in line with maximize and close (minimize sits on the baseline)
+workspace	edit_note	0	200	-	-	medium	Playground window icon and rewriter rule editor; Pharo look is a window with text lines; edit_note = lines of text being edited (scratch code)
+zoomIn	zoom_in	0	200	-	-	high	Magnifier with plus; exact
+zoomOut	zoom_out	0	200	-	-	high	Magnifier with minus; zoom_out
+zoomToFit	fit_screen	0	200	-	-	high	zoom to fit the content (legacy); fit_screen keeps it distinct from fullscreen

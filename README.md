@@ -3,7 +3,7 @@
 Google's Material icons for Pharo 12 to 15, in the Rounded style, every icon of two sets, each at 16, 24 and 32 pixels and at 192 pixels:
 
 - **[Material Icons Rounded](https://fonts.google.com/icons?icon.set=Material+Icons&icon.style=Rounded)**, all 2127 icons: **`MaterialIcons rounded`**;
-- **[Material Symbols Rounded](https://fonts.google.com/icons?icon.set=Material+Symbols&icon.style=Rounded)**, all 3929 icons, outlined: **`MaterialIcons symbolsRounded`**. The filled ones are an optional extra, **`MaterialIcons symbolsRoundedFilled`**.
+- **[Material Symbols Rounded](https://fonts.google.com/icons?icon.set=Material+Symbols&icon.style=Rounded)**, all 3944 icons, outlined: **`MaterialIcons symbolsRounded`**. The filled ones are an optional extra, **`MaterialIcons symbolsRoundedFilled`**.
 
 Every icon comes by its Material name, as a Form or a FormSet, at any size, in any colour, with its category, codepoint and tags. Two icon packs for Pharo's UI are drawn with these icons:
 
@@ -26,15 +26,15 @@ Metacello new
 | `Core` | `MaterialIcons-Core`, `MaterialIcons-Rounded` | `MaterialIcons rounded` at 16, 24 and 32 pixels | 2.9 MB |
 | `IconsRounded` | `Core`, `MaterialIcons-Rounded-192` | and its masters at 192 pixels | +4.4 MB |
 | `SymbolsRoundedSmall` | `MaterialIcons-Core`, `MaterialSymbols-Rounded` | `MaterialIcons symbolsRounded` at 16, 24 and 32 pixels | 6.6 MB |
-| `SymbolsRounded` | `SymbolsRoundedSmall`, `MaterialSymbols-Rounded-192` | and its masters at 192 pixels | +11.0 MB |
-| `SymbolsRoundedFilled` | `MaterialSymbols-Rounded-Filled`, `MaterialSymbols-Rounded-Filled-192` | `MaterialIcons symbolsRoundedFilled`, all sizes | 15.1 MB |
+| `SymbolsRounded` | `SymbolsRoundedSmall`, `MaterialSymbols-Rounded-192` | and its masters at 192 pixels | +11.1 MB |
+| `SymbolsRoundedFilled` | `MaterialSymbols-Rounded-Filled`, `MaterialSymbols-Rounded-Filled-192` | `MaterialIcons symbolsRoundedFilled`, all sizes | 15.2 MB |
 | `ThemePack` | `MaterialIcons-ThemePack` (with `Core`) | `MaterialThemeIcons` | 0.04 MB |
-| `SymbolsThemePack` | `MaterialSymbols-ThemePack` (with `SymbolsRoundedSmall`) | `MaterialSymbolsThemeIcons` | 0.02 MB |
+| `SymbolsThemePack` | `MaterialSymbols-ThemePack` (with `SymbolsRoundedSmall`) | `MaterialSymbolsThemeIcons` | 0.4 MB |
 | `Tests` | `MaterialIcons-Tests`, `MaterialSymbols-Tests` (`IconsTests`, `SymbolsTests`) | the tests, with the masters | |
-| `default` | all of the above but `SymbolsRoundedFilled` | | 25.1 MB |
-| `Full` | all of them | | 40.2 MB |
+| `default` | all of the above but `SymbolsRoundedFilled` | | 25.5 MB |
+| `Full` | all of them | | 40.7 MB |
 
-For example, `load: #( 'SymbolsRounded' 'SymbolsThemePack' )` loads the symbols and their pack without Material Icons Rounded. `load: 'Core'` loads what the earlier versions loaded.
+For example, `load: #( 'SymbolsRounded' 'SymbolsThemePack' )` loads the symbols and their pack without Material Icons Rounded. `load: 'Core'` loads what the earlier versions loaded. The image grows by more than the Tonel loaded, and by twice as much until the caches of Monticello are emptied: see [Sizes, load times, image growth](#sizes-load-times-image-growth).
 
 The icon data is generated: `scripts/generate.py` rasterizes the pinned SVGs of Google's repository, see [Regenerating](#regenerating).
 
@@ -62,7 +62,7 @@ MaterialIcons rounded tagsOf: #home.
 MaterialIcons rounded codepointOf: #home.			"16rE88A, the glyph in the Material Icons fonts"
 
 MaterialIcons symbolsRounded iconNamed: #home.			"the same protocol, Material Symbols Rounded"
-MaterialIcons symbolsRounded size.				"3929"
+MaterialIcons symbolsRounded size.				"3944"
 MaterialIcons symbolsRounded categories.			"#('Actions' 'Activities' ... 'UI actions')"
 MaterialIcons symbolsRounded formNamed: #eco size: 64.
 MaterialIcons symbolsRoundedFilled iconNamed: #home.		"group SymbolsRoundedFilled"
@@ -109,7 +109,8 @@ Everything below holds for both packs. Where they differ, the [Material Symbols 
 - **Install.** `install` makes a `MaterialThemeIcons` the current `ThemeIcons`, which is what `Smalltalk ui icons`, `iconNamed:`, Spec's icon providers and Commander use. 243 keys of the default pack are mapped to Material icons (`scripts/pharo-mapping.tsv`). They are drawn at the size the default pack uses for each key (14 pixels for `#accept`, 32 for `#info`), so rows and menus keep their layout.
 - **Keys that stay as they were.** Every other key keeps the icon of the pack that was current before: check boxes, radio buttons, the small arrows, window buttons, halos, logos (Pharo, git, GitHub), the coloured circles and so on.
 - **Colours.** The icons take the colour of the UI theme and are redrawn when the theme changes. The status keys keep fixed colours: tests (green, red, amber, and a filled grey circle for `testNotRun`, so that it does not look like a radio button), errors (red), warnings (amber), information (blue), `breakpoint` (red) and `confirm` (green).
-- **Weight.** Material icons look lighter than svgPack's: they keep Material's padding of 2 units on the 24 grid, so their shapes are about 12% smaller and carry about two thirds of the ink. It shows most on `stop`, `downArrow`, `go`/`glamorousGo`/`smallDoIt` (a 7-pixel triangle in 13 pixels) and `leftSide`/`rightSide`. The padding is not trimmed: many icons draw into it.
+- **Weight.** Material icons look lighter than svgPack's: they keep Material's padding of 2 units on the 24 grid, so their shapes are about 12% smaller and carry about two thirds of the ink. In `MaterialThemeIcons` it shows most on `stop`, `downArrow`, `go`/`glamorousGo`/`smallDoIt` (a 7-pixel triangle in 13 pixels) and `leftSide`/`rightSide`; its padding is not trimmed, since many icons draw into it. `MaterialSymbolsThemeIcons` trims it on the small keys where it matters (see below).
+- **Not in any pack.** A few tools draw icons of their own instead of asking the pack, so no icon pack replaces them: `StFileBrowserIconCache` and `StNoteBookPreviewerPresenter` (drive, file, folder, terminal) and, in Pharo 15, `StSettingsAbstractPresenter` (its `…Icon` methods). They are not keys of svgPack.
 - **Uninstall.** `uninstall` makes the previous pack current again and empties the cache of the icons it was drawn with.
   - Installing a second time keeps the first fallback, so `uninstall` always goes back to the pack you had before.
   - Installing one Material pack while the other is installed goes over the other's fallback: the two packs replace each other rather than piling up.
@@ -125,14 +126,16 @@ Everything below holds for both packs. Where they differ, the [Material Symbols 
   - Keys that Pharo 15 renamed (`glamorousRestart` and `restart`, `glamorousBrowse` and `browse`…) map to the same symbol. So do keys that differ only by state or theme (`windowCloseInactive`, `pauseDark`, the three `smallCogState` frames…).
   - Related keys stay in one family: `into`, `over` and `through` are `step_into`, `step_over` and `step`; the change keys are boxed (`add_box`, `indeterminate_check_box`, `edit_square`); the status dots are all `fiber_manual_record`.
   - Low confidence mostly means that Material has no counterpart. That covers the brand logos (Pharo's lighthouse is `cell_tower`; GitHub is `hub`; GitLab is `pets`; Bitbucket is `bucket_check`) and a few old browser buttons that have no senders.
-  - `blank` and `empty` are left out. They are transparent spacers, and `blank` is the default icon of every command that has none, so any glyph would show on all of them.
+  - `blank` and `empty` are left out on purpose. They are transparent spacers, and `blank` is the default icon of every command that has none, so any glyph would show on all of them.
+  - `separator` (24×5) and `protocolNone` (16×1) are rules rather than icons, with no sender that draws them; they are mapped to a trimmed `horizontal_rule`, a line, rather than left out.
   - `checkboxMarker`, `radioButtonMarker`, `rotate` and `scale` are transparent in svgPack too, but they mark a state or a halo handle. They are mapped (`check`, a dot, `rotate_right`, `open_in_full`), so `CheckboxButtonMorph`, whose on image is `checkboxMarker`, draws a check mark when selected.
 
 - **Variant.** Each mapped key chooses its own variant of the symbol:
   - outlined or filled (`fill`). The status keys are filled, so a test result or an error reads as a solid shape. So are the keys whose svgPack picture is solid (`play`, `pause`, `thumbsUp`…).
   - grade 0 or 200 (`grade`). Grade 200 has heavier strokes at the same size: 34% more ink at 16 pixels, on average over all the symbols, which brings them closer to the weight of svgPack. The outlined keys use grade 200; the filled ones use grade 0.
 - **Exact sizes.** Each key is drawn from optical size 24 at the sizes svgPack draws it at the scales 1, 1.5 and 2: 14, 21 and 28 pixels for `#accept`, 7×10 for `#play`. A key that is not square has the symbol centred, at the side of its shorter edge.
-- **Colours.** Every key takes the colour of the UI theme, except the keys that the mapping gives a fixed colour, which are status keys. Those are tests (a green check, a red X, an amber !, and a filled grey disc for `testNotRun`), errors (red), warnings (amber), information and `question` (blue), `confirm` (green), `breakpoint` and `halt` (red), and the red, green and grey dots.
+- **Trimmed keys.** On the smallest keys Material's padding would leave a speck: a 3-pixel triangle in the 7 pixels of `arrowDown`. 26 keys are trimmed (column `trim`): the symbol's viewBox is cut to the bounds of its drawing plus a margin, then widened to the shape of the key, so the glyph fills the key as svgPack's does. They are the small triangles (`arrowDown`, `arrowUp` and their `Double` forms, `arrowUpAndDown`, `play`, `glamorousPlay`), `go`, `glamorousGo` and `smallDoIt` (a 9×11 triangle in 13 pixels, as large as the other menu icons), `expandBox`, `removeCross`, `glamorousRemove`, `haloCollapse`, `greenArrowUpAndDown`, the rules `separator` and `protocolNone`, and every 12×12 check box (`checkBoxOff`, `checkBoxOn`, `partialCheckedBox`, `changeEmpty`…), whose outline then lands on whole pixels and is crisp at scale 1.
+- **Colours.** Every key takes the colour of the UI theme, except the keys that the mapping gives a fixed colour, which are status keys. Those are tests (a green check, a red X, an amber !, and a filled grey disc for `testNotRun`), errors (red), warnings (amber), information, `question` and `confirm` (blue, `confirm` a disc with !, as svgPack draws it), `breakpoint` and `halt` (red), `uncommentedClass` (a red !), the red, green and grey dots, and the buttons of inactive windows (`windowCloseInactive`, `windowMaximizeInactive`, `windowMinimizeInactive`, `windowMenuInactive` and their `Inverted` forms: grey, the passive look of svgPack, which the theme also uses for the close buttons of notebook tabs and the clear button of search fields).
 - **Pixels.** `MaterialSymbolsThemeIconsArt` holds the pixels of every mapped key. The pack therefore needs neither the masters nor the filled packages, only `MaterialSymbols-Rounded` for the `symbol_<name>` keys.
 - **Export.** `exportToIconPacks` writes `materialSymbolsRounded.zip`, with `LICENSE-material-symbols` and a `NOTICE` of its own.
 
@@ -167,20 +170,20 @@ The icons are the 2127 that the family Material Icons Round supports in the meta
 
 ### Material Symbols Rounded
 
-The icons are those that the family Material Symbols Rounded supports in the same metadata: 3944 are listed, and 3929 are kept.
+The icons are all those that the family Material Symbols Rounded supports in the same metadata: 3944.
 
-- **Left out.** The other 15 are the newest, with no SVG in Google's repository at the pinned commit yet: `contrast_auto`, `contrast_inverse`, `contrast_inverse_auto`, `devices_2`, `document_share_off`, `frame_person_2`, `input_search`, `mail_person`, `mirror_stack`, `print_landscape_long`, `print_landscape_short`, `print_portrait_long`, `print_portrait_short`, `pull_request` and `touch_double_2_hold`.
-  - They come with a later pin; `MaterialSymbolsRoundedCategory missingIcons` lists them.
-  - fonts.gstatic.com serves them, but unversioned, so a pin on them could not be reproduced.
+- **From fonts.gstatic.com.** 15 of them are the newest, with no SVG in Google's repository at the pinned commit (its HEAD today) yet: `contrast_auto`, `contrast_inverse`, `contrast_inverse_auto`, `devices_2`, `document_share_off`, `frame_person_2`, `input_search`, `mail_person`, `mirror_stack`, `print_landscape_long`, `print_landscape_short`, `print_portrait_long`, `print_portrait_short`, `pull_request` and `touch_double_2_hold`.
+  - Their SVGs, the same six variants as the others, come from Google Fonts: `https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsrounded/<name>/<style>/<size>.svg`. These URLs are unversioned (the versioned ones answer 404 for the symbols), so the manifest pins each file by its SHA-256, and the generator stops if Google changes one. A later pin of the repository will take them from there.
+  - `MaterialSymbolsRoundedCategory fallbackIcons` lists them, and `missingIcons` the icons listed but not here (none).
 
 | category | icons | category | icons | category | icons |
 |---|---:|---|---:|---|---:|
-| Actions | 271 | Hardware | 271 | Social | 384 |
-| Activities | 127 | Home | 125 | Text | 522 |
+| Actions | 272 | Hardware | 273 | Social | 384 |
+| Activities | 127 | Home | 125 | Text | 527 |
 | Android | 273 | Household | 189 | Transit | 127 |
-| Audio&Video | 229 | Images | 296 | Travel | 94 |
+| Audio&Video | 230 | Images | 299 | Travel | 94 |
 | Business | 181 | Maps | 175 | UI actions | 448 |
-| Communicate | 172 | Privacy | 45 | | |
+| Communicate | 173 | Privacy | 45 | | |
 
 - **Where they live.** Each category is a class of `MaterialSymbols-Rounded`. The category names are cleaned up for the class names: `UI actions` becomes `MaterialSymbolsRoundedUIActions`, `Audio&Video` becomes `MaterialSymbolsRoundedAudioVideo`.
   - `iconTable` holds the tags of an icon as one String, comma-separated, because single literals for the 138,000 tags would cost megabytes of image; `tagsOf:` answers an Array.
@@ -194,22 +197,33 @@ The icons are those that the family Material Symbols Rounded supports in the sam
 
   The theme pack also uses grade 200, at optical size 24, for the keys mapped to it.
 - **Masters.** They are rendered by CairoSVG at 192 pixels from optical size 48, the largest optical size. At that size each pixel covers 5 units of the font, so the 60-unit strokes of optical size 48 are exactly 12 pixels wide. 256 pixels would cost 42% more for no visible gain.
+  - 192 pixels is a choice, made to match the masters of Material Icons Rounded, not a maximum published by Google: for the Symbols Google publishes only SVGs, no PNGs. `formNamed:size:` above 192 enlarges the master by bilinear interpolation, so very large sizes are softer than a new rendering of the SVG would be.
 
 ### Sizes, load times, image growth
 
-Measured on stock images: Pharo 15 build 117 and Pharo 12 build 1599. Each group was loaded with Metacello from a local clone into a fresh image, the 14 images loading at once. Before saving, the images ran `MCFileBasedRepository flushAllCaches` and a garbage collection. "Image" is the growth of the saved `.image`; the `.changes` file grows by about as much as the Tonel loaded.
+Measured on stock images: Pharo 15 build 117 and Pharo 12 build 1599. Each group was loaded with Metacello from a local clone into a fresh image, the 14 images loading at once, before the 15 symbols of fonts.gstatic.com and the trimmed keys were added (0.5 MB more of Tonel in all). Before saving, the images emptied the caches of Monticello (below) and ran a garbage collection. "Image" is the growth of the saved `.image`; the `.changes` file grows by about as much as the Tonel loaded.
 
 | group | PNGs | Tonel | load, Pharo 15 | load, Pharo 12 | image, Pharo 15 | image, Pharo 12 |
 |---|---:|---:|---:|---:|---:|---:|
 | `Core` | 1.8 MB | 2.9 MB | 3.0 s | 6.9 s | +5.2 MB | +5.1 MB |
 | `IconsRounded` | 4.9 MB | 7.3 MB | 6.4 s | 15.4 s | +9.8 MB | +12.0 MB |
 | `SymbolsRoundedSmall` | 3.6 MB | 6.6 MB | 6.0 s | 24.6 s | +8.7 MB | +10.8 MB |
-| `SymbolsRounded` | 11.5 MB | 17.6 MB | 13.5 s | 44.5 s | +20.0 MB | +22.4 MB |
-| `default` | 16.5 MB | 25.1 MB | 19.5 s | 60.5 s | +28.3 MB | +31.0 MB |
-| `Full` | 27.1 MB | 40.2 MB | 30.3 s | 90.8 s | +43.7 MB | +47.2 MB |
+| `SymbolsRounded` | 11.6 MB | 17.7 MB | 13.5 s | 44.5 s | +20.0 MB | +22.4 MB |
+| `default` | 16.8 MB | 25.5 MB | 19.5 s | 60.5 s | +28.3 MB | +31.0 MB |
+| `Full` | 27.4 MB | 40.7 MB | 30.3 s | 90.8 s | +43.7 MB | +47.2 MB |
 
-- **Files and methods.** The largest generated file is 1.4 MB (`MaterialSymbolsRoundedSocial.extension.st`, 384 masters). The largest method is 170 KB, the `iconTable` of the 522 symbols of `Text`. Neither Pharo 12 nor Pharo 15 hits a limit of Tonel, Monticello or the compiler.
-- **Tests.** The 72 tests of `Tests` pass on both versions, the filled ones included. They take about 3 minutes, most of it decoding every PNG at every size, masters included.
+- **The caches of Monticello.** Right after a load the image holds every method twice: Monticello's repositories keep each version they loaded, with all its method sources. A `tonel://` load of `default` makes the image about 59 MB larger, and of `Full` about 90 MB; emptying the caches frees about 28 MB of the `default` load. This empties them on Pharo 12 and 15 (on Pharo 15, `TonelRepository allInstances do: #flushCache` alone is enough; on Pharo 12 it is not):
+
+  ```smalltalk
+  MCRepository allSubInstances do: [ :each | [ each flushCache ] on: Error do: [ :error | ] ].
+  Smalltalk garbageCollect.
+  ```
+
+  A `github://` load goes through Iceberg, whose growth was not measured here.
+- **Pharo 12** loads the large packages more slowly than Pharo 15: about 1.5 minutes for `Full`.
+- **Unloading.** Unloading a package leaves the names of its classes as Undeclared bindings that nothing refers to, as Monticello does for any removed class; `Smalltalk image cleanOutUndeclared` removes them.
+- **Files and methods.** The largest generated file is 1.4 MB (`MaterialSymbolsRoundedSocial.extension.st`, 384 masters). The largest method is 171 KB, the `iconTable` of the 527 symbols of `Text`. Neither Pharo 12 nor Pharo 15 hits a limit of Tonel, Monticello or the compiler.
+- **Tests.** The 74 tests of `Tests` pass on both versions, the filled ones included. They take about 3 minutes, most of it decoding every PNG at every size, masters included.
 
 ## Regenerating
 
@@ -227,15 +241,16 @@ build/venv/bin/python -I scripts/generate.py			# writes src/
 build/venv/bin/python -I scripts/generate.py --check		# compares instead: "up to date"
 ```
 
-- **What it does.** It downloads the pinned files of [google/material-design-icons](https://github.com/google/material-design-icons) into `build/cache` and checks each file against its SHA-256 in the manifest. The cache's layout is `mir-svg/`, `mir-android-xxxhdpi-192/` and `msr-svg/`; `--cache DIR` puts it elsewhere. It then rasterizes the icons with CairoSVG and writes the Tonel files. The files it uses:
+- **What it does.** It downloads the pinned files of [google/material-design-icons](https://github.com/google/material-design-icons) into `build/cache` and checks each file against its SHA-256 in the manifest. The cache's layout is `mir-svg/`, `mir-android-xxxhdpi-192/`, `msr-svg/` and `msr-gstatic/`; `--cache DIR` puts it elsewhere. It then rasterizes the icons with CairoSVG and writes the Tonel files. The files it uses:
   - **Material Icons Rounded** (`scripts/manifest.json`), at commit `3912baecc97388955ce39f5e26bfb786a70cbe48`, the last commit that changed `src/`. The `android/` tree is the same there as at the later pin. It takes:
     - each icon's `src/<category>/<name>/materialiconsround/24px.svg`, rasterized at 16, 24 and 32 pixels;
     - its 192-pixel `android/…/drawable-xxxhdpi/round_<name>_black_48.png`, kept as it is.
   - **Material Symbols Rounded** (`scripts/manifest-symbols.json`), at commit `10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7`. It takes six SVGs per symbol from `symbols/web/<name>/materialsymbolsrounded/`:
     - `<name>_24px.svg` and `<name>_fill1_24px.svg`, rasterized at 16, 24 and 32 pixels;
     - `<name>_48px.svg` and `<name>_fill1_48px.svg`, rasterized at 192 pixels;
-    - `<name>_grad200_24px.svg` and `<name>_grad200fill1_24px.svg`, for the theme pack.
-- **Time.** The first run downloads 27,828 files: 4,254 for Material Icons Rounded and 23,574 for Material Symbols Rounded. raw.githubusercontent.com answers "429 Too Many Requests" to many quick downloads; the generator waits and retries, so a first run can take 10 to 15 minutes. With the cache filled, rasterizing the 32,127 PNGs takes about 1 minute in 32 processes (`--jobs N`; the default is the number of CPUs, at most 32). Each PNG depends only on its own SVG.
+    - `<name>_grad200_24px.svg` and `<name>_grad200fill1_24px.svg`, for the theme pack;
+    - for the 15 symbols that the commit lacks, the same six from fonts.gstatic.com (`default/24px.svg`, `fill1/24px.svg`, `default/48px.svg`, `fill1/48px.svg`, `grad200/24px.svg`, `grad200fill1/24px.svg`), each pinned by its SHA-256.
+- **Time.** The first run downloads 27,918 files: 4,254 for Material Icons Rounded and 23,664 for Material Symbols Rounded (90 of them from fonts.gstatic.com). raw.githubusercontent.com answers "429 Too Many Requests" to many quick downloads; the generator waits and retries, so a first run can take 10 to 15 minutes. With the cache filled, rasterizing the 32,876 PNGs takes about 1.5 minutes in 32 processes (`--jobs N`; the default is the number of CPUs, at most 32). Each PNG depends only on its own SVG.
 - **Reproducible.** It writes the PNGs itself (Python's zlib), so rerunning on the same inputs writes the same bytes, whatever the number of processes. The committed data was made with cairo 1.18.6.
 - **libcairo.** CairoSVG needs `libcairo.so.2`. Where the system has none, point `LD_LIBRARY_PATH` at the `lib` directory of a Pharo VM that ships cairo. The generator warns when the cairo version differs, since the pixels may then differ slightly.
 - **The pins.** Each manifest records:
@@ -244,21 +259,21 @@ build/venv/bin/python -I scripts/generate.py --check		# compares instead: "up to
   - for each icon, its name, category, codepoint, version, tags and the SHA-256 of each of its files;
   - a hash of what the pin takes from the metadata: `round_subset_sha256` for Material Icons Rounded, `subset_sha256` for Material Symbols Rounded.
 
-  The Symbols manifest also lists the icons that are left out (`missing_at_commit`). `generate.py pin [rounded|symbols]` rebuilds a manifest from the live metadata; it only needs to be run to move a pin, and it resumes from the files it already downloaded.
+  The Symbols manifest also lists the icons that the commit lacks (`missing_at_commit`): their entries carry `"source": "gstatic"`, and `upstream.fallback` gives the URL of their files on fonts.gstatic.com and the style of each variant there (`fill1_24px` is `fill1/24px`). An icon that neither has would be listed in `left_out` and left out. `generate.py pin [rounded|symbols]` rebuilds a manifest from the live metadata; it only needs to be run to move a pin, and it resumes from the files it already downloaded at the commit (the files of fonts.gstatic.com are always downloaded again).
 
   The live metadata changes from one fetch to the next (its popularity counters), so the pin does not hash it as it comes. The subset hash covers only what the pin takes from it: the pinned icons sorted by name, each with its name, categories, codepoint, version and tags, as compact JSON with sorted keys. It can be recomputed from the manifest alone, and rerunning `pin` leaves the manifest as it is while Google changes none of those icons.
 - **The UI mappings.**
   - `scripts/pharo-mapping.tsv` maps Pharo icon keys to Material Icons Rounded names. Each row gives the key's size in the default pack (svgPack) and an optional fixed colour.
-  - `scripts/symbols-mapping.tsv` maps keys to Material Symbols. Its columns are named in its header: `pharoKey`, `symbolName`, `fill`, `grade` and `colour`, plus optional `size` and `note`. The sizes come from `scripts/pharo-icon-keys.tsv`: the 377 keys of svgPack and their sizes at the three scales, the same in Pharo 12 and 15 (the tests check them against the pack).
+  - `scripts/symbols-mapping.tsv` maps keys to Material Symbols. Its columns are named in its header: `pharoKey`, `symbolName`, `fill`, `grade` and `colour`, plus optional `trim`, `size` and `note`. The sizes come from `scripts/pharo-icon-keys.tsv`: the 377 keys of svgPack and their sizes at the three scales, the same in Pharo 12 and 15 (the tests check them against the pack).
   - The generator stops on any unknown key or name, a symbol that the pin leaves out, a key mapped twice or a wrong value, and lists every wrong line.
 
 ## Licence
 
 - **The code** of this repository is under the MIT licence (`LICENSE`).
-- **The icons** are Material Icons and Material Symbols by Google. Both are under the Apache License 2.0: `LICENSE-material-icons` is the `LICENSE` of google/material-design-icons, the same file at both pinned commits.
+- **The icons** are Material Icons and Material Symbols by Google. Both are under the Apache License 2.0: `LICENSE-material-icons` is the `LICENSE` of google/material-design-icons, the same file at both pinned commits. The 15 symbols taken from fonts.gstatic.com are Material Symbols too, under the same licence.
 - **What the packages hold.**
   - `MaterialIcons-Rounded-192` holds Google's PNGs unmodified, in Base64.
-  - The other generated packages and the two Art classes hold PNG renderings of Google's SVGs, made as described above.
+  - The other generated packages and the two Art classes hold PNG renderings of Google's SVGs, made as described above (for the trimmed keys of `MaterialSymbolsThemeIconsArt`, cropped to their drawing first).
   - The class comments name the source and the licence, and `NOTICE` gives the attribution.
 - **In the image.** The text of the licence is also in the image, with the icons it covers: `MaterialIconsRoundedCategory licenseText` and `MaterialSymbolsRoundedCategory licenseText` (generated).
 - **In the exported zips.** The zips written by `exportToIconPacks` carry the licence (`LICENSE-material-icons` or `LICENSE-material-symbols`) and a NOTICE of their own (`MaterialThemeIconsArt noticeText`, `MaterialSymbolsThemeIconsArt noticeText`, generated).

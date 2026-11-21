@@ -19,11 +19,15 @@ codepoint, tags and SHA-256 of every source file of every icon):
                                rasterized at 16, 24, 32 px
         master, 192 px         <name>_48px.svg (optical size 48, the largest), rasterized at 192 px
         Filled                 the same from <name>_fill1_24px.svg and <name>_fill1_48px.svg
+        not at the commit      the few symbols that fonts.google.com lists but the repository does not
+                               have yet: the same six SVGs from fonts.gstatic.com (unversioned), each
+                               pinned by its SHA-256, so a change upstream stops the generator
 
 The files are downloaded from raw.githubusercontent.com at the pinned commit into the cache
 (build/cache by default; the layout is mir-svg/<commit>/<name>.svg,
-mir-android-xxxhdpi-192/<commit>/<name>.png and msr-svg/<commit>/<name>/<name>_<variant>.svg),
-and each is checked against its SHA-256 in the manifest. The generator writes:
+mir-android-xxxhdpi-192/<commit>/<name>.png, msr-svg/<commit>/<name>/<name>_<variant>.svg and
+msr-gstatic/<name>/<name>_<variant>.svg), and each is checked against its SHA-256 in the manifest.
+The generator writes:
 
     src/MaterialIcons-Rounded/                  one class per category, icon_<name>: 16, 24, 32 px
     src/MaterialIcons-Rounded-192/              master_<name>, extensions of those classes
@@ -99,6 +103,9 @@ SYMBOLS_COMMIT = '10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7'
 SYMBOLS_PATH = 'symbols/web/{name}/materialsymbolsrounded/{name}_{variant}.svg'
 SYMBOLS_FAMILY = 'Material Symbols Rounded'
 SYMBOLS_VARIANTS = ('24px', '48px', 'fill1_24px', 'fill1_48px', 'grad200_24px', 'grad200fill1_24px')
+# The symbols that the metadata lists but the repository lacks at the pinned commit: fonts.gstatic.com serves
+# them, but only unversioned (short-term/release), so each file is pinned by its SHA-256 in the manifest
+GSTATIC_URL = 'https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsrounded/{name}/{style}/{size}.svg'
 SYMBOLS_THEME_PACKAGE = 'MaterialSymbols-ThemePack'
 SYMBOLS_ART_CLASS = 'MaterialSymbolsThemeIconsArt'
 # (fill, grade) of the theme pack -> the variant (optical size 24) its keys are drawn from
@@ -196,6 +203,21 @@ def symbols_relative(commit, name, variant):
     return f'msr-svg/{commit}/{name}/{name}_{variant}.svg'
 
 
+def gstatic_relative(name, variant):
+    return f'msr-gstatic/{name}/{name}_{variant}.svg'
+
+
+def gstatic_style(variant):
+    """(style, size) of a variant of the repository on fonts.gstatic.com: fill1_24px is fill1/24px, 24px default/24px"""
+    style, _, size = variant.rpartition('_')
+    return style or 'default', size
+
+
+def gstatic_url(name, variant):
+    style, size = gstatic_style(variant)
+    return GSTATIC_URL.format(name=name, style=style, size=size)
+
+
 def symbols_files(manifest):
     """(key, cache path, url, sha256) of every source file of Material Symbols Rounded."""
     upstream = manifest['upstream']
@@ -203,8 +225,12 @@ def symbols_files(manifest):
     for icon in manifest['icons']:
         name = icon['name']
         for variant in upstream['variants']:
-            yield ((name, variant), symbols_relative(commit, name, variant),
-                   raw_url(commit, upstream['path'].format(name=name, variant=variant)), icon['sha256'][variant])
+            if icon.get('source') == 'gstatic':
+                yield ((name, variant), gstatic_relative(name, variant), gstatic_url(name, variant),
+                       icon['sha256'][variant])
+            else:
+                yield ((name, variant), symbols_relative(commit, name, variant),
+                       raw_url(commit, upstream['path'].format(name=name, variant=variant)), icon['sha256'][variant])
 
 
 def fetch_all(files, cache):
@@ -308,24 +334,50 @@ def pin_symbols(cache, metadata):
             raise RuntimeError(f'{name}: some variants are missing at {SYMBOLS_COMMIT}: {hashes}')
         return None if hashes[SYMBOLS_VARIANTS[0]] is None else hashes
 
-    icons, missing = [], []
+    def gstatic_hashes_of(name):
+        """The SHA-256 of each variant on fonts.gstatic.com, always downloaded again (the URLs are
+        unversioned), or None if one is not there"""
+        hashes = {}
+        for variant in SYMBOLS_VARIANTS:
+            try:
+                data = fetch(gstatic_url(name, variant), missing_ok=True)
+            except NotFound:
+                return None
+            if not data.lstrip().startswith(b'<svg'):
+                raise RuntimeError(f'{gstatic_url(name, variant)}: not an SVG')
+            store(cache, gstatic_relative(name, variant), data)
+            hashes[variant] = sha256(data)
+        return hashes
+
+    icons, missing, left_out = [], [], []
     with concurrent.futures.ThreadPoolExecutor(16) as pool:
         for each, hashes in zip(entries, pool.map(hashes_of, entries)):
+            source = None
             if hashes is None:
                 missing.append(each['name'])
-                continue
+                hashes, source = gstatic_hashes_of(each['name']), 'gstatic'
+                if hashes is None:
+                    left_out.append(each['name'])
+                    continue
             if any(',' in tag for tag in each['tags']):
                 raise RuntimeError(f'{each["name"]}: a tag with a comma, {each["tags"]}')
-            icons.append({'name': each['name'], 'category': each['categories'][0], 'codepoint': each['codepoint'],
-                          'version': each['version'], 'tags': each['tags'], 'sha256': hashes})
+            icon = {'name': each['name'], 'category': each['categories'][0], 'codepoint': each['codepoint'],
+                    'version': each['version'], 'tags': each['tags'], 'sha256': hashes}
+            if source:
+                icon['source'] = source
+            icons.append(icon)
+    upstream['fallback'] = {
+        'url': GSTATIC_URL, 'for': 'the icons of missing_at_commit',
+        'styles': {variant: '/'.join(gstatic_style(variant)) for variant in SYMBOLS_VARIANTS}}
     manifest = {'upstream': upstream, 'icons': icons, 'metadata': {
         'url': METADATA_URL, 'family': SYMBOLS_FAMILY,
-        'subset_sha256': subset_sha256([each for each in entries if each['name'] not in missing]),
+        'subset_sha256': subset_sha256([each for each in entries if each['name'] not in left_out]),
         'retrieved': datetime.date.today().isoformat(), 'listed': len(entries), 'icons': len(icons),
-        'missing_at_commit': missing}}
+        'missing_at_commit': missing, 'left_out': left_out}}
     write_manifest(manifest, SYMBOLS_MANIFEST)
-    print(f'Material Symbols Rounded: {len(icons)} icons pinned at {SYMBOLS_COMMIT}, '
-          f'{len(missing)} listed but not in the repository: {" ".join(missing)}')
+    print(f'Material Symbols Rounded: {len(icons)} icons pinned, {len(icons) - len(missing) + len(left_out)} at '
+          f'{SYMBOLS_COMMIT}, {len(missing) - len(left_out)} from fonts.gstatic.com '
+          f'({" ".join(n for n in missing if n not in left_out)}), {len(left_out)} left out: {" ".join(left_out)}')
 
 
 def pin(cache, which):
@@ -467,9 +519,16 @@ def load_cairosvg():
     return cairosvg, cairocffi.cairo_version_string()
 
 
-def render(svg, width, height):
-    """A grey+alpha PNG of width x height with svg drawn as a square of the shorter side, centred."""
+def render(svg, width, height, whole=False):
+    """A grey+alpha PNG of width x height with svg drawn as a square of the shorter side, centred;
+    whole: svg drawn over all of width x height (its viewBox has that aspect, see trimmed_svg)."""
     cairosvg, _ = load_cairosvg()
+    if whole:
+        rendered = cairosvg.svg2png(bytestring=svg, output_width=width, output_height=height)
+        w, h, alphas = alpha_of_png(rendered)
+        if (w, h) != (width, height):
+            raise ValueError(f'rendered {w}x{h}, expected {width}x{height}')
+        return la_png(width, height, alphas)
     side = min(width, height)
     rendered = cairosvg.svg2png(bytestring=svg, output_width=side, output_height=side)
     w, h, alphas = alpha_of_png(rendered)
@@ -485,12 +544,12 @@ def render(svg, width, height):
 
 
 def render_job(job):
-    svg, width, height = job
-    return render(svg, width, height)
+    svg, width, height, whole = job
+    return render(svg, width, height, whole)
 
 
 class Rasterizer:
-    """Renders (svg, width, height) jobs, each one once, in a pool of processes."""
+    """Renders (svg, width, height, whole) jobs, each one once, in a pool of processes."""
 
     def __init__(self, jobs):
         cairosvg, self.cairo = load_cairosvg()
@@ -502,11 +561,11 @@ class Rasterizer:
         self.wanted = {}
         self.done = {}
 
-    def want(self, svg, width, height=None):
+    def want(self, svg, width, height=None, whole=False):
         height = width if height is None else height
-        key = (sha256(svg), width, height)
+        key = (sha256(svg), width, height, whole)
         if key not in self.done:
-            self.wanted[key] = (svg, width, height)
+            self.wanted[key] = (svg, width, height, whole)
 
     def run(self):
         keys = sorted(self.wanted)
@@ -516,9 +575,9 @@ class Rasterizer:
                     self.done[key] = png
         self.wanted = {}
 
-    def png(self, svg, width, height=None):
+    def png(self, svg, width, height=None, whole=False):
         height = width if height is None else height
-        return self.done[sha256(svg), width, height]
+        return self.done[sha256(svg), width, height, whole]
 
 
 # ---------------------------------------------------------------- Tonel
@@ -774,7 +833,10 @@ def generate_symbols(manifest, sources, rasterizer):
     metadata = manifest['metadata']
     categories = sorted({icon['category'] for icon in icons})
     counts = ' '.join(f'#( {st_string(c)} {sum(1 for i in icons if i["category"] == c)} )' for c in categories)
-    missing = ' '.join(st_string(name) for name in metadata['missing_at_commit'])
+    missing = ' '.join(st_string(name) for name in metadata.get('left_out', []))
+    fallback_names = [icon['name'] for icon in icons if icon.get('source') == 'gstatic']
+    fallback = ' '.join(st_string(name) for name in fallback_names)
+    fallback_url = upstream.get('fallback', {}).get('url', '')
     base, filled = SYMBOLS_SETS
     for each in SYMBOLS_SETS:
         pkg, masters_pkg = f'src/{each.package}', f'src/{each.master_package}'
@@ -798,9 +860,16 @@ def generate_symbols(manifest, sources, rasterizer):
                 (True, 'categoryCounts', 'accessing',
                  ['\t"The number of icons of each category"', '', f'\t^ #( {counts} )']),
                 (True, 'missingIcons', 'accessing', [
-                    '\t"The icons that fonts.google.com lists for Material Symbols Rounded but that the upstream',
-                    '\trepository does not have yet at the pinned commit: they come with a later pin"',
-                    '', f'\t^ #( {missing} )']),
+                    '\t"The icons that fonts.google.com lists for Material Symbols Rounded but that are not here:',
+                    '\tneither the upstream repository at the pinned commit nor fonts.gstatic.com has them"',
+                    '', f'\t^ #( {missing} )' if missing else '\t^ #( )']),
+                (True, 'fallbackIcons', 'accessing', [
+                    '\t"The icons that the upstream repository does not have yet at the pinned commit: their SVGs',
+                    '\tcome from fonts.gstatic.com instead (fallbackDescription), each pinned by its SHA-256"',
+                    '', f'\t^ #( {fallback} )']),
+                (True, 'fallbackDescription', 'accessing', [
+                    '\t"Where the SVGs of fallbackIcons come from (unversioned URLs, pinned by SHA-256)"',
+                    '', f'\t^ {st_string(fallback_url)}']),
                 (True, 'upstreamCommit', 'accessing', ['', f"\t^ '{upstream['commit']}'"]),
                 (True, 'licenseText', 'licence', [
                     '\t"The Apache License 2.0 of Material Symbols (LICENSE-material-icons, the LICENSE of the upstream',
@@ -816,7 +885,9 @@ def generate_symbols(manifest, sources, rasterizer):
                 'comma-separated) of each. '
                 f'The package {each.master_package} adds `master_<name>`, the icon at {MASTER_SIZE} pixels drawn from '
                 f'the optical size 48; the packages {filled.package} and {filled.master_package} '
-                'hold the filled variant.\n\n' + common)
+                f'hold the filled variant. The {len(fallback_names)} `fallbackIcons`, which the repository does not '
+                'have yet at the pinned commit, are drawn from the same SVGs served by fonts.gstatic.com.\n\n'
+                + common)
             superclass = 'MaterialIconsCategory'
         else:
             comment = (
@@ -897,11 +968,12 @@ MAPPING_COLUMNS = ('pharoKey', 'symbolName', 'fill', 'grade', 'colour')
 
 
 def read_symbols_mapping(manifest):
-    """The rows of scripts/symbols-mapping.tsv, checked: (key, name, fill, grade, colour or None, sizes).
+    """The rows of scripts/symbols-mapping.tsv, checked: (key, name, fill, grade, colour or None, sizes,
+    trim or None).
     Every wrong row is reported, then the generator stops."""
     pharo_keys = read_pharo_keys()
     names = {icon['name'] for icon in manifest['icons']}
-    missing = set(manifest['metadata']['missing_at_commit'])
+    missing = set(manifest['metadata'].get('left_out', []))
     rows, errors, seen, header = [], [], {}, None
     with open(SYMBOLS_MAPPING, encoding='utf-8') as stream:
         for number, line in enumerate(stream, 1):
@@ -924,8 +996,9 @@ def read_symbols_mapping(manifest):
             elif key in seen:
                 problems.append(f'pharoKey {key!r} is mapped twice (also line {seen[key]})')
             if name in missing:
-                problems.append(f'symbolName {name!r} is listed by fonts.google.com but not in the repository at '
-                                f'{SYMBOLS_COMMIT[:7]} yet (scripts/manifest-symbols.json, missing_at_commit)')
+                problems.append(f'symbolName {name!r} is listed by fonts.google.com but neither the repository at '
+                                f'{SYMBOLS_COMMIT[:7]} nor fonts.gstatic.com has it (scripts/manifest-symbols.json, '
+                                'left_out)')
             elif name not in names:
                 problems.append(f'symbolName {name!r} is not a Material Symbols Rounded icon '
                                 '(scripts/manifest-symbols.json)')
@@ -936,6 +1009,9 @@ def read_symbols_mapping(manifest):
                 problems.append(f'grade {grade!r}, expected 0 or 200')
             if colour != '-' and not re.fullmatch(r'[0-9A-F]{6}', colour):
                 problems.append(f'colour {colour!r}, expected RRGGBB (upper case) or -')
+            trim = row.get('trim', '-')
+            if trim not in ('', '-') and not (re.fullmatch(r'\d{1,3}', trim) and int(trim) <= MAX_TRIM):
+                problems.append(f'trim {trim!r}, expected - or a margin of 0 to {MAX_TRIM} units of the 960 grid')
             if key in pharo_keys and row.get('size', '-') not in ('', '-'):
                 actual = '{}x{}'.format(*pharo_keys[key][0])
                 if row['size'] != actual:
@@ -944,7 +1020,8 @@ def read_symbols_mapping(manifest):
                 errors += [f'{where}: {problem}' for problem in problems]
                 continue
             seen[key] = number
-            rows.append((key, name, int(fill), int(grade), None if colour == '-' else colour, pharo_keys[key]))
+            rows.append((key, name, int(fill), int(grade), None if colour == '-' else colour, pharo_keys[key],
+                         None if trim in ('', '-') else int(trim)))
     if header is None:
         raise SystemExit('scripts/symbols-mapping.tsv: no header')
     if errors:
@@ -952,10 +1029,72 @@ def read_symbols_mapping(manifest):
     return rows
 
 
+MAX_TRIM = 480
+INK_GRID = 960
+_ink_boxes = {}
+
+
+def view_box(svg):
+    match = re.search(rb'<svg\b[^>]*\bviewBox="([^"]*)"', svg)
+    if not match:
+        raise ValueError('an SVG without viewBox')
+    return tuple(float(v) for v in match.group(1).split())
+
+
+def ink_box(svg):
+    """(x0, y0, x1, y1): the bounds of the ink of svg in the units of its viewBox, from a rendering at
+    960 pixels (1 unit per pixel for Material Symbols), counting the pixels of alpha above 8"""
+    key = sha256(svg)
+    if key not in _ink_boxes:
+        vx, vy, vw, vh = view_box(svg)
+        if vw != vh:
+            raise ValueError(f'a viewBox that is not square: {vw} x {vh}')
+        cairosvg, _ = load_cairosvg()
+        _, _, alphas = alpha_of_png(cairosvg.svg2png(bytestring=svg, output_width=INK_GRID, output_height=INK_GRID))
+        rows = [y for y, row in enumerate(alphas) if max(row) > 8]
+        columns = [x for x, top in enumerate(map(max, zip(*alphas))) if top > 8]
+        if not rows:
+            raise ValueError('an SVG without ink')
+        unit = vw / INK_GRID
+        _ink_boxes[key] = (vx + columns[0] * unit, vy + rows[0] * unit,
+                           vx + (columns[-1] + 1) * unit, vy + (rows[-1] + 1) * unit)
+    return _ink_boxes[key]
+
+
+def trimmed_svg(svg, width, height, margin):
+    """svg with its viewBox narrowed to its ink plus margin units on each side, then widened (or heightened)
+    about its centre to the aspect width:height, so that the glyph fills a key of that size instead of keeping
+    Material's padding"""
+    x0, y0, x1, y1 = ink_box(svg)
+    x0, y0, x1, y1 = x0 - margin, y0 - margin, x1 + margin, y1 + margin
+    box_width, box_height = x1 - x0, y1 - y0
+    if box_width * height < box_height * width:
+        wider = box_height * width / height
+        x0, box_width = x0 - (wider - box_width) / 2, wider
+    else:
+        taller = box_width * height / width
+        y0, box_height = y0 - (taller - box_height) / 2, taller
+    box = ' '.join(f'{round(v, 3):g}' for v in (x0, y0, box_width, box_height))
+    tag = re.search(rb'<svg\b[^>]*>', svg)
+    opening = tag.group(0)
+    for attribute, value in ((b'viewBox', box), (b'width', str(width)), (b'height', str(height))):
+        opening, count = re.subn(rb'\b' + attribute + rb'="[^"]*"', attribute + b'="' + value.encode() + b'"', opening)
+        if count != 1:
+            raise ValueError(f'an SVG whose <svg> has {count} {attribute.decode()} attributes')
+    return svg[:tag.start()] + opening + svg[tag.end():]
+
+
+def art_svg(sources, name, fill, grade, width, height, trim):
+    """The SVG a key is drawn from at width x height, and whether it fills all of it (trimmed)"""
+    svg = sources[name, ART_VARIANTS[fill, grade]]
+    return (svg, False) if trim is None else (trimmed_svg(svg, width, height, trim), True)
+
+
 def want_symbols_art(manifest, sources, rasterizer):
-    for key, name, fill, grade, colour, sizes in read_symbols_mapping(manifest):
+    for key, name, fill, grade, colour, sizes, trim in read_symbols_mapping(manifest):
         for width, height in sizes:
-            rasterizer.want(sources[name, ART_VARIANTS[fill, grade]], width, height)
+            svg, whole = art_svg(sources, name, fill, grade, width, height, trim)
+            rasterizer.want(svg, width, height, whole)
 
 
 def symbols_notice_text(manifest, rasterizer):
@@ -972,6 +1111,8 @@ def symbols_notice_text(manifest, rasterizer):
         '',
         'Its PNG files of the Material Symbols are modified forms of those SVG files:',
         f'rasterized by material-icons.st (scripts/generate.py, {rasterizer.description}),',
+        'some of them cropped to the bounds of their drawing first (the column trim of',
+        'scripts/symbols-mapping.tsv),',
         'then painted in one colour in Pharo by MaterialSymbolsThemeIcons.',
         'The other PNG files are those of the icon pack it was built over',
         '(by default svgPack, https://github.com/pharo-project/pharo-icon-packs),',
@@ -982,14 +1123,18 @@ def symbols_notice_text(manifest, rasterizer):
 def generate_symbols_art(manifest, sources, rasterizer):
     rows = read_symbols_mapping(manifest)
     entries, methods, drawn = [], [], set()
-    for key, name, fill, grade, colour, sizes in rows:
+    for key, name, fill, grade, colour, sizes, trim in rows:
         variant = ART_VARIANTS[fill, grade]
-        selector = f'art_{name}_{variant[:-5] or "default"}_' + '_'.join(f'{w}x{h}' for w, h in sizes)
+        selector = (f'art_{name}_{variant[:-5] or "default"}_' + '_'.join(f'{w}x{h}' for w, h in sizes)
+                    + ('' if trim is None else f'_trim{trim}'))
         colour_literal = 'nil' if colour is None else st_string(colour)
         entries.append(f'\t\t#( {st_symbol(key)} {st_string(name)} {fill} {grade} {colour_literal} #{selector} )')
         if selector not in drawn:
             drawn.add(selector)
-            pngs = [rasterizer.png(sources[name, variant], w, h) for w, h in sizes]
+            pngs = []
+            for w, h in sizes:
+                svg, whole = art_svg(sources, name, fill, grade, w, h, trim)
+                pngs.append(rasterizer.png(svg, w, h, whole))
             methods.append((True, selector, 'icons', [png_array(pngs)]))
     methods.append((True, 'entries', 'accessing', [
         '\t"Pharo icon key, Material Symbols name, fill (0 or 1), grade (0, or 200 for heavier strokes of the',
