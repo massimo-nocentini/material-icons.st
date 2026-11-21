@@ -1,12 +1,19 @@
 "
-I give the Material icons of one style as Forms: `MaterialIcons rounded` answers those of Material Icons Rounded (fonts.google.com/icons, icon.set=Material+Icons, icon.style=Rounded), by their Material names.
+I give the Material icons of one style as Forms, by their Material names:
+
+- `MaterialIcons rounded`: Material Icons Rounded (fonts.google.com/icons, icon.set=Material+Icons, icon.style=Rounded), 2127 icons;
+- `MaterialIcons symbolsRounded`: Material Symbols Rounded (icon.set=Material+Symbols, icon.style=Rounded), 3929 icons, in their default variant (FILL 0, wght 400, GRAD 0);
+- `MaterialIcons symbolsRoundedFilled`: the same icons filled (FILL 1), when the optional group SymbolsRoundedFilled is loaded.
 
 ```
 MaterialIcons rounded iconNamed: #home.				""a 16x16 Form""
 MaterialIcons rounded formNamed: #arrow_back scale: 2.		""32x32""
+MaterialIcons rounded formNamed: #arrow_back size: 128.		""128x128, from the 192-pixel master""
 MaterialIcons rounded formSetNamed: #search.			""a FormSet for HiDPI: 16, 24 and 32 pixels""
 MaterialIcons rounded formNamed: #delete scale: 1 color: Color red.
 MaterialIcons rounded iconNamed: #'10k'.			""names that begin with a digit are quoted Symbols""
+MaterialIcons symbolsRounded iconNamed: #home.
+MaterialIcons symbolsRounded masterFormNamed: #home.	""192x192""
 
 MaterialIcons rounded iconNames.			""the 2127 names, sorted""
 MaterialIcons rounded categories.			""#('action' 'alert' 'av' ...)""
@@ -15,13 +22,13 @@ MaterialIcons rounded search: 'trash'.			""by name and by tag""
 MaterialIcons rounded entryNamed: #home.		""a MaterialIcon: category, codepoint, tags""
 ```
 
-The icons are drawn in my `color`: by default (nil) the text colour of the current UI theme, so that they read on a light and on a dark theme alike; `color: aColor` fixes it, `color: nil` follows the theme again. `MaterialIcons rounded` is one instance shared by every client, so `color:` changes the colour for all of them: a client that wants its own colour passes it, `formNamed:scale:color:` and `formSetNamed:color:` (nil there too means the colour of the theme).
+The icons are drawn in my `color`: by default (nil) the text colour of the current UI theme, so that they read on a light and on a dark theme alike; `color: aColor` fixes it, `color: nil` follows the theme again. `MaterialIcons rounded` is one instance shared by every client, so `color:` changes the colour for all of them: a client that wants its own colour passes it, `formNamed:scale:color:`, `formNamed:size:color:` and `formSetNamed:color:` (nil there too means the colour of the theme).
 
-The scales are 1, 1.5 and 2 (16, 24 and 32 pixels), those of the Pharo icon packs. A FormSet holds the three, so that a canvas scaled for HiDPI picks the sharp one.
+The scales are 1, 1.5 and 2 (16, 24 and 32 pixels), those of the Pharo icon packs, and those three sizes are drawn ahead, from the vector icons. A FormSet holds the three, so that a canvas scaled for HiDPI picks the sharp one. Every other size comes from the master of the icon, its PNG at 192 pixels (`masterSize`; the packages `MaterialIcons-Rounded-192`, `MaterialSymbols-Rounded-192`...): `formNamed:size:` answers it averaged down over the area of each pixel (a box filter), or interpolated up (bilinear) beyond 192. Without the masters (`hasMasters` false) the other sizes come from the 32-pixel icon instead.
 
-I decode an icon the first time it is asked for, and keep its Form, per name, scale and colour, until `flushCache`, the next save of the image (the class empties the caches of its instances when the image is saved, so that the saved image does not carry them) or the next start. Nothing else empties the cache: every new colour adds Forms to it (MaterialThemeIcons flushes it when the UI theme changes). My index of names is built at the first use and rebuilt by `MaterialIcons reset`.
+I decode an icon the first time it is asked for, and keep its Form, per name, size and colour, until `flushCache`, the next save of the image (the class empties the caches of its instances when the image is saved, so that the saved image does not carry them) or the next start. Nothing else empties the cache: every new colour adds Forms to it (MaterialThemeIcons flushes it when the UI theme changes). My index of names is built at the first use and rebuilt by `MaterialIcons reset`.
 
-My icons do not change the icons of Pharo's UI: `MaterialThemeIcons install` (package MaterialIcons-ThemePack) does.
+My icons do not change the icons of Pharo's UI: `MaterialThemeIcons install` (package MaterialIcons-ThemePack) and `MaterialSymbolsThemeIcons install` (package MaterialSymbols-ThemePack) do.
 "
 Class {
 	#name : 'MaterialIcons',
@@ -80,11 +87,92 @@ MaterialIcons class >> rounded [
 	^ self style: #rounded
 ]
 
+{ #category : 'converting' }
+MaterialIcons class >> resample: aForm to: aSide [
+	"Answer a new Form of aSide x aSide pixels, of depth 32, black with the shape (the alpha) of aForm, a square Form of depth 32, resized: each pixel the average of the pixels of aForm under it, weighted by their area (a box filter) when shrinking, the bilinear interpolation of the four nearest when enlarging"
+
+	| side alphas weights rows result bits |
+	aForm unhibernate.
+	side := aForm width.
+	alphas := Array new: side * side.
+	aForm bits doWithIndex: [ :pixel :index |
+		alphas at: index put: (pixel bitShift: -24) ].
+	weights := self resamplingWeightsFrom: side to: aSide.
+	"horizontal: side rows of aSide"
+	rows := Array new: side * aSide.
+	0 to: side - 1 do: [ :y |
+		1 to: aSide do: [ :x |
+			| first sum |
+			first := y * side + (weights at: x) first - 1.
+			sum := 0.0.
+			(weights at: x) second doWithIndex: [ :weight :k |
+				sum := sum + (weight * (alphas at: first + k)) ].
+			rows at: y * aSide + x put: sum ] ].
+	"vertical: aSide rows of aSide"
+	result := Form extent: aSide @ aSide depth: 32.
+	bits := result bits.
+	1 to: aSide do: [ :y |
+		| first |
+		first := (weights at: y) first - 1.
+		1 to: aSide do: [ :x |
+			| sum alpha |
+			sum := 0.0.
+			(weights at: y) second doWithIndex: [ :weight :k |
+				sum := sum + (weight * (rows at: first + k - 1 * aSide + x)) ].
+			alpha := (sum rounded max: 0) min: 255.
+			alpha = 0 ifFalse: [
+				bits at: y - 1 * aSide + x put: (alpha bitShift: 24) ] ] ].
+	^ result
+]
+
+{ #category : 'converting' }
+MaterialIcons class >> resamplingWeightsFrom: aSourceSide to: aSide [
+	"For each of the aSide pixels of a row, the index (from 1) of the first pixel of a row of aSourceSide pixels it reads, and the weights of the pixels from there: when shrinking, the part of each source pixel that lies under it (the weights add up to 1); when enlarging, the linear interpolation between the centres of the two nearest"
+
+	| ratio |
+	ratio := aSourceSide / aSide.
+	^ (1 to: aSide) collect: [ :i |
+		  aSide <= aSourceSide
+			  ifTrue: [
+				  | left right first |
+				  left := i - 1 * ratio.
+				  right := i * ratio.
+				  first := left floor + 1.
+				  {
+					  first.
+					  ((first to: right ceiling) collect: [ :j |
+						   ((right min: j) - (left max: j - 1) / ratio) asFloat ]) asArray } ]
+			  ifFalse: [
+				  | centre left fraction |
+				  centre := ((i - (1 / 2)) * ratio - (1 / 2) max: 0) min: aSourceSide - 1.
+				  left := centre floor min: aSourceSide - 2.
+				  fraction := centre - left.
+				  {
+					  left + 1.
+					  {
+						  (1 - fraction) asFloat.
+						  fraction asFloat } } ] ]
+]
+
 { #category : 'accessing' }
 MaterialIcons class >> scales [
 	"The scales at which the icons are drawn: 16, 24 and 32 pixels"
 
 	^ #( 1 1.5 2 )
+]
+
+{ #category : 'accessing' }
+MaterialIcons class >> symbolsRounded [
+	"The icons of Material Symbols Rounded, in their default variant (FILL 0, wght 400, GRAD 0)"
+
+	^ self style: #symbolsRounded
+]
+
+{ #category : 'accessing' }
+MaterialIcons class >> symbolsRoundedFilled [
+	"The icons of Material Symbols Rounded, filled (FILL 1): the optional group SymbolsRoundedFilled"
+
+	^ self style: #symbolsRoundedFilled
 ]
 
 { #category : 'class initialization' }
@@ -271,6 +359,35 @@ MaterialIcons >> formNamed: aName scale: aScale color: aColor [
 ]
 
 { #category : 'forms' }
+MaterialIcons >> formNamed: aName size: anInteger [
+	"The icon aName, anInteger x anInteger pixels, in my colour"
+
+	^ self formNamed: aName size: anInteger color: self color
+]
+
+{ #category : 'forms' }
+MaterialIcons >> formNamed: aName size: anInteger color: aColor [
+	"The icon aName, anInteger x anInteger pixels, in aColor (nil: my colour). 16, 24 and 32 pixels are the icons drawn ahead for the scales 1, 1.5 and 2; the other sizes come from the master"
+
+	| index mask |
+	aColor ifNil: [ ^ self formNamed: aName size: anInteger ].
+	index := self class pixelSizes indexOf: anInteger.
+	index > 0 ifTrue: [
+		^ self
+			  formNamed: aName
+			  scale: (self class scales at: index)
+			  color: aColor ].
+	mask := self maskNamed: aName size: anInteger.
+	^ self
+		  cached: {
+				  aName asSymbol.
+				  #size.
+				  anInteger.
+				  aColor }
+		  ifAbsentPut: [ self class tint: mask color: aColor ]
+]
+
+{ #category : 'forms' }
 MaterialIcons >> formSetNamed: aName [
 	"A FormSet of the icon aName in my colour, 16x16 with the Forms of the three scales, for HiDPI"
 
@@ -318,6 +435,14 @@ MaterialIcons >> iconNamesInCategory: aString [
 ]
 
 { #category : 'testing' }
+MaterialIcons >> hasMasters [
+	"Whether the masters of my icons (192 pixels) are loaded"
+
+	^ self categoryClasses notEmpty and: [
+		  self categoryClasses first hasMasters ]
+]
+
+{ #category : 'testing' }
 MaterialIcons >> includesIcon: aName [
 
 	^ aName isString and: [
@@ -351,9 +476,86 @@ MaterialIcons >> maskNamed: aName scale: aScale [
 		  self class formFromBase64PNG: (entry base64PNGAt: index) ]
 ]
 
+{ #category : 'forms' }
+MaterialIcons >> maskNamed: aName size: anInteger [
+	"The shape of the icon aName at anInteger pixels: black, with the alpha of the icon. 16, 24 and 32 are the icons drawn ahead; the master as it is at its own size; the master resized (or the 32-pixel icon, without the masters) at the others"
+
+	| entry index |
+	entry := self entryNamed: aName.
+	index := self class pixelSizes indexOf: anInteger.
+	index > 0 ifTrue: [
+		^ self maskNamed: aName scale: (self class scales at: index) ].
+	anInteger = self masterSize ifTrue: [ ^ self masterMaskNamed: aName ].
+	^ self
+		  cached: {
+				  entry name.
+				  #size.
+				  anInteger.
+				  #mask }
+		  ifAbsentPut: [
+			  self class
+				  resample: (self hasMasters
+						   ifTrue: [ self masterMaskNamed: aName ]
+						   ifFalse: [ self maskNamed: aName scale: self class scales last ])
+				  to: anInteger ]
+]
+
+{ #category : 'forms' }
+MaterialIcons >> masterFormNamed: aName [
+	"The master of the icon aName, at masterSize pixels (192), in my colour"
+
+	^ self masterFormNamed: aName color: self color
+]
+
+{ #category : 'forms' }
+MaterialIcons >> masterFormNamed: aName color: aColor [
+	"The master of the icon aName, at masterSize pixels (192), in aColor (nil: my colour)"
+
+	^ self formNamed: aName size: self masterSize color: aColor
+]
+
+{ #category : 'forms' }
+MaterialIcons >> masterMaskNamed: aName [
+	"The shape of the master of the icon aName: black, with its alpha"
+
+	| entry |
+	entry := self entryNamed: aName.
+	^ self
+		  cached: {
+				  entry name.
+				  #master.
+				  #mask }
+		  ifAbsentPut: [
+		  self class formFromBase64PNG: (self base64MasterOf: entry) ]
+]
+
+{ #category : 'accessing' }
+MaterialIcons >> masterPNGBytesNamed: aName [
+	"The PNG of the master of the icon aName, at masterSize pixels (192). Those of Material Icons Rounded are Google's own PNGs, byte for byte (8-bit, black, of various colour types: grey and alpha, RGBA or a palette); those of Material Symbols, 8-bit grey (0) and alpha"
+
+	^ (self base64MasterOf: (self entryNamed: aName)) base64Decoded
+]
+
+{ #category : 'accessing' }
+MaterialIcons >> masterSize [
+	"The side in pixels of the masters of my icons (192), nil when they are not loaded"
+
+	^ self categoryClasses
+		  ifEmpty: [ nil ]
+		  ifNotEmpty: [ :classes | classes first masterSize ]
+]
+
+{ #category : 'private' }
+MaterialIcons >> base64MasterOf: anEntry [
+
+	^ anEntry base64Master ifNil: [
+		  self error: 'The masters of the Material icons of the style ' , style printString
+			  , ' are not loaded (the package of the style that ends with -192)' ]
+]
+
 { #category : 'accessing' }
 MaterialIcons >> pngBytesNamed: aName scale: aScale [
-	"The PNG of the icon aName at aScale: 8-bit grey (0) and alpha"
+	"The PNG of the icon aName at aScale (16, 24 or 32 pixels): 8-bit grey (0) and alpha"
 
 	^ ((self entryNamed: aName) base64PNGAt: (self indexOfScale: aScale))
 		  base64Decoded

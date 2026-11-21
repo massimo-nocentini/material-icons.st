@@ -1,10 +1,13 @@
 "
-I describe one Material icon: its name (a Symbol, the Material one: `#arrow_back`, `#'10k'`), its Material category, the codepoint of its glyph in the Material Icons fonts, its tags (the search words of fonts.google.com/icons) and the class that holds its pixels.
+I describe one Material icon: its name (a Symbol, the Material one: `#arrow_back`, `#'10k'`), its category, the codepoint of its glyph in the fonts of its style (Material Icons or Material Symbols), its tags (the search words of fonts.google.com/icons) and the class that holds its pixels.
 
 ```
 MaterialIcons rounded entryNamed: #home.		""a MaterialIcon(#home action)""
 (MaterialIcons rounded entryNamed: #home) tags.
+(MaterialIcons symbolsRounded entryNamed: #home) tags.
 ```
+
+The tables of Material Symbols hold the tags of an icon as one String, comma-separated (one literal instead of dozens); `tags` answers them as an Array in both cases.
 "
 Class {
 	#name : 'MaterialIcon',
@@ -46,6 +49,13 @@ MaterialIcon >> base64PNGs [
 ]
 
 { #category : 'accessing' }
+MaterialIcon >> base64Master [
+	"My PNG at the side of the masters of my style (192 pixels), in Base64, or nil when the package of the masters is not loaded"
+
+	^ source base64MasterOf: name
+]
+
+{ #category : 'accessing' }
 MaterialIcon >> category [
 
 	^ category
@@ -64,9 +74,12 @@ MaterialIcon >> matches: aString [
 
 	| lowercase |
 	lowercase := aString asLowercase.
-	^ (name includesSubstring: lowercase) or: [
-		  tags anySatisfy: [ :each |
-			  each asLowercase includesSubstring: lowercase ] ]
+	(name includesSubstring: lowercase) ifTrue: [ ^ true ].
+	^ tags isString
+		  ifTrue: [ tags asLowercase includesSubstring: lowercase ]
+		  ifFalse: [
+			  tags anySatisfy: [ :each |
+				  each asLowercase includesSubstring: lowercase ] ]
 ]
 
 { #category : 'accessing' }
@@ -106,6 +119,9 @@ MaterialIcon >> source [
 
 { #category : 'accessing' }
 MaterialIcon >> tags [
+	"An Array of Strings"
 
-	^ tags
+	^ tags isString
+		  ifTrue: [ (tags substrings: ',') asArray ]
+		  ifFalse: [ tags ]
 ]
