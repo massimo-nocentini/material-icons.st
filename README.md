@@ -121,11 +121,18 @@ Everything below holds for both packs. Where they differ, the [Material Symbols 
 
 `MaterialSymbolsThemeIcons` (group `SymbolsThemePack`) maps every Pharo icon key listed in `scripts/symbols-mapping.tsv` to a Material Symbol. svgPack has 377 keys in both Pharo 12 and Pharo 15, with their sizes in `scripts/pharo-icon-keys.tsv`; keys that are not mapped keep the previous pack's icon.
 
+- **Mapping.** 375 of the 377 keys are mapped. Each symbol was chosen from the senders of its key in Pharo 12 and 15 and from svgPack's picture, then checked side by side with it. Each row carries a confidence (206 high, 136 medium, 33 low) and a note on why.
+  - Keys that Pharo 15 renamed (`glamorousRestart` and `restart`, `glamorousBrowse` and `browse`…) map to the same symbol. So do keys that differ only by state or theme (`windowCloseInactive`, `pauseDark`, the three `smallCogState` frames…).
+  - Related keys stay in one family: `into`, `over` and `through` are `step_into`, `step_over` and `step`; the change keys are boxed (`add_box`, `indeterminate_check_box`, `edit_square`); the status dots are all `fiber_manual_record`.
+  - Low confidence mostly means that Material has no counterpart. That covers the brand logos (Pharo's lighthouse is `cell_tower`; GitHub is `hub`; GitLab is `pets`; Bitbucket is `bucket_check`) and a few old browser buttons that have no senders.
+  - `blank` and `empty` are left out. They are transparent spacers, and `blank` is the default icon of every command that has none, so any glyph would show on all of them.
+  - `checkboxMarker`, `radioButtonMarker`, `rotate` and `scale` are transparent in svgPack too, but they mark a state or a halo handle. They are mapped (`check`, a dot, `rotate_right`, `open_in_full`), so `CheckboxButtonMorph`, whose on image is `checkboxMarker`, draws a check mark when selected.
+
 - **Variant.** Each mapped key chooses its own variant of the symbol:
-  - outlined or filled (`fill`). The status keys are filled, so a test result or an error reads as a solid shape.
-  - grade 0 or 200 (`grade`). Grade 200 has heavier strokes at the same size: 34% more ink at 16 pixels, on average over all the symbols, which brings them closer to the weight of svgPack.
+  - outlined or filled (`fill`). The status keys are filled, so a test result or an error reads as a solid shape. So are the keys whose svgPack picture is solid (`play`, `pause`, `thumbsUp`…).
+  - grade 0 or 200 (`grade`). Grade 200 has heavier strokes at the same size: 34% more ink at 16 pixels, on average over all the symbols, which brings them closer to the weight of svgPack. The outlined keys use grade 200; the filled ones use grade 0.
 - **Exact sizes.** Each key is drawn from optical size 24 at the sizes svgPack draws it at the scales 1, 1.5 and 2: 14, 21 and 28 pixels for `#accept`, 7×10 for `#play`. A key that is not square has the symbol centred, at the side of its shorter edge.
-- **Colours.** Every key takes the colour of the UI theme, except the keys that the mapping gives a fixed colour (the status keys: tests, errors, warnings, information).
+- **Colours.** Every key takes the colour of the UI theme, except the keys that the mapping gives a fixed colour, which are status keys. Those are tests (a green check, a red X, an amber !, and a filled grey disc for `testNotRun`), errors (red), warnings (amber), information and `question` (blue), `confirm` (green), `breakpoint` and `halt` (red), and the red, green and grey dots.
 - **Pixels.** `MaterialSymbolsThemeIconsArt` holds the pixels of every mapped key. The pack therefore needs neither the masters nor the filled packages, only `MaterialSymbols-Rounded` for the `symbol_<name>` keys.
 - **Export.** `exportToIconPacks` writes `materialSymbolsRounded.zip`, with `LICENSE-material-symbols` and a `NOTICE` of its own.
 
