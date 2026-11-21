@@ -105,6 +105,8 @@ MaterialThemeIconsTest >> testExportZip [
 		self
 			assert: (archive memberNamed: name , '/NOTICE') contents asString
 			equals: MaterialThemeIconsArt noticeText withUnixLineEndings.
+		self assert: ((archive memberNamed: name , '/NOTICE') contents asString
+				 includesSubstring: '(see ' , MaterialThemeIcons licenseFileName , ')').
 		self deny: ((archive memberNamed: name , '/NOTICE') contents asString includes: Character cr).
 		self deny: (archive memberNames anySatisfy: [ :each |
 				 each includesSubstring: '/' , MaterialThemeIcons materialPrefix ]).

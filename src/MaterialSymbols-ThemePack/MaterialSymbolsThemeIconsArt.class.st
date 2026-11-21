@@ -83,6 +83,11 @@ MaterialSymbolsThemeIconsArt class >> art_arrow_drop_down_grad200_16x16_24x24_32
 ]
 
 { #category : 'icons' }
+MaterialSymbolsThemeIconsArt class >> art_arrow_drop_down_grad200_16x16_24x24_32x32_trim140 [
+	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAOklEQVR42mNgGAKAEUq7MISiyaxm2IPMzWL4jwbT0c0qQZGuwWZdMVy6GpeLisDSVfgcHcUQzTD0AACqbRo+I1y5PAAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAAXElEQVR42mNgGAWDATAisRcxWONQdYQhHsZkQRI2YlDCoeEDdmEJhqsM/7HAWwzSuBwojkXLTdzKsWm5ySBFKBjEGa7Ald8grBwExKBaiFQO8f4WIJQYTXWDFwAALpUsHnAh25IAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAAg0lEQVR42mNgGAWjYDAARjS+AIMQAR3vGD7gllRj+MrwnwD8wqCCrIUJxQBBBi6CbuZiYMcnXUjQBZWEbCjAq72CmIDNYPiHVfM/hnxi4yYdixH/GPJIid40NCNI1A4CqUhG/GPIJSeRpTL8hWrPITedpjD8AMIUSpI6LxCOglEwBAAAPDJiyc2mjyYAAAAASUVORK5CYII=' )
+]
+
+{ #category : 'icons' }
 MaterialSymbolsThemeIconsArt class >> art_arrow_drop_down_grad200_7x7_11x11_14x14_trim48 [
 	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAQAAABuW59YAAAANElEQVR42mNgQAGMQCwAJhkY/jN8YGDQYvgJZIDgLyAbCLwYfoA5ATAtfgwfgRgJMDNgAwDuEgxh1ZTkygAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAQAAAADpb+tAAAAO0lEQVR42mNgoAJgBOJ9DAYoYmcY3EBUCMMvhv9w+JshFCYfDJf4wxCJrNGb4QemIAgEMNxnCGSgJgAAcdMUUd1b5osAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAQAAAC1QeVaAAAAUklEQVR42mNgoAlgBGN5BiY08X8MDxn+gxhNQAoT1kFUaTG8xJB6waABM0SD4RmK1EsGHWQ71Bme4pJCln7BoI3N5RoMjxgeI+xCB6wMbAy0BwDxlyyKI2UuVwAAAABJRU5ErkJggg==' )
 ]
@@ -488,8 +493,8 @@ MaterialSymbolsThemeIconsArt class >> art_error_fill1_16x16_24x24_32x32 [
 ]
 
 { #category : 'icons' }
-MaterialSymbolsThemeIconsArt class >> art_expand_content_grad200_10x10_15x15_20x20_trim48 [
-	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAZ0lEQVR42mNkQAA+BjMg+YPhKJIYQwPDfzB0QBbkZnBiKAEK+rAgCX5l2MfwD0j/Y2ZABa8ZfjOsYmDgB5rFjSbF4IVuNAMDCwMTkDQBkieBZsKBA9QhDQghRiC0ZuAAsk4xfIIJAgD2thftS4z8AAAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAQAAACR313BAAAAdUlEQVR42mNgIBH0MryDwqnYpC8y/IfCDwwMjBjSCgzODMwM1gxxDJ8Y+HFZkQzU/ZGBgQmH9D8IZsEhfYDhAsNeorzSB1SpgFv6A9AZidilQE5jZMDpRJjT7IB+/cuwj+E+dsMh8AI2w5cyvAfDdwy7SYwfAHIwJMYN9MjJAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAqElEQVR42mNgIBIw4hD3BkJmKPshQx/DD+zKpBl+M/xHgpUMDExYFf4BQmQgx8DAglXhSwYnBi8GViDLlsGKOD80g62ejstqLICQwn9g8i9hg6wYvgNDwJMYO8WAgYUUbuLE6PECGv6dwZKwZ7yBocnB4E5YIcTnzJQFDxwgotAJHGV/GLYxHMOleDpKSvmOPQRAVj9Gs4MZl9V9QHMU4AlsC8MzBkoAAED0KTrQIETbAAAAAElFTkSuQmCC' )
+MaterialSymbolsThemeIconsArt class >> art_expand_all_grad200_10x10_15x15_20x20_trim48 [
+	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAW0lEQVR42mNggAE3IEQDxQw/gbAUWSgbKBAAhD8ZckFcFrAgJ0MQw1YgHcSgyUASYAaTJQyCDLeBtA+DP8MxBgYmsOAPhnVAawKB5HdkHSVAm38BSTTgCoRQAABFphJ3pkUkKQAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAQAAACR313BAAAAgUlEQVR42mNgQAbMDLJAjANIMJxj+A/EEtglrwElnwPxNUwFYgxXgBJrGDgYlgHpGwxSqNLTwJKsQBYrkP4P5KMAA4YKsCQDWEERkE8/YAC0D2F3BbrdU4GuXYvk8rno/r4MVgDztyS68eJIoSaOzX5xhrNAybPYJSExJsPAhCwAAAaiJYXXfebtAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAnUlEQVR42mNgIBsEM5wEwiBCylIZ/jH8B8J/DDn4lGWBlb0CQpDSLPymvWLQZdBgeI7b1BCoMh0wTwdqajBMmgmuUJ+BkeE1gxPDFTDvCpD1Giiii2kiJ0MSgyKKiCJQhJNhSAIuhhQGJRQRJYZkoCgGaEIKRURINmEqDMIa4FgTRwrDX7QozMblzkyURJGJP5n9JSaZQdxKVMLFCQD+pUKCSmjrxwAAAABJRU5ErkJggg==' )
 ]
 
 { #category : 'icons' }
@@ -508,28 +513,18 @@ MaterialSymbolsThemeIconsArt class >> art_fiber_manual_record_fill1_12x12_18x18_
 ]
 
 { #category : 'icons' }
-MaterialSymbolsThemeIconsArt class >> art_fiber_manual_record_fill1_16x16_24x24_32x32 [
-	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAaElEQVR42mNgoDlgRGLzMMQymAPpkwyLGL5iKtVheMTwHwofAnlogAdJGqKEB1VBFoo0CGZCJJigCkwxrDRFVYATwBScwpA5he7IhygueMDAjenNh0jSOtgCipshjsEMHFCLsQUUzQAAUGAspcyvCowAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAAjElEQVR42u1RuRGAMAzTUbIBsBhhCsYABmIQnh52SNqAOQoCZ4UBQGpyZ8lWbOCHoECHGU44ySt/k1ci3AI6mLjc3+QHPbcUj+7XlCBYEhhqpGqjVCoqZrX/wVE3OGqweqSNLsPrhoUaVt3QUwOp5OQXFhnrZNTDlbFbm8cUG5efwVrZuxUOaHiYT2EHiaRp67QPXiwAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAA1klEQVR42u1UOw6CQBB9SoGJ9uIVJKLeErgJRFrjRTyD0gINJgSHRAxEdmaIhRa8KTab5b1d3nyACb/HjDlbwMWa1juuKMcK7xGjQP2KnHaenmwhRPUmt1EhoBMVPfkgt5FoJEIjvYlAonsDj+//yJEXiFl6ExFHt8lvSaCgrzqY9wRcrESPltiaBRxVmh2zgA61WSBVCaSciZloYs6ZWOIi3n/mG2snFtJBuiFgBfzvmumky5pFrxhqZ39M0j2q+bzjfETujB5pNhXthtYbjbTHNP3/GU/uDMBd8Eg7cwAAAABJRU5ErkJggg==' )
+MaterialSymbolsThemeIconsArt class >> art_fiber_manual_record_fill1_16x16_24x24_32x32_trim400 [
+	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAATElEQVR42mNgGHjAiMJjY9AFkpcZfmFXbMBwm+E/EN4GsrAANqg0RAkbpgITuDQIGsGEmeAK/qMo/4/filvYrMDhSGzevMTwm2FQAQAzoyAGjvw0XwAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAAZ0lEQVR42mNgGAV0As4MWxieAuFmBidilJcz/GP4D4X/GMoIm45QDtHiiF/DFhTlILgJv4ZnGBqeoCpgQtPwH8OI//g1nMPQcA6/k5wwPO1AKJzKSAtWEHAEhsxToGc3EjZ9FFAJAAC5ojzdvwwYIgAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAAmElEQVR42mNgGAWjgAqAEY+cHIMngyqQvs2wneERqQZzMExj+M3wHwp/M0wFipCk/TBcMwweIsWIqRjaQXAysdrlkByPDH8zyGIqZsJigDcDC1aDWRi8iDNAGafblIkz4D9OA/4TZ8BdnAbcoywQf2ELROxgClYDJpGSkA5RlpBARkxG8sgvoO0cpGcmWaTM9Hi03BkFNAUAUqNamjaujHoAAAAASUVORK5CYII=' )
 ]
 
 { #category : 'icons' }
-MaterialSymbolsThemeIconsArt class >> art_fiber_manual_record_grad200_16x16_24x24_32x32 [
-	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAmElEQVR42q1QSQ6DMAwcQPQBza2VUH/aCB5UuCGV73BJyBPadGKVqGE5FVuyPN7GNvCvZAkqcKUd8doqPaHBBE+1qIlW6UFSLTWUDcuShsEeZ/EVPQ+dck9UFbEiMoxGubHjkUzsGKmCkwv0q3uybzRS2AWFI0X+21HLkmpvyflMR+6O1uO59QnNseFRBneUe6++yKvfOFA+QTYxuAp6oaoAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAA3klEQVR42mNgGPqAEUOEncGHwYVBBsh6wrCHYQvDT/wGeDPcZ/iPBO8DRfCAHIa/UIWfgBDC+gsUxQF8wMr/MkxgUATzlRgmQkU8sSlnBzvmL0MYimgYWMs9BjZMDcFgB0zAEJ8IFg/C1DAdLKGEIa4EFp8K4zLBJeSA+CPQcnRwD+h9iCyahv9YYwUWV/8xNTwGYj5o+CADZQZeqCyahj1gMh9DA0RkL2nBehdbsIKSBSSaJgGdQUTE4U4a2fhSkycwGJET31100zEDkg2YppzB4f4I6NUtDL8Yhh0AAIXjYDh3eChKAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAABTUlEQVR42mNgGAUUA0Y8ctwM6gwSQPo5wy2Gr6Qa7M2wg+E7w38o/M6wncGLeM0SDHvhWpHhbrB7CAIdhkdYtYPgI6AsQdth2v8wrGaIY7AFwniGtQx/oaIPCbkC5vibDHoo4gbAgIR5BG/QQRTdYhDGkBOGG+GJ24DtYAV/GfSxyhpAPbINl3Yehh9gBWtxWrAWGqncCCEmJGk1BnYwvRmnAVvAJAdQJVYDYOF7F6cB99BUohnwn2DyZkRTiWbASyithNMAmMwLXJnnO4FAXA+W/8bARSgaDbDKGkOjcSvudOAFTSq3GUQw5EQY7kBlPfClxd1wI4xQxI2AIhCZXfgLFAmGUwyyYNY/hk1Ax4K0qTL4MPhBg/sRgxk8sMnIzg8JZ2eIK3Zj1b6LQZz4UskTmGUQRdo3IM+D9EKVC5jmpYD0U2BIfButf2gIAJ54p4rffM49AAAAAElFTkSuQmCC' )
-]
-
-{ #category : 'icons' }
-MaterialSymbolsThemeIconsArt class >> art_fiber_new_grad200_16x16_24x24_32x32 [
-	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAu0lEQVR42mNgoBQwMqgyNDGI4JB9w1DHwHCE4T8eeJiR4SnDLwYjHCacY2BjAVL/GN7jUPCPgYEFzPBl6GAwZdjMcIkhGqjrBsMmhrcMEQzHQFJMYAUCDIoM7QwSDHwM2xnmMggySDPMYBAC0gwwExgYpgB18AJpLgYesN8YYCTEhM8MjxhSGL4yfGSwByp8wLCQwYIhieEJRNVThh8MyjgceZeBg4lwWB4mFFCqDI0Mojg0v2aopzgyGQCRWD8zE5K6eAAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAABFUlEQVR42mNgGHSAEYjNGYIZ+IlQ+5FhDcMpBgZvhj8M/4mEfxi8GBgOEK0cBPeyMEgCLbvI4EiEk/Yz6DPIsICZfxjeE6HhD4hgIjWUYBpYGR4zLADSZgwXGPzBwfAX6MHTDJFgWReG2wwQt8AoBk4GGYZ4hm0M3xmUGOQYmBmSGT4wHGJQZ1BkKAf68hqDClAFA7qTXjFMZRCHsu0ZXBmkwSxpoFFYnAQCBQxcDK1QNj+DAAMbNj+wILFvMlQwTGL4DGZvAjrpPpC2Y+Bl4AOnByRl/xnOAE17zCAPlNgK9LQv3NM74RF2AeiWM0D6JkwDMQCsgeR4YIGSgkSrBaYQUhLfPgag10hK3qRloNXAxDL4AAApF5VUDLo80AAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAABdElEQVR42mNgGAWMYNKIwYKBl0SdnxlOMJyDGDGN4T9Z8B/DVJADEsnUDoEJTAyBFAVBAAuDFJhxkGSD1jE4AEkZFij3N8N7Eg34DaGYKI1GqhrQyvCTIQ3M6mbYyyDB8AIa0usZlBmeMWRDVYkA2a0ITSxIBpgxsDH0MxxguMVgCIQqDOIMHxjOAMVPAA2QZDAFsjoY1gANlASqxGoACHAxLGSwgfOuMriCaTcwKcVQzsDOsARVA6oB3xjeAhN1KZyvD3bBHoZ98GTPiD8QfzEkAZ3YAHQ+zHhBIOTHCLn/uGNhD8MUoDPlobyzQN8rM2SSFo0VDDfhbG2G3UBYxfAXyI5neAIk88Ge+ofdgHNAG0HhEAsM/cMMt4HRKMDgAoRGQPFLKCG1DNnGM+C43k1yCtoF1ndm4JMyLB2wAqOLNMAKM+ApgzGQtmd4R5YDHjMBCwZKwHpQ4pwCjFdyC1Vo2jYE5gA+Eu3+BMyl50frRRAAAMcDpZrc7cjkAAAAAElFTkSuQmCC' )
+MaterialSymbolsThemeIconsArt class >> art_fiber_manual_record_grad200_16x16_24x24_32x32_trim400 [
+	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAXUlEQVR42mNgGHjAiMJTZnAGknsY7mFXHM/wjeE0wxkgGYdNWhkoEQ5mhQNZSpgK0oB6YeAMQyqMyUS8c5WABkeCWZFAliI2JXFAibNAiOJIVG8qMriAvXmfYVABAGIOFKqyRP+dAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAApklEQVR42u1SwQ2DMAw8+oJAxmhZGEUsAC92QAzQDsAfFkBKn+4hIQQKkKhv7mHF1tk5XwLc8CM6rKZ4QdDDhozQKPElXRgNMy/9Q+qACjWjMPO0lCQ1C0nzJLzlAillDJuZmpmF2lIeu4YcMVpMaz6hQ0IDThvE8S1aqidQjqSRkpKrLYyzdBFi60hTa0bBG5n/JQxlzA9nOT0L+xoKT8aeG934Cz8DJDPCn6+D5wAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAA1UlEQVR42u2SzQ2CQBCFn9YgnvVOiJ4sA+xEYwcCtfjbiCaiHQhWAB41BB97MJDdw6yJN95kNvBl/lgG6NTprxoixhUFLUHEN0vN8UTVsAKBXXrJpBc2WGCJHZ8qkkA+fN09hfslHjI1hSMrEKvubot5eJOGsgI3hm41uidN9OC+ocCIftLomT6WFTCrZ8amAil9ptGa3GW9InWJXotN1SWupb+xYHDWKDHBgyTHQPq9gVqkNw5Y0Y6qewnfZhd99muucm6XXsvh2lyYmPMM5cN36vSTPj2NS9APl8eTAAAAAElFTkSuQmCC' )
 ]
 
 { #category : 'icons' }
 MaterialSymbolsThemeIconsArt class >> art_file_export_grad200_16x16_24x24_32x32 [
 	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAyUlEQVR42mNkgABZBjEGGLjN8IkBDWQz/GP4D4dnGAQRUoxg8iyDFsNEqEg4gwLDaQY3hg/IJlxheAdn7wabcpZBCMJlYsAOjIAKBbEr+ARXshREsWAoyGXYxsAMpPsZ5LG7AQbeMVxFmHCH4RsDXsDMwIbfBHmGZKCifwzLgJZhBeXQMFyKaQLEm70MB8E0K6ZeiBWVDPYMtxjUgGYwMEQz6ILFOBl+IJQlM6wDhlsngyOQ/QBq3V+GLERkIQMhBkUw/ZLhCYgCAGn/Ng9PKXX2AAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAABBklEQVR42mNgIBEwwlkxDHEMQihyPxiSGG7h0hjO8B8LfMqgiq6QBUpHAPFfhodIMiIMfAxSDPsZHBjuYLNhP9g8ZDATastjBmVkYSaCvpQBGqZMigYGBllkLUxEhSVIixIhDe/QtExFDSVM0MHwhYEXys5m4GHgIBRKyOAZUHY/KX7AEqxfgfgLMRpgfqhkeM2whIFqAMkPiFAyhob0X4YjDK8Im2HF8A+eRq8TE0r/kaQ1iAml4wzmKImboAZmhnwGeVKCNY8hGuzWB2DfgEAVQzxcVgyI36NqTAEnDXWGUIafDCvAIp/RsmsYeiFgynAXnEKZgQELs5MZKveWYSHDMjLjEABBNVQhbOunbwAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAABb0lEQVR42mNgoBAwovBkGSwYBLGousBwihjDChl+MvzHCr8xOBPWbsvwD4d2EPzK4EjIgD482iFGOGHTxgJnyYDJxwwOaCrSGcrANBfDJgZvhoO4DYCA3wz30ETewVncDNsYfBj2o0ozkRRnXAxb0F3IRGK0g4ywp8QAkEe2MthRYgDIiM0MlsQbcA+LGB9DAa5YwARrGeoYbJAssmbgxBeNmOAfQzMK/y6DEmWByEBZNOIx4CcSSZYByxh+Acn5pBqACMTtDIrAdHaHfAMYGJ6REwao0SgCTCIQ8IMc4xajFCBHURMMUjoAya7ElJDFKIO8iDEAEQuvGB5iZBoS04ElsFz+QklKfAsseXnIjwUWYL7zAbP+o1U3iLgBAVZcRoXDK5ESKCsQLN6EtZDvxjTAE6rdFRh9D4CsjwxSYPFPWLT/ZbDC5oYChhXQokqMIYpBASq6DUP7T4Z8XJUrNsDJ4MfAj1JPnGB4wkA9AAAiy5zqwzS4eAAAAABJRU5ErkJggg==' )
-]
-
-{ #category : 'icons' }
-MaterialSymbolsThemeIconsArt class >> art_file_open_grad200_16x16_24x24_32x32 [
-	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAvklEQVR42mNkgAAZBnEo6wfDDYa/DGggDSj0Hw6PMQgipBjB5BkGbYaJUJFwBgWG0wxuDB+QTbjC8A7O3g025SzMFCYG7MAIqFAQu4JPUNqYoQdEsWAoyGXYxsAMpPsZzLC7AQbeAUWxmgADdxie4VdgAwkuXAo8GByA5BdY6GC64TY0VB1whQMbmOxjOMACjSBOhg645FaGwwz/gEH9i6EQGFxYImslUCQVCLUZ9jBYMUJ1STNIwE24CjQRDgDI1joHksTjrAAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAABDUlEQVR42mNgIBEwwlnhDEkMwkgyfxkuMjQyPMWlMZjhPxb4lEEVXSELlI4Gm/kQSUaEgY9BimE/gwPDHWw27AebhwxmQm15zKCMLMxE0JcyQMOUSdHAwCAL1KJEigaQlr1APxHQ8A6Fp8BQiRpKmKCD4QsDL5SdzcDDoE8olJDBU6DsflL8wEBaKDEwfAXiL6Q4yZlhPoMuKRqwpCV8QI9BHUz/YzjG8JyFCOXn4T59zKBA2NOqqAFDSrCuZjBj+EeKhiAGN4Sn3wOxOMNdFAUfGXIZjgK9CgLrGAIYmBnmAvlw3diy6AKgjCTDIyCUAOb4P8AIlMZdCIDit5jhDNifIM0MwMD9DtRKKgAAX0xUgVr0zXkAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAABgklEQVR42mNgoBAwovCkGKwYhDDUPGA4xvCFGMMyGL4z/McKHzPYE9ZuwfAHh3YQ/MbgTMiAXjzaQfArgxM2bSxwliyYfMzggKYinaEMTHMxbGbwZjiA2wAI+M1wD03kHZzFxbCVwYdhP6o0E0lxxsWwBd2FTCRGO8gIe0oMYGDgBoaFJSUGMDDwMmxgECHegHtYxMQYUnDFAiZYy1DHYINkkTUDJ5DUJd6AfwzNKPy7DEpAkpWSMGCgLBYoNuAnEkmWAQuA+BfDMkyJVeA8d5cII1SBBQ8D8bGACW7jy42EABuDDJz9BOgVEr3gASwbEUXMR1ARQ1ogFgCzEgLwMWSTagA3Gv80eYEIAfsZ+oFlAwUp0QZo+X9MF7CCswo6QA3v/+DqiJVhJUMwsHCBg248RfoLBk2wmgNg3mGG5VDxZ8heWMPwF6dzxRmiwfQuMLmdIYZhBZj1Gb0GwFW1/WPwhNak7kAIAswMFQwLGfTQK1dJYOUqjGH/f4bzDGcYaAUAgqiQzMlWg/gAAAAASUVORK5CYII=' )
 ]
 
 { #category : 'icons' }
@@ -673,6 +668,11 @@ MaterialSymbolsThemeIconsArt class >> art_height_grad200_16x16_24x24_32x32 [
 ]
 
 { #category : 'icons' }
+MaterialSymbolsThemeIconsArt class >> art_height_grad200_6x7_9x11_12x14_trim48 [
+	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAAYAAAAHCAQAAACBmfRmAAAAO0lEQVR42mNgAAFPIIQCU4YfQGjKwMAM5HxkYGQ4xrCe4TcLkPOV4QOYZABxuBkEwORXkB4zmB4GZNMAaO0NPG5E5uoAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAAAkAAAALCAQAAAAHUG+QAAAAVklEQVR42mNggABmBm8gRgLMDIsZ/jOsYGBBCLUABUCwASIPAl8ZrjJ4MBQx7Gd4ilBnDFRjBGEyMWAAnELmDPZA0gFIw0Ez1MYmZHctAgqsRHYXiusBnHQTyqmkzwsAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAAAwAAAAOCAQAAACxtDVnAAAAXUlEQVR42mNgQAAhIMQCNBmeA6EmNuH/QIghtZbhH8NvIPzHsA5VQpfBheERELox6GDaApKAAyYGHIB0CRYorcMgDaY9GJ4wXEF37h8g/MewBlWnBi4P4gwSjEAEANX3HhqBWGi4AAAAAElFTkSuQmCC' )
+]
+
+{ #category : 'icons' }
 MaterialSymbolsThemeIconsArt class >> art_height_grad200_9x15_14x23_18x30_trim48 [
 	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAAkAAAAPCAQAAACcwS2GAAAAY0lEQVR42mNggAExBjTQxvCfoQNZoAUoAIK9MIEgqAAIhjIwMAOFGBnEGc4y6DMsZ3jEsJbhBUxlMVBFCYTJxIABKBIyYtgCxAwMhkBaByIciuSuYHTX9yAb0A4UaEc3FR4SAGnYH/U8RzyzAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAAA4AAAAXCAQAAACRmLYJAAAApElEQVR42mNgIBJwMXQDIRd2qb0M/4HwMAMPLiks0lwM++FSILgf2fBKFCkQrAQJM4ElXwDxL6DBIHCQ4TeQfIlssBWDCkMpWE8pgyaDNUSQBSp5DEnhdRiDCZ/HB62kLYMGXEybwQ5ZSRLQ878YDoAD4QAwhP4zJCACQQKIWRnswWwIKYYcK/tQgn0fapRzMeyBSx3CFt17cElBpLuAkIvIFAcATAlA8GoPBloAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAABIAAAAeCAQAAACLBYanAAAAwUlEQVR42mNgIAvoAiFewMjQy/AfCHuBLJxKJoKVgOAM7MqQleBQhq4Eq7IGDCUg2ICq6DlWRa8gkkxQRRfA5HaGN2D6LcM+MH0e1SR+hhKGNAZWhmdgE54xcDDkMZQxCGAPBpgiFMBETCSMKiJOEQuUFmDIYPjOMBMuzgHk8zBMZviIrHgXODr2AiMYRL8BskD0NlQTX2FNKs9Q3TQNq2NmoAt0YJjTjy0zdBBWgqqsH1/O6wEr6cGtBAJ0gJAcAADJAXKEH8t7oAAAAABJRU5ErkJggg==' )
 ]
@@ -740,6 +740,11 @@ MaterialSymbolsThemeIconsArt class >> art_info_fill1_16x16_24x24_32x32 [
 { #category : 'icons' }
 MaterialSymbolsThemeIconsArt class >> art_info_fill1_32x32_48x48_64x64 [
 	^ #( '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' )
+]
+
+{ #category : 'icons' }
+MaterialSymbolsThemeIconsArt class >> art_input_grad200_16x16_24x24_32x32 [
+	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAApElEQVR42mNgoBQwAnEeQwYDOxa5nwwzGCYxMsgyPGT4xPAWqlwASQEXAxuDPAODCsN/hka4ILJJE4AyxkwMdxhsGHqgQqZAs+rxuUiY4T5QVzOyCSwMPAy7GMThSniBuIbhCcNMmAATVpP+47JChOEBULIJ1ZEMDNZgg0FAiUEC6Mg6VF0EvIkaUOh+4mOQZwZKvmdQY2DBouA9QwvDboojkwEAc4EldsuTsXkAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAA/UlEQVR42mNgGHSAEUzGM8QwCBJQ+Z5hCcNCCDOB4T+RMA5iw24GF4bfDI8J2CDLwApU6cYCZPID8V0GTQIabjCoMwgxMDABmSsYfjIsR5EMZ5gFNJGEgPgOdO99BgU0G/4znIHYgA7+M+wAkgoMBxgUMSVBfuBkcGVgRxFdx2DFIMYgD9TiBPQdBliKJyAvEOMkvADkpBRgOHGgiHIw9ACdxMDwiCGYOGM2gp3zkEEJM5SwASZwsD5ACyMkPxQz/GCoQ5L6xxDFMJPBDhgTOMApoN7rBJ0JtQHk6Y9ArIwtvNESHyiJQ3MDsck7HpaB4hhiichAixkWMQxGAACMcHG0IfuszAAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAABOklEQVR42mNgGAWMUNqNIYxBngR9DxlWMexCcEsZ/jH8JxH+YyiDaZdn+EWydhD8BXIzC9AAcwZWsEFXGH4S6QF2Bh0gyQrU+RBkAD9U2J/hHpEGKDHcBdMCDAxMQOoOmPOZ4QWGQhkGReJMzGRYyuCAIeoP9OU/hhqsLoCEQhp+Y5dDlTXhM4AJjwGweK5laCY3mZXDo6wLlwtYwKmxCksIQMB3Bk5oUvuFNTTAwJ3IlKdLahgQBUBe2MlQzeAI5nFAHYwAetBUysDQxnCZdOMbCAciPpAM195MXjpwh9LNwJRAAGQBk7Ijhqg3ww+Gv8QkZUcw5zMDF4ZCMRylFJoXVMCCPAwSGApfAYsuIqLxI5S9kYQCBQLeU1ak/WSQhZlYRlahWoJcrLsyhJNUrD9gWMmwZ7RWhAAADP3aAeqFI1oAAAAASUVORK5CYII=' )
 ]
 
 { #category : 'icons' }
@@ -843,13 +848,13 @@ MaterialSymbolsThemeIconsArt class >> art_menu_book_grad200_16x16_24x24_32x32 [
 ]
 
 { #category : 'icons' }
-MaterialSymbolsThemeIconsArt class >> art_menu_grad200_10x10_15x15_20x20 [
-	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAATklEQVR42mNgIBYwMrAwLGcQQBL5wBDJwvCHYR0DL5LgZ4Y/LAxMDKoMXEiC3xiYmIDUPxQDgTwWIHGfgRtJ8CvDPxagsAua4EqinckAAN2CDq+z4s0xAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAQAAACR313BAAAAZklEQVR42mNgoCFgBGIdhmgwjQr+MyxluAJiVAGZ2GAVA1SXAFbdHyDSQgyODEwY0v8Y9jO8AzFacRjeCtHNz+DMwIyh+y/DXoaPEDsVsBr+AMKoxWF4LQMDC1B6NQMnVt2rGWgLAD7BM0DLu5eUAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAh0lEQVR42mNgGPyAEUy6MCjhUXOPYQ+EIc3wj+E/HviXQYqBgQWo8CXDEgYtPCZeY3hFsht5GMTwqHnF8AXCEGB4jdeNr4EqGJiACv8z/MZr62+gZ6FWswItxw2+EDAI0zNsDMsYFPCouc8QBTFTkuEPXs/8AaoAB/hzBnsGbTwmXgGqGBIAACb+Q6tBUGDuAAAAAElFTkSuQmCC' )
+MaterialSymbolsThemeIconsArt class >> art_menu_grad200_10x10_15x15_20x20_trim0 [
+	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAOElEQVR42mNgwAIYGUwZFNDEHjAw3GX4jwbvMjKwMXCjqfzKyNDJoIgmeJ8Ju0VYtOOwCKuTsAAAVPUZa6wfI34AAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAQAAACR313BAAAAUElEQVR42mNgoAQwMjgymOGUPc3A8JHhP074gZEhisEep+6DBO32Y7DCKXuMkeETAy9O6U+MDL4M1jiljxK0O5rBDqfsIYL+xhdqpyiKEQYArpUndL72BuMAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAAaklEQVR42mNgGDDAyODMEMLAREDVX4Y1jAxvGYSIMPAdE8Nhomw+xAgkBIlQ+J4Ez0gw2DAwElD1H+TAm0CKMLzBBCSItFqcwZag1f8YjpDgGaKDZyNRntlAbBS+BSWKYAZmwoli4NItAwD0QDgKFUZp8AAAAABJRU5ErkJggg==' )
 ]
 
 { #category : 'icons' }
-MaterialSymbolsThemeIconsArt class >> art_menu_grad200_14x16_21x24_28x32 [
-	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAQAAACMnYaxAAAAOUlEQVR42mNgoD9gBOIUhgwsMjMY5rAAqV8M77FI/iTC2GSGTCwy0xnmgoz9jdXY35Qa+4csY2kEADOODr0YC+IMAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAABUAAAAYCAQAAAC/gH7DAAAAi0lEQVR42mNgGJaAEUzyM6jgVXWH4SOEwcLwmOE/XvgYqIaBCaj0P8MPAnb/AKqBOoCdQRqv0mcEDcPmrUIGS7yqjjP0QxgcDP8IeOsf0IkgnwHdkc7gAjUfG/jPsIfhJxlu5WVQxWvqbYbPsCh4RMCtj2BRwMDwm4DdvxFRwMkgiVfpc4bvDKOAAQAMvUjB3lRR+gAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAABwAAAAgCAQAAACrvNDJAAAAgUlEQVR42mNgGAXDATBCyVQGIygbP/jPcI5hNpCEggAgk3joD9LCBNb4gyRX/kA4lYEhiMGUSKeeZlg3sKGazGBCpFPPMMxFhKo/SaHqhwjVXyS58jdyqIYwGBPp1LMMawY2VBMZ1IjUcYthPhVC9Tf5oRoGzFbEgXMMq0ZLo+EDAONwXH8ZITT2AAAAAElFTkSuQmCC' )
+MaterialSymbolsThemeIconsArt class >> art_menu_grad200_14x16_21x24_28x32_trim16 [
+	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAQAAACMnYaxAAAAPklEQVR42mNgoAlgZFBiCGJgxiLzl2EdA8N8hv844HxGBgkGbxw6txKwM4ehHofORiYKvILXQXi9gjcQaAIAnm4lTPdHxyYAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAABUAAAAYCAQAAAC/gH7DAAAAf0lEQVR42t2TMQ5AQBBF325EJCIREteh4ihaLqBwAc6j4UI0woYGN9jZ1kwxzcv8/ycZ+GUpMnoSK7fRebTUoqWbZsYIQMOivuETWtGD2ymWpiSycjsTNDyibrSLAUUlNeCwVXask4tP3ghCGSpNQSBQD8g9BmJSK7oy/vNfeAF9WzlXV6+hLQAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAABwAAAAgCAQAAACrvNDJAAAAf0lEQVR42mNgGAWDCDAysDLMYLAH0sSD/wwHGDIZGKKBDNJhFBPDF7Jc+oUR6MgyBicGJhI0/WPYz9A5pKKDCeheB5Kjo5yBIZSs6AhhosSp7QyOJEbHAYaKIRUdjED3OpDsxw4GBn+yosOPiYGHLJfygDLyNDKcmjVaBg4qAAA01GPKjwmhSgAAAABJRU5ErkJggg==' )
 ]
 
 { #category : 'icons' }
@@ -1003,8 +1008,13 @@ MaterialSymbolsThemeIconsArt class >> art_refresh_grad200_16x16_24x24_32x32 [
 ]
 
 { #category : 'icons' }
-MaterialSymbolsThemeIconsArt class >> art_remove_grad200_10x16_15x24_20x32_trim96 [
-	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAAoAAAAQCAQAAACFdibLAAAAH0lEQVR42mNgGHSAEYizGByQRPYzTGcCUv8xlA0+AAAFCwME8JEa/AAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAAA8AAAAYCAQAAACPDG/iAAAAHklEQVR42mNgGAU0ARIMTxj+Y8AnQHEGptHQoTsAAI4NCvLB1UzYAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAgCAQAAAC4a5A9AAAANUlEQVR42mNgGAWjgFzACCaZGJwYBHGoeMewn+EfjFPL8B8PrIGYRaLVjgxCxFg9CkYBOQAAjGgU8MqdU8MAAAAASUVORK5CYII=' )
+MaterialSymbolsThemeIconsArt class >> art_release_alert_grad200_16x16_24x24_32x32 [
+	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAABDUlEQVR42m2RsU4CURBFD7to4g9s4g8YbJSIsbCAwhBKS1sqSPgBUDs+gi+gojBioYVGKpBSEytjZUcIn7Csd+e9zYphJvvenXsnOy93II8LanbXhLZEhZiED2UiVNkUQ8rMJcxYK9+E5mLCTD5lJSrhXviQks5Hq1dSLJoqJrSJhM841xnR4lVs0zU0BG/83z759qgntgGBJnVUxp7eU7pImU76jr46X9jx9Bc/HhV5ltIvWhFQ8PQtux4VMi5krM7r/zRdsWPCQLMGJrgYKfMYEKcj9vXVWfLAgqG1Rlxx6RUz2Rn1JHxgRt1tGpW+48gMnmngmqlZfZxb7eLElvWu3LKsbN1Vu6t/1/0L4UZOlaJoYFwAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAABtklEQVR42pVUvy9DURT+SrWNWipaTGogBovNIhGbwc/BoFuFEGJmECkTdhIWf4JJDEIYRMLkRxMWUUNptCSI5fnx3dO673pPiXOS8879znfvu/fccy7glDAC2vdz9If0wkIWi6ijLtCz0P8bvRwpfIha1Lx3g2DxCYkC+UNPU3beTSxDDKs4xzvDadRiDEmcYghRPBJ5Z2SVDJ9z5bzGBfFQlUwYkYQCvAJXib3CIXW9gJTgjt8Vflup9fQj9h9mZIUGPY7iCa9o0uNGic8qt0SAW7HVmtCMCt5Gix5HbJaaEMSIACFN8BhWSaXYYS5DKcWG/HDPyEKXIINGFrcF2VRnnhL3orBKXjoFGzCQSlwKNu2lgWMDwAGz5cOugXg0T29pn6VWTHzYsbekDn0kw26D4v82vUfix+rQKksvvHglWSONKVwbpX0vdg3PX/dQIzajCSGSw0YaMjbLa0zYktJYxhtz1i6ZUwtOogNtBstVfOPfii/uLD67vNdY0qq8H9hrcZzgDKMs9LSUd5LRGFkumfuxgeaKd1yQDfmvFgVb3kIOSyzwKG2Oo76/3o2I8cwE3M/MJwaOq2bsOXFjAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAACSElEQVR42rVVQUtVQRT+3u2JlNbC1J6Q1SIyWjxXLaSIJPUH5KKMwpYV/YKgRYZ/wlUbMQ3UhDCyFBQMpLdxoSRk0CKlwE30ePmg23fPnTtvztxXPUHPwL0z3/nOmZlzZs4AByL9WMUkepGRUYa9SSL9tZqfRhGhtDXcY1szoyI1NckLY5BuE7WYX8bvvzoIcdWnH3L6R3AJt/EETeyHeMgldyBg/xdGuaprwrmCY8S+oew7ymMRu85MY4KexDCeIif9t452l+y8djCvFlrEqdTWOlBSnHcxHBh1oyVuYRp38SXl4CPRaWoTOarVM+J1E+0KvYAC839RYe34LNwZ7WBEwC1v1nFB33jotqAjegvb8m2241ianG8iAVkVC2PQggH5Zz1yNWk2qb9jsiPhKJjIzqNOkecE/aCwOiwYdiEOZBazBthIzV/NQbSlDWMxS2sMmsEOM+3LK9EsVzkTO8ZqMFDh8WVM7sVoCg/MRY+OvLOFT2hNUc/ifApr5XlxtuAG8T3q/5uFerJUECPJWZ/HPXqjc8iTNIbm1OZceEjAst1bLL28Vj/Ro7CMubVDOnCxt+9RUBwZwGFWiVsKC8mqWHgOSt5lesk1lTHlIFl0MTOOg0RW7D3/SoMbqETnhO3fxGv8sLwV7WBBFYsSzv2jVquCkkgnlrjYinpO0DYWtGEWtkieO9oy2fl0hhvQjcc2oY/wjOU0pk/gganVm2R0k7l/ZX1vD8t4bS/TGRuuddxnW9/r0xY/rlPos49rH0eruH4gD/kfVvkw1CjDoHsAAAAASUVORK5CYII=' )
+]
+
+{ #category : 'icons' }
+MaterialSymbolsThemeIconsArt class >> art_remove_grad200_10x16_15x24_20x32_trim24 [
+	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAAoAAAAQCAQAAACFdibLAAAAHElEQVR42mNgGHSAkSGEoYyBCUnkH0MXE8PQAACcQAJYnd//UAAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAAA8AAAAYCAQAAACPDG/iAAAANElEQVR42mNgGAWkA0YgVmQQwir3juE+A4MXwz+G/1jhPwYvJsKGKzAIY5V7y/BgNPTJAQAeNBGK6xOB5wAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAgCAQAAAC4a5A9AAAAP0lEQVR42mNgGAWjgFzACMT+DG4MLHjU/GHYxbCRgUGT4S/DfwLwL4MmE5E2/wdZ7cfgTsDqnQybRmNpFJAPAL70GUDRCST1AAAAAElFTkSuQmCC' )
 ]
 
 { #category : 'icons' }
@@ -1088,8 +1098,8 @@ MaterialSymbolsThemeIconsArt class >> art_sort_by_alpha_grad200_16x16_24x24_32x3
 ]
 
 { #category : 'icons' }
-MaterialSymbolsThemeIconsArt class >> art_square_fill1_12x12_18x18_24x24_trim48 [
-	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAQAAAD8fJRsAAAARUlEQVR42mNkYGDQZRBnQAUvGS4zMOgx/GX4jwb/MugyMcgyMDGgAyYGOUxBuNzglHjM8A9D9B/DI0YgpcMggSbxguEKAJW1EmKY8gJHAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAATUlEQVR42mNgIAIwArEvw0QGARzyHxjyGLaAGPcY/uOB9xgYmICKhPDaJQRRRBCMKhoIRe/wqgDKMgOpuwyWQPIHVvicIZ/hFjG2MQAAL+0iu/5kCkcAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAAW0lEQVR42mNgIBEwgkkDhkgGAQIqPzAsZ7jAAFX+g+E/EfAHgz4DAxNQQyQDO1GuYQeqBGvgJdoDfBANJIFRDaMahpaGz0Sr/kRGFoUUAvoMUUQUAssYLjKQDgBi3TFhPG+E5wAAAABJRU5ErkJggg==' )
+MaterialSymbolsThemeIconsArt class >> art_square_dot_grad200_12x12_18x18_24x24_trim48 [
+	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAQAAAD8fJRsAAAAnElEQVR42mNkYGDQY1BnQAU3GS4xMOgy/GH4jwb/MOiwMGgxMDNYMrwCqvsMFAABcYbrDNpMDIxA5iOGewxmDEsZVjK4Mrxn+AgUYWSBmhrOsBxMuwIVHgIxmKASKXCLkyAUTOI/XOI/qsRcuMQ8CAWzYyVQZQoQz2VYxSAJkQBplWPgYDgDhCCgxCAGMRCHB0G+0GXQQAuSGwyXAdfKMNQCXVedAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAwklEQVR42o1SMQ7CMAw8KpIddhYGkDrwBxB/ofQJ8DT+ARupxAphYSpIxXEd2qgEepbSnH22rGuAnlihQBWJgqqMuMSFAQZQKEm4dqSDKQ506qHQC8781Uip+8SNoAECxUNnfM9hmVlsmc+ZqbYoD3bJvom0TPFxo4qIks+SKUbB0mPKCJI+RjaiI+5BxVKmIyqxD0Q7PBvStiCjdR27YhOzoG5ZUHgTReQdn+Altwczn3Wo3GH+/eD6qZgfkmXPB/cGu7l73xFEofoAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAABEElEQVR42pVUOw6CQBB9EhoTvYAWWmgBLVdRO0+g0noFLUVuQKcx8SKWSqOJFmqvCZY4LJ+Au4vLkAw7y3s7Oz+AilJjuocpWn+QD7g4x8s+3ggVnhcdDI0IEzSUbtMkJHRadJg5hl8CNuCR7saEOA4fB5WIdcF2CyOY9D5iS6EKZM9CshLLRpCFGWCW7FrM3vMebKxyVh0O6XUeoBXgbSw4/8tihYqEIZ35K3XalRJMSUqlhFBICOUEcel8OWGDDwcPqBpSwgNzjjDHU06Icm7nvATU9m4RwLfGGjsMWL5OdJnn72ddOCqOvP/0LG1GaZ8aaYIjwo0ZnsIIXZFM9Et9RNOfwIQar1zulK8LqssXjglfL5Z3yJ8AAAAASUVORK5CYII=' )
 ]
 
 { #category : 'icons' }
@@ -1155,11 +1165,6 @@ MaterialSymbolsThemeIconsArt class >> art_tune_grad200_16x16_24x24_32x32 [
 { #category : 'icons' }
 MaterialSymbolsThemeIconsArt class >> art_undo_grad200_16x16_24x24_32x32 [
 	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAq0lEQVR42mNgoBQww1mMDNEM/xhe41LIyDCB4T/DZPzSNxhUGATBkA1dQQJQGhn+ZFjHIAPTCwJ6DIcY+BnuM5yBukuHQY3hEYMJsovMGT4A9blAeUwMvUBzelCtMWd4w9AI53EAlZ9Hdwmy01gZvjNcghiGAL+Q2MVAM44gHAkCIgzlDHxQthaDDdBCI4bHyBZ4o3j0CFARA6oJDECv8YLp/wxPGV4yUA0AABVgLoS3i27EAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAA40lEQVR42mNgGALAmEGAeMWMDNMZ/jNcJ175DKDy/wy3iVU+Faz8JYMOfmUwMJ0hA0wfYLiFJP+R4TjDVoZfmBoNwKZjh3cZbDE18AJdjlvLTwZnTC2yDHfAkisZWOBibAxGDEvBoq8Y+DC1yEBtmY8mDgm7PGxBANHyAU1UmOEfUHQ99lCTYpjC4Ich+gyo4Rjx8c/N8AeoYSuEw0SEhmIGZiB5lDjT+RgaGH4Dzf/MIAERYMFITS5IfFZgMEDSQjbDC2zmiWCNts8MsdjSEgTUM3iBXQwBv4BJ8TjDQiA5rAAAIu9eudIyVicAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAABOElEQVR42mNgGAU0AUwMExi+M+xi4CBX+3yG/2DoQ5n2bwwK5GhfANX+k8GPOC0sKNrnMsRD2a0MTxmMkeS+M7wGQgKgH2o7LvicYQaDIj4DPhIwAOK1fNwGrCXCABBsQdbEiMTmZtjKYA9lT2C4jma8BEMogw6UHQK0DCvgZjgA968mljiqg8reZ2DH5Q2EEU8ZhLDIz4LK+uIOCYQRHlhkJRn+guUm4osNbobdQCXXGfixyt4GG7AWW0KCga8M7gwqDA+BUYYN/AaTrPgMYGD4x3ALh+t4GZTB9HNEyJIGchjYwPRh8rK6L8MvcAi8ZxDA7wVRBjkMMSmGcIZIqItbGD7gsyeR4Q/epLyOkMdP4NW+AHcqhIE2HFr/MZzETIGMWAxgZHDByPffGV4yXGF4Nlrj0AQAAPrVsZrG0DvtAAAAAElFTkSuQmCC' )
-]
-
-{ #category : 'icons' }
-MaterialSymbolsThemeIconsArt class >> art_unfold_more_grad200_6x7_9x11_12x14_trim48 [
-	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAAYAAAAHCAQAAACBmfRmAAAAPUlEQVR42mNgAAF3Bg8GKHBhuAmErgwMLEDOCyD3P4MgAypgBmIdBnYGPgY5hldMQI4Ew14glIDJe0BMAwCabQiT+zVh8AAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAAAkAAAALCAQAAAAHUG+QAAAAUElEQVR42mNggABmBk8gRgLMDIsY/jOsZGBBCM1i+MMwG4hngThMYKH/DDEMqUBMDTCLIRJIRjDMRBjPwLAEaOMSBkZkdy0E2roC2V0orgcAicIO7qvRxicAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAAAwAAAAOCAQAAACxtDVnAAAAaElEQVR42mNgQAABIMQC1BmeAaE6urAaw1OG/0D4gkELWZgbLFzP0AAkHzGwgYRYwBI/GI4BYT+Q9YnBhuEvA10BM8M6hiIwq4hhDZAHdxUzgwlDIAMvAyPQyc8Y2Bm+EfQgniDBCEQAbDAcAtj+x7QAAAAASUVORK5CYII=' )
 ]
 
 { #category : 'icons' }
@@ -1244,7 +1249,7 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #arrowDoubleUp 'arrow_drop_up' 0 200 nil #art_arrow_drop_up_grad200_7x7_11x11_14x14_trim48 )
 		#( #arrowDown 'arrow_drop_down' 0 200 nil #art_arrow_drop_down_grad200_7x7_11x11_14x14_trim48 )
 		#( #arrowUp 'arrow_drop_up' 0 200 nil #art_arrow_drop_up_grad200_7x7_11x11_14x14_trim48 )
-		#( #arrowUpAndDown 'unfold_more' 0 200 nil #art_unfold_more_grad200_6x7_9x11_12x14_trim48 )
+		#( #arrowUpAndDown 'height' 0 200 nil #art_height_grad200_6x7_9x11_12x14_trim48 )
 		#( #autoReload 'update' 0 200 nil #art_update_grad200_16x16_24x24_32x32 )
 		#( #autoReloadDark 'update' 0 200 nil #art_update_grad200_16x16_24x24_32x32 )
 		#( #back 'arrow_back' 0 200 nil #art_arrow_back_grad200_16x16_24x24_32x32 )
@@ -1269,7 +1274,7 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #checkboxMarker 'check' 0 200 nil #art_check_grad200_12x12_18x18_24x24 )
 		#( #checkBoxOff 'check_box_outline_blank' 0 200 nil #art_check_box_outline_blank_grad200_12x12_18x18_24x24_trim48 )
 		#( #checkBoxOn 'check_box' 1 0 nil #art_check_box_fill1_12x12_18x18_24x24_trim48 )
-		#( #checkBoxPressed 'square' 1 0 nil #art_square_fill1_12x12_18x18_24x24_trim48 )
+		#( #checkBoxPressed 'square_dot' 0 200 nil #art_square_dot_grad200_12x12_18x18_24x24_trim48 )
 		#( #checkboxSelected 'check_box' 1 0 nil #art_check_box_fill1_12x12_18x18_24x24_trim48 )
 		#( #checkboxUnselected 'check_box_outline_blank' 0 200 nil #art_check_box_outline_blank_grad200_12x12_18x18_24x24_trim48 )
 		#( #checkedBox 'check_box' 1 0 nil #art_check_box_fill1_12x12_18x18_24x24_trim48 )
@@ -1309,7 +1314,7 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #error 'error' 1 0 'E53935' #art_error_fill1_16x16_24x24_32x32 )
 		#( #example 'lightbulb' 0 200 nil #art_lightbulb_grad200_16x16_24x24_32x32 )
 		#( #exception 'bolt' 1 0 nil #art_bolt_fill1_16x16_24x24_32x32 )
-		#( #expandBox 'expand_content' 0 200 nil #art_expand_content_grad200_10x10_15x15_20x20_trim48 )
+		#( #expandBox 'expand_all' 0 200 nil #art_expand_all_grad200_10x10_15x15_20x20_trim48 )
 		#( #eyedropper 'colorize' 0 200 nil #art_colorize_grad200_38x36_57x54_76x72 )
 		#( #flag 'flag' 1 0 nil #art_flag_fill1_16x16_24x24_32x32 )
 		#( #folder 'folder' 0 200 nil #art_folder_grad200_16x16_24x24_32x32 )
@@ -1337,9 +1342,9 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #glamorousExample 'lightbulb' 0 200 nil #art_lightbulb_grad200_16x16_24x24_32x32 )
 		#( #glamorousFolder 'folder' 0 200 nil #art_folder_grad200_16x16_24x24_32x32 )
 		#( #glamorousGo 'play_arrow' 1 0 nil #art_play_arrow_fill1_13x13_20x20_26x26_trim60 )
-		#( #glamorousGrayCircle 'fiber_manual_record' 1 0 '9E9E9E' #art_fiber_manual_record_fill1_16x16_24x24_32x32 )
-		#( #glamorousGrayCircleEmpty 'fiber_manual_record' 0 200 '9E9E9E' #art_fiber_manual_record_grad200_16x16_24x24_32x32 )
-		#( #glamorousGreenCircle 'fiber_manual_record' 1 0 '43A047' #art_fiber_manual_record_fill1_16x16_24x24_32x32 )
+		#( #glamorousGrayCircle 'fiber_manual_record' 1 0 '9E9E9E' #art_fiber_manual_record_fill1_16x16_24x24_32x32_trim400 )
+		#( #glamorousGrayCircleEmpty 'fiber_manual_record' 0 200 '9E9E9E' #art_fiber_manual_record_grad200_16x16_24x24_32x32_trim400 )
+		#( #glamorousGreenCircle 'fiber_manual_record' 1 0 '43A047' #art_fiber_manual_record_fill1_16x16_24x24_32x32_trim400 )
 		#( #glamorousHelp 'help' 0 200 nil #art_help_grad200_16x16_24x24_32x32 )
 		#( #glamorousInspect 'eyeglasses' 0 200 nil #art_eyeglasses_grad200_16x16_24x24_32x32 )
 		#( #glamorousInto 'step_into' 0 200 nil #art_step_into_grad200_16x16_24x24_32x32 )
@@ -1348,11 +1353,11 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #glamorousLeftSide 'keyboard_tab_rtl' 0 200 nil #art_keyboard_tab_rtl_grad200_16x16_24x24_32x32 )
 		#( #glamorousMore 'menu_open' 0 200 nil #art_menu_open_grad200_16x16_24x24_32x32 )
 		#( #glamorousOpen 'folder_open' 0 200 nil #art_folder_open_grad200_16x16_24x24_32x32 )
-		#( #glamorousOpenFromUrl 'file_open' 0 200 nil #art_file_open_grad200_16x16_24x24_32x32 )
+		#( #glamorousOpenFromUrl 'input' 0 200 nil #art_input_grad200_16x16_24x24_32x32 )
 		#( #glamorousOver 'step_over' 0 200 nil #art_step_over_grad200_16x16_24x24_32x32 )
 		#( #glamorousPlay 'play_arrow' 1 0 nil #art_play_arrow_fill1_7x10_11x15_14x20_trim48 )
 		#( #glamorousPreferences 'tune' 0 200 nil #art_tune_grad200_16x16_24x24_32x32 )
-		#( #glamorousRedCircle 'fiber_manual_record' 1 0 'E53935' #art_fiber_manual_record_fill1_16x16_24x24_32x32 )
+		#( #glamorousRedCircle 'fiber_manual_record' 1 0 'E53935' #art_fiber_manual_record_fill1_16x16_24x24_32x32_trim400 )
 		#( #glamorousRedo 'redo' 0 200 nil #art_redo_grad200_16x16_24x24_32x32 )
 		#( #glamorousRefresh 'refresh' 0 200 nil #art_refresh_grad200_16x16_24x24_32x32 )
 		#( #glamorousRemove 'close' 0 200 nil #art_close_grad200_10x10_15x15_20x20_trim96 )
@@ -1372,12 +1377,12 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #glamorousZoomOut 'zoom_out' 0 200 nil #art_zoom_out_grad200_16x16_24x24_32x32 )
 		#( #glamorousZoomToFit 'fit_screen' 0 200 nil #art_fit_screen_grad200_16x16_24x24_32x32 )
 		#( #go 'play_arrow' 1 0 nil #art_play_arrow_fill1_13x13_20x20_26x26_trim60 )
-		#( #grayCircle 'fiber_manual_record' 1 0 '9E9E9E' #art_fiber_manual_record_fill1_16x16_24x24_32x32 )
-		#( #grayCircleEmpty 'fiber_manual_record' 0 200 '9E9E9E' #art_fiber_manual_record_grad200_16x16_24x24_32x32 )
+		#( #grayCircle 'fiber_manual_record' 1 0 '9E9E9E' #art_fiber_manual_record_fill1_16x16_24x24_32x32_trim400 )
+		#( #grayCircleEmpty 'fiber_manual_record' 0 200 '9E9E9E' #art_fiber_manual_record_grad200_16x16_24x24_32x32_trim400 )
 		#( #greenArrowUpAndDown 'height' 0 200 nil #art_height_grad200_9x15_14x23_18x30_trim48 )
-		#( #greenCircle 'fiber_manual_record' 1 0 '43A047' #art_fiber_manual_record_fill1_16x16_24x24_32x32 )
+		#( #greenCircle 'fiber_manual_record' 1 0 '43A047' #art_fiber_manual_record_fill1_16x16_24x24_32x32_trim400 )
 		#( #group 'dataset' 0 200 nil #art_dataset_grad200_16x16_24x24_32x32 )
-		#( #haloCollapse 'remove' 0 200 nil #art_remove_grad200_10x16_15x24_20x32_trim96 )
+		#( #haloCollapse 'remove' 0 200 nil #art_remove_grad200_10x16_15x24_20x32_trim24 )
 		#( #haloDebug 'build' 0 200 nil #art_build_grad200_16x16_24x24_32x32 )
 		#( #haloDismiss 'disabled_by_default' 0 200 nil #art_disabled_by_default_grad200_16x16_24x24_32x32 )
 		#( #haloDrag 'drag_pan' 0 200 nil #art_drag_pan_grad200_16x16_24x24_32x32 )
@@ -1429,7 +1434,7 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #notFound 'broken_image' 0 200 nil #art_broken_image_grad200_16x16_24x24_32x32 )
 		#( #objects 'graph_3' 0 200 nil #art_graph_3_grad200_13x13_20x20_26x26 )
 		#( #open 'folder_open' 0 200 nil #art_folder_open_grad200_16x16_24x24_32x32 )
-		#( #openFromUrl 'file_open' 0 200 nil #art_file_open_grad200_16x16_24x24_32x32 )
+		#( #openFromUrl 'input' 0 200 nil #art_input_grad200_16x16_24x24_32x32 )
 		#( #over 'step_over' 0 200 nil #art_step_over_grad200_16x16_24x24_32x32 )
 		#( #overlayAdd 'add_box' 0 200 nil #art_add_box_grad200_9x9_14x14_18x18 )
 		#( #overlayDirty 'asterisk' 0 200 nil #art_asterisk_grad200_8x8_12x12_16x16 )
@@ -1466,7 +1471,7 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #radioButtonUnselected 'radio_button_unchecked' 0 200 nil #art_radio_button_unchecked_grad200_16x16_24x24_32x32 )
 		#( #recentMessages 'overview' 0 200 nil #art_overview_grad200_16x16_24x24_32x32 )
 		#( #recoverLostChanges 'settings_backup_restore' 0 200 nil #art_settings_backup_restore_grad200_16x16_24x24_32x32 )
-		#( #redCircle 'fiber_manual_record' 1 0 'E53935' #art_fiber_manual_record_fill1_16x16_24x24_32x32 )
+		#( #redCircle 'fiber_manual_record' 1 0 'E53935' #art_fiber_manual_record_fill1_16x16_24x24_32x32_trim400 )
 		#( #redo 'redo' 0 200 nil #art_redo_grad200_16x16_24x24_32x32 )
 		#( #references 'link' 0 200 nil #art_link_grad200_16x16_24x24_32x32 )
 		#( #refresh 'refresh' 0 200 nil #art_refresh_grad200_16x16_24x24_32x32 )
@@ -1525,7 +1530,7 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #smallLeftFlush 'format_align_left' 0 200 nil #art_format_align_left_grad200_16x16_24x24_32x32 )
 		#( #smallLoadProject 'download' 0 200 nil #art_download_grad200_16x16_24x24_32x32 )
 		#( #smallLock 'lock' 0 200 nil #art_lock_grad200_16x16_24x24_32x32 )
-		#( #smallNew 'fiber_new' 0 200 nil #art_fiber_new_grad200_16x16_24x24_32x32 )
+		#( #smallNew 'release_alert' 0 200 nil #art_release_alert_grad200_16x16_24x24_32x32 )
 		#( #smallObjects 'graph_3' 0 200 nil #art_graph_3_grad200_13x13_20x20_26x26 )
 		#( #smallOk 'check' 0 200 nil #art_check_grad200_14x14_21x21_28x28 )
 		#( #smallOpen 'folder_open' 0 200 nil #art_folder_open_grad200_16x16_24x24_32x32 )
@@ -1555,7 +1560,7 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #smallVolume 'volume_up' 0 200 nil #art_volume_up_grad200_16x16_24x24_32x32 )
 		#( #smallWarning 'warning' 1 0 'FFB300' #art_warning_fill1_16x16_24x24_32x32 )
 		#( #smallWindow 'web_asset' 0 200 nil #art_web_asset_grad200_16x16_24x24_32x32 )
-		#( #solidMenu 'menu' 0 200 nil #art_menu_grad200_14x16_21x24_28x32 )
+		#( #solidMenu 'menu' 0 200 nil #art_menu_grad200_14x16_21x24_28x32_trim16 )
 		#( #spawn 'open_in_new' 0 200 nil #art_open_in_new_grad200_16x16_24x24_32x32 )
 		#( #stop 'stop_circle' 1 0 nil #art_stop_circle_fill1_16x16_24x24_32x32 )
 		#( #string 'format_paragraph' 0 200 nil #art_format_paragraph_grad200_16x16_24x24_32x32 )
@@ -1569,7 +1574,7 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #through 'step' 0 200 nil #art_step_grad200_16x16_24x24_32x32 )
 		#( #thumbsDown 'thumb_down' 1 0 nil #art_thumb_down_fill1_14x14_21x21_28x28 )
 		#( #thumbsUp 'thumb_up' 1 0 nil #art_thumb_up_fill1_14x14_21x21_28x28 )
-		#( #tinyMenu 'menu' 0 200 nil #art_menu_grad200_10x10_15x15_20x20 )
+		#( #tinyMenu 'menu' 0 200 nil #art_menu_grad200_10x10_15x15_20x20_trim0 )
 		#( #tools 'handyman' 0 200 nil #art_handyman_grad200_16x16_24x24_32x32 )
 		#( #top 'vertical_align_top' 0 200 nil #art_vertical_align_top_grad200_16x16_24x24_32x32 )
 		#( #trait 'layers' 0 200 nil #art_layers_grad200_16x16_24x24_32x32 )
@@ -1597,10 +1602,10 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #windowMaximizeInactive 'crop_square' 0 200 '9E9E9E' #art_crop_square_grad200_16x16_24x24_32x32 )
 		#( #windowMaximizeInactiveInverted 'crop_square' 0 200 '9E9E9E' #art_crop_square_grad200_16x16_24x24_32x32 )
 		#( #windowMaximizeInverted 'crop_square' 0 200 nil #art_crop_square_grad200_16x16_24x24_32x32 )
-		#( #windowMenu 'arrow_drop_down' 0 200 nil #art_arrow_drop_down_grad200_16x16_24x24_32x32 )
-		#( #windowMenuInactive 'arrow_drop_down' 0 200 '9E9E9E' #art_arrow_drop_down_grad200_16x16_24x24_32x32 )
-		#( #windowMenuInactiveInverted 'arrow_drop_down' 0 200 '9E9E9E' #art_arrow_drop_down_grad200_16x16_24x24_32x32 )
-		#( #windowMenuInverted 'arrow_drop_down' 0 200 nil #art_arrow_drop_down_grad200_16x16_24x24_32x32 )
+		#( #windowMenu 'arrow_drop_down' 0 200 nil #art_arrow_drop_down_grad200_16x16_24x24_32x32_trim140 )
+		#( #windowMenuInactive 'arrow_drop_down' 0 200 '9E9E9E' #art_arrow_drop_down_grad200_16x16_24x24_32x32_trim140 )
+		#( #windowMenuInactiveInverted 'arrow_drop_down' 0 200 '9E9E9E' #art_arrow_drop_down_grad200_16x16_24x24_32x32_trim140 )
+		#( #windowMenuInverted 'arrow_drop_down' 0 200 nil #art_arrow_drop_down_grad200_16x16_24x24_32x32_trim140 )
 		#( #windowMinimize 'remove' 0 200 nil #art_remove_grad200_16x16_24x24_32x32 )
 		#( #windowMinimizeInactive 'remove' 0 200 '9E9E9E' #art_remove_grad200_16x16_24x24_32x32 )
 		#( #windowMinimizeInactiveInverted 'remove' 0 200 '9E9E9E' #art_remove_grad200_16x16_24x24_32x32 )
@@ -1623,7 +1628,7 @@ MaterialSymbolsThemeIconsArt class >> noticeText [
   commit 10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7,
   symbols/web/{name}/materialsymbolsrounded/{name}_{variant}.svg
   (variants 24px, fill1_24px, grad200_24px and grad200fill1_24px)
-  Licensed under the Apache License, Version 2.0 (see LICENSE-material-icons).
+  Licensed under the Apache License, Version 2.0 (see LICENSE-material-symbols).
 
 Its PNG files of the Material Symbols are modified forms of those SVG files:
 rasterized by material-icons.st (scripts/generate.py, CairoSVG 2.9.1 on cairo 1.18.6),

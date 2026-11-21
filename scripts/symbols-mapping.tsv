@@ -22,8 +22,10 @@
 #     halt, uncommentedClass (red), the coloured dots (red, green, grey) and the buttons of inactive windows
 #     (*Inactive*, grey 9E9E9E, the passive look of svgPack); everything else follows the UI theme
 #   - trimmed (trim): the keys of 10 px or less whose symbol would be a speck in Material's padding (the small
-#     triangles, expandBox, removeCross, haloCollapse), go/glamorousGo/smallDoIt (13 px), greenArrowUpAndDown,
-#     every 12x12 check box (a crisp box of the full 12 px), and the rules separator and protocolNone
+#     triangles, arrowUpAndDown, expandBox, removeCross, haloCollapse, tinyMenu), go/glamorousGo/smallDoIt (13 px),
+#     greenArrowUpAndDown, every 12x12 check box (a crisp box of the full 12 px), the rules separator and
+#     protocolNone, solidMenu (bars on whole pixels), the four windowMenu triangles (as large as svgPack's) and the
+#     coloured dots and rings (as small as svgPack's)
 #   - keys that Pharo 15 renamed (glamorousX -> x) and keys whose only difference is the state or the theme
 #     (Inactive, Inverted, Dark, Pressed...) map to the same symbol
 #   - brand logos (Pharo, git, GitHub, GitLab, Bitbucket) have no Material counterpart: the nearest symbol, low
@@ -42,7 +44,7 @@ arrowDoubleDown	arrow_drop_down	0	200	-	48	high	7x7 single down triangle of the 
 arrowDoubleUp	arrow_drop_up	0	200	-	48	high	7x7 up triangle on the increment button of SpMorphicNumberInputFieldAdapter; arrow_drop_up is the same small solid triangle (name says double but the image is a single triangle); trimmed: the glyph fills the key instead of keeping Material's padding (7 px triangle in 7)
 arrowDown	arrow_drop_down	0	200	-	48	high	7px solid down triangle for menu-button dropdowns and descending sort; same symbol as dropDown (only the size differs); trimmed: the glyph fills the key instead of keeping Material's padding (7 px triangle in 7)
 arrowUp	arrow_drop_up	0	200	-	48	high	Small 7px up triangle (overridden-methods/superclass marker, coverage); arrow_drop_up is the same triangle shape; trimmed: the glyph fills the key instead of keeping Material's padding (7 px triangle in 7)
-arrowUpAndDown	unfold_more	0	200	-	48	high	6x7 up/down triangles drawn by FTUnsortedSortingState>>#sortingIcon (column not sorted); unfold_more is the standard both-ways sort affordance; kept distinct from greenArrowUpAndDown (height); trimmed: the glyph fills the key instead of keeping Material's padding
+arrowUpAndDown	height	0	200	-	48	high	6x7 up/down arrows drawn by FTUnsortedSortingState>>#sortingIcon (column not sorted); height, a vertical double arrow, the family of greenArrowUpAndDown and upAndDownArrow (unfold_more was two grey specks at 6x7); trimmed: the glyph fills the key instead of keeping Material's padding
 autoReload	update	0	200	-	-	high	Process browser 'Auto update' toggle; Pharo draws a circular arrow with a clock badge, update is exactly a circular arrow around clock hands (timed refresh); kept distinct from refresh/autorenew
 autoReloadDark	update	0	200	-	-	medium	no senders; circular arrow with clock = automatic reload; Dark is only the dark-theme colouring, so the same symbol as autoReload
 back	arrow_back	0	200	-	-	high	Navigate back (Calypso history, file browser, reverse dependency); Pharo look is a left arrow
@@ -67,7 +69,7 @@ changeUpdate	edit_square	0	200	-	-	medium	Epicea/diff modification: boxed pencil
 checkboxMarker	check	0	200	-	-	high	Check mark drawn inside a checkbox (UITheme checkboxMarkerForm); bare check, not the boxed one
 checkBoxOff	check_box_outline_blank	0	200	-	48	high	12x12 empty checkbox of ThreePhaseButtonMorph class>>#checkBox; exact match; trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
 checkBoxOn	check_box	1	0	-	48	high	ThreePhaseButtonMorph checkBox on-state; filled check_box like checkedBox / checkboxSelected; trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
-checkBoxPressed	square	1	0	-	48	medium	svgPack draws a solid inner square in a box while the box is pressed; trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
+checkBoxPressed	square_dot	0	200	-	48	medium	svgPack draws a box with a small inner square while the box is pressed; square_dot is that box with a dot inside, outlined in grade 200 like checkBoxOff, and trimmed like every 12x12 check box, so its outline is the full 12 px and lands on whole pixels (the filled square it replaced read as a solid block, or as checked)
 checkboxSelected	check_box	1	0	-	48	high	Selected checkbox state (UITheme checkboxSelectedFormSet, Iceberg select all); FILL 1 is the Material checked-checkbox convention and distinguishes it from unselected (check_box_outline_blank); trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
 checkboxUnselected	check_box_outline_blank	0	200	-	48	high	12px empty checkbox used for "select none" commands; same symbol as uncheckedBox (same concept and size); trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
 checkedBox	check_box	1	0	-	48	high	Ticked checkbox (tree node check state, 'select all' commands); FILL 1 is Material's checked-box state, distinct from check_box_outline_blank; trimmed like every 12x12 check box, so the box is the full 12 px of svgPack and its outline lands on whole pixels (untrimmed it was soft, max alpha 210)
@@ -107,7 +109,7 @@ enable	toggle_on	1	0	-	-	high	Selected/enabled icon pack in SpIconPacksFetchPres
 error	error	1	0	E53935	-	high	Red "!" disk for errors/validation (Spec, Commander, breakpoints); FILL 1 = solid disk like Pharo's
 example	lightbulb	0	200	-	-	high	Lightbulb with exclamation marks Spec/Morphic example methods; lightbulb matches look and the 'try this' idea
 exception	bolt	1	0	-	-	medium	Exception class>>#systemIconName, broken-critique and Finder exception classes; Pharo art is a lightning bolt in an orange disc, filled bolt keeps that look and stays distinct from error/warning/report
-expandBox	expand_content	0	200	-	48	medium	Debugger 'Expand the diff view' (maximize) and finder 'Expand all'; Pharo draws two overlapping boxes (old zoom box); expand_content conveys enlarge/expand for both uses (unfold_more would only fit the tree case, open_in_full is haloScale); trimmed: the glyph fills the key instead of keeping Material's padding
+expandBox	expand_all	0	200	-	48	medium	Finder 'Expand all' and the debugger inspector's side toolbar; svgPack draws two overlapping boxes (old zoom box); expand_all says 'expand all' and reads at 10 px (expand_content was two corner specks, filter_none copies the picture but is greyer); trimmed: the glyph fills the key instead of keeping Material's padding
 eyedropper	colorize	0	200	-	-	high	colour picker button of ColorSelectorDialogWindow; eyedropper
 flag	flag	1	0	-	-	high	Methods flagged with self flag: (Calypso decorator/query, FlagIconStyler); Pharo draws an orange ! circle but the concept is a flag; FILL 1 reads better as a marker at 16px; suggest orange tint
 folder	folder	0	200	-	-	high	Closed folder in file browser and Iceberg branch items; exact match (smallOpen gets folder_open)
@@ -135,9 +137,9 @@ glamorousEdit	edit	0	200	-	-	high	Scopes presenter toolbar edit button (P12); pe
 glamorousExample	lightbulb	0	200	-	-	high	example methods (SpExampleMethodNode); Pharo draws a lightbulb too
 glamorousFolder	folder	0	200	-	-	high	Folder (Iceberg repair: locate repository); same look
 glamorousGo	play_arrow	1	0	-	60	high	13px green triangle for evaluate/do-it (playground, inspector, profiler); FILL 1 = solid triangle like Pharo's (FILL 0 is an outline); same as smallDoIt (same meaning and size); trimmed: the glyph fills the key instead of keeping Material's padding (9x11 triangle in 13, as big as the other menu icons)
-glamorousGrayCircle	fiber_manual_record	1	0	9E9E9E	-	high	same picture as grayCircle (renamed key)
-glamorousGrayCircleEmpty	fiber_manual_record	0	200	9E9E9E	-	medium	same picture as grayCircleEmpty (renamed key)
-glamorousGreenCircle	fiber_manual_record	1	0	43A047	-	high	same picture as greenCircle (renamed key)
+glamorousGrayCircle	fiber_manual_record	1	0	9E9E9E	400	high	same picture as grayCircle (renamed key); trimmed with a margin of 400: a 6-7 px dot in 8 px, the size of svgPack's (untrimmed it was a 10 px disc)
+glamorousGrayCircleEmpty	fiber_manual_record	0	200	9E9E9E	400	medium	same picture as grayCircleEmpty (renamed key); trimmed with a margin of 400: a ring of 7 to 8 px, the diameter of the trimmed dots and of svgPack's ring (untrimmed it was 10 px)
+glamorousGreenCircle	fiber_manual_record	1	0	43A047	400	high	same picture as greenCircle (renamed key); trimmed with a margin of 400: a 6-7 px dot in 8 px, the size of svgPack's (untrimmed it was a 10 px disc)
 glamorousHelp	help	0	200	-	-	high	question mark help entry (Roassal world menu); circled ? is Material help; same as help
 glamorousInspect	eyeglasses	0	200	-	-	high	Inspect (Iceberg inspect, profiler, inspect variable); Pharo's inspector icon is literally a pair of glasses
 glamorousInto	step_into	0	200	-	-	high	Debugger step-into (Sindarin step bytecode); exact debugger concept, arrow into a point
@@ -146,11 +148,11 @@ glamorousLeft	arrow_back	0	200	-	-	medium	green left arrow with a shaft (legacy 
 glamorousLeftSide	keyboard_tab_rtl	0	200	-	-	low	No sender (legacy Glamour); Pharo draws a blue arrow pointing left into the left side of a box; keyboard_tab_rtl (arrow to a left bar) is the nearest look/meaning, first_page is the alternative
 glamorousMore	menu_open	0	200	-	-	medium	same senders and picture as more (Pharo 12 name)
 glamorousOpen	folder_open	0	200	-	-	high	Open (legacy, no sender); Pharo look is an open folder
-glamorousOpenFromUrl	file_open	0	200	-	-	medium	same picture as openFromUrl (renamed key), no senders
+glamorousOpenFromUrl	input	0	200	-	-	medium	same picture as openFromUrl (renamed key), no senders
 glamorousOver	step_over	0	200	-	-	high	Sindarin debugger 'step over' command; step_over is the exact debugger concept
 glamorousPlay	play_arrow	1	0	-	48	high	solid green play triangle; filled play_arrow matches; trimmed: the glyph fills the key instead of keeping Material's padding (7x8 triangle in 7x10)
 glamorousPreferences	tune	0	200	-	-	medium	No sender (legacy); gear + wrench; preferences -> tune like preferences in chunk 2 (settings is used by configuration)
-glamorousRedCircle	fiber_manual_record	1	0	E53935	-	high	same picture as redCircle (renamed key)
+glamorousRedCircle	fiber_manual_record	1	0	E53935	400	high	same picture as redCircle (renamed key); trimmed with a margin of 400: a 6-7 px dot in 8 px, the size of svgPack's (untrimmed it was a 10 px disc)
 glamorousRedo	redo	0	200	-	-	high	Profiler 'show as root'/redo; Pharo look is the purple curved redo arrow; same concept as redo
 glamorousRefresh	refresh	0	200	-	-	high	Circling arrows for refresh commands (Iceberg, inspector, file browser); same concept as refresh (sync matches the two-arrow look but means synchronise)
 glamorousRemove	close	0	200	-	96	medium	10x10 X: close_small is unreadable at 10 px; trimmed: the glyph fills the key instead of keeping Material's padding, with a wider margin (an 8 px X in 10)
@@ -170,12 +172,12 @@ glamorousZoomIn	zoom_in	0	200	-	-	high	magnifier with plus; exact match
 glamorousZoomOut	zoom_out	0	200	-	-	high	No sender; magnifier with minus
 glamorousZoomToFit	fit_screen	0	200	-	-	high	no senders; zoom to fit, frame corners like Pharo's
 go	play_arrow	1	0	-	60	high	Evaluate / Do it (playground, example browser, profiler run); green play triangle in Pharo; FILL 1 matches the solid triangle; trimmed: the glyph fills the key instead of keeping Material's padding (9x11 triangle in 13, as big as the other menu icons)
-grayCircle	fiber_manual_record	1	0	9E9E9E	-	high	small status dot like svgPack's (about a third of the box); same symbol as the other coloured dots
-grayCircleEmpty	fiber_manual_record	0	200	9E9E9E	-	medium	grey ring: fiber_manual_record outlined, the same diameter as the filled grey dot (grayCircle); circle was a 14 px ring that read as a radio button
-greenArrowUpAndDown	height	0	200	-	48	high	green double-headed vertical arrow (legacy); height is the same double-headed arrow, kept distinct from arrowUpAndDown (unfold_more); trimmed: the glyph fills the key instead of keeping Material's padding (the full height of 15)
-greenCircle	fiber_manual_record	1	0	43A047	-	high	small green status dot, the family of grayCircle and redCircle
+grayCircle	fiber_manual_record	1	0	9E9E9E	400	high	small status dot like svgPack's (about a third of the box); same symbol as the other coloured dots; trimmed with a margin of 400: a 6-7 px dot in 8 px, the size of svgPack's (untrimmed it was a 10 px disc)
+grayCircleEmpty	fiber_manual_record	0	200	9E9E9E	400	medium	grey ring: fiber_manual_record outlined, the same diameter as the filled grey dot (grayCircle); circle was a 14 px ring that read as a radio button; trimmed with a margin of 400: a ring of 7 to 8 px, the diameter of the trimmed dots and of svgPack's ring (untrimmed it was 10 px)
+greenArrowUpAndDown	height	0	200	-	48	high	green double-headed vertical arrow (legacy); height is the same double-headed arrow, as arrowUpAndDown and upAndDownArrow; trimmed: the glyph fills the key instead of keeping Material's padding (the full height of 15)
+greenCircle	fiber_manual_record	1	0	43A047	400	high	small green status dot, the family of grayCircle and redCircle; trimmed with a margin of 400: a 6-7 px dot in 8 px, the size of svgPack's (untrimmed it was a 10 px disc)
 group	dataset	0	200	-	-	medium	generic grouping (Iceberg extension definitions, Syc protect variable, file previewers); Pharo draws a grid of squares in parentheses, dataset is a grid of squares in a frame; Material 'group' means people, so avoided
-haloCollapse	remove	0	200	-	96	medium	Halo handle that collapses the morph; remove (a centred bar, trimmed to the width of the key): collapse_content drew two grey specks at 10x16
+haloCollapse	remove	0	200	-	24	medium	Halo handle that collapses the morph; remove (a centred bar, trimmed to the width of the key): collapse_content drew two grey specks at 10x16; a margin of 24 keeps the bar darkest at scale 1
 haloDebug	build	0	200	-	-	medium	Morphic halo debug handle drawn as a wrench; build (wrench) matches the look, bug_report is kept for glamorousBug
 haloDismiss	disabled_by_default	0	200	-	-	medium	Halo handle that deletes the morph (bold X); X in a square fits a halo handle and stays distinct from windowClose (close) and cancel
 haloDrag	drag_pan	0	200	-	-	medium	Morphic halo handle to drag (move) the morph; four-way move arrows (open_with is the same idea)
@@ -227,7 +229,7 @@ newerPackagesAvailable	deployed_code_update	0	200	-	-	medium	Newer package versi
 notFound	broken_image	0	200	-	-	medium	ThemeIcons>>notFoundIcon, the red square shown for a missing icon; broken_image says "image not found" (alternative indeterminate_question_box)
 objects	graph_3	0	200	-	-	medium	Three connected coloured nodes for dependency analyzer, baseline map and rewriter scope; graph_3 is a node graph of the same shape
 open	folder_open	0	200	-	-	high	opened folder: file browser, Spec examples, Iceberg location; same look and meaning
-openFromUrl	file_open	0	200	-	-	medium	only sender: the settings browser's Load button (a file); same picture as glamorousOpenFromUrl
+openFromUrl	input	0	200	-	-	medium	only sender: the settings browser's 'open from URL' (Load) button; input is an arrow going into a box, svgPack's picture (file_open was a document with a small arrow)
 over	step_over	0	200	-	-	high	Sindarin step over (debuggerStepOver); exact Material debugger symbol; distinct from redo
 overlayAdd	add_box	0	200	-	-	high	9x9 badge: svgPack draws a plus in a box
 overlayDirty	asterisk	0	200	-	-	medium	8px star overlay badge marking dirty/unsaved items (no senders); asterisk is the usual "modified" mark
@@ -264,7 +266,7 @@ radioButtonSelected	radio_button_checked	0	200	-	-	high	Selected radio button (f
 radioButtonUnselected	radio_button_unchecked	0	200	-	-	high	Empty radio button ring; exact concept
 recentMessages	overview	0	200	-	-	medium	profiler 'Full Report' button (art is a document with a pencil), name means recently visited messages; overview = document + clock covers report and 'recent'; distinct from history
 recoverLostChanges	settings_backup_restore	0	200	-	-	medium	Epicea code changes browser taskbar icon, FFI method decorators, Iceberg; Pharo draws a window with a green arrow going into a box; settings_backup_restore (restore arrow) says recover changes and stays distinct from history
-redCircle	fiber_manual_record	1	0	E53935	-	high	small red status dot, the family of grayCircle and greenCircle
+redCircle	fiber_manual_record	1	0	E53935	400	high	small red status dot, the family of grayCircle and greenCircle; trimmed with a margin of 400: a 6-7 px dot in 8 px, the size of svgPack's (untrimmed it was a 10 px disc)
 redo	redo	0	200	-	-	high	Redo (Rubric code menu, profiler); same look and meaning as glamorousRedo
 references	link	0	200	-	-	medium	Message browser / Finder "References" (senders and references); link conveys references; lan matches the node-tree look and is the alternative
 refresh	refresh	0	200	-	-	high	Refresh/reload (Iceberg checkout, cycle nodes, finder); circular arrow
@@ -323,7 +325,7 @@ smallLanguage	send	0	200	-	-	low	Used only for message-send dependency nodes (DA
 smallLeftFlush	format_align_left	0	200	-	-	medium	Left-aligned lines; used as the generic text-file icon in file dialogs/Microdown and for alignment; keeps the align family (smallRightFlush, smallCentered, smallJustified); description would be the pure file meaning
 smallLoadProject	download	0	200	-	-	medium	Arrow into a tray: load project/baseline, load script, menu entries that load tools; download conveys loading in
 smallLock	lock	0	200	-	-	high	padlock: Metacello baseline lock and deny dialog; exact match
-smallNew	fiber_new	0	200	-	-	medium	New branch/repository (Iceberg), Sindarin step to next instance creation, Spec example 'new'; Pharo draws an orange starburst (a 'new!' badge); fiber_new is the 'new' badge and stays distinct from addCross (add_circle) / add / note_add
+smallNew	release_alert	0	200	-	-	medium	New branch/tag/repository (Iceberg), Spec 'new' command, Sindarin step to next instance creation; svgPack draws an orange starburst (a 'new!' badge): release_alert is Material's 'new releases' burst badge (new_releases of Material Icons); fiber_new spelled NEW, unreadable at 16 px
 smallObjects	graph_3	0	200	-	-	medium	object-centric breakpoints/watchpoints, reflectivity and metalink menus; Pharo draws three connected balls (object graph); share has the same look but means sharing
 smallOk	check	0	200	-	-	high	OK/accept buttons (Spec, Iceberg commit, accept changes); Pharo look is a green check; same as accept
 smallOpen	folder_open	0	200	-	-	high	Open folder for file dialogs and open-directory commands; exact, distinct from folder
@@ -353,7 +355,7 @@ smallUpdate	refresh	0	200	-	-	high	Update/refresh/fetch (browser update, Iceberg
 smallVolume	volume_up	0	200	-	-	high	Speaker with waves; exact
 smallWarning	warning	1	0	FFB300	-	high	Orange filled warning triangle (critics, alert dialog, doc comment styler); FILL 1 matches the filled status look
 smallWindow	web_asset	0	200	-	-	high	window with title bar: taskbar/presenter window icon, open natively, grab window
-solidMenu	menu	0	200	-	-	high	Halo fallback graphical handle (solidMenuIcon); hamburger menu, same as haloMenu/tinyMenu (size only differs)
+solidMenu	menu	0	200	-	16	high	Halo fallback graphical handle (solidMenuIcon); hamburger menu, same as haloMenu/tinyMenu (size only differs); trimmed: the outer bars land on whole pixels at scale 1 (untrimmed all three were soft)
 spawn	open_in_new	0	200	-	-	medium	no senders; spawn a new browser/window on the selection
 stop	stop_circle	1	0	-	-	medium	Stop/interrupt (job interrupt button, stop logger, breakpoint/debug point styler); Pharo draws a red circled X; stop_circle FILL 1 keeps it distinct from cancel and testRed; suggest red tint
 string	format_paragraph	0	200	-	-	medium	Pilcrow, the icon of String class (systemIconName); format_paragraph is the same pilcrow and means text; abc is the alternative
@@ -367,7 +369,7 @@ testYellow	error	1	0	FFB300	-	high	SUnit failure: amber ! disc, as in the Materi
 through	step	0	200	-	-	medium	debugger 'step through' (into blocks, over messages; legacy here); step is the generic debugger step, distinct from step_into (into) and step_over (over)
 thumbsDown	thumb_down	1	0	-	-	high	No sender; solid red thumb down; FILL 1 to match the solid Pharo picture (thumbsUp should use the same fill)
 thumbsUp	thumb_up	1	0	-	-	high	no senders; Pharo draws a solid green thumb, FILL 1
-tinyMenu	menu	0	200	-	-	medium	Tiny menu button (no sender); Pharo look is a hamburger, as menu
+tinyMenu	menu	0	200	-	0	medium	Tiny menu button (no sender); Pharo look is a hamburger, as menu; trimmed with no margin: three bars in 10 px, the outer two crisp (untrimmed they merged into one grey block)
 tools	handyman	0	200	-	-	high	Crossed hammer and wrench for the Tools menu and settings group; handyman is the same picture
 top	vertical_align_top	0	200	-	-	medium	Red up arrow: 'move to top' in editable lists and 'top' icon position; vertical_align_top conveys to-top, distinct from glamorousUp (arrow_upward)
 trait	layers	0	200	-	-	medium	trait = composable layer of behaviour (Pharo draws a T in a green disc, no letter-T symbol); layers keeps continuity with the Material Icons pack; must differ from class (data_object) and jigsaw/extension
@@ -395,10 +397,10 @@ windowMaximize	crop_square	0	200	-	-	medium	Window maximize button (UITheme form
 windowMaximizeInactive	crop_square	0	200	9E9E9E	-	medium	Title-bar maximise button, inactive state (square); same symbol as windowMaximize, inactive is only a colour; crop_square = classic maximise square; grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear)
 windowMaximizeInactiveInverted	crop_square	0	200	9E9E9E	-	medium	Legacy maximize button, inactive inverted state (grey square outline); same symbol as windowMaximize should get, only state/colour differs; grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear)
 windowMaximizeInverted	crop_square	0	200	-	-	medium	dark-theme maximize title-bar button (a square); crop_square is the title-bar maximize square (Material 'maximize' is a top bar, not this)
-windowMenu	arrow_drop_down	0	200	-	-	high	Window menu button (UITheme windowMenuFormSet), profiler 'Expand All' and selected toolbar item; black down triangle, as windowMenuInactiveInverted
-windowMenuInactive	arrow_drop_down	0	200	9E9E9E	-	high	svgPack draws the same triangle as windowMenu, greyed: same symbol for the four windowMenu keys; grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear)
-windowMenuInactiveInverted	arrow_drop_down	0	200	9E9E9E	-	high	Window menu button, inactive inverted variant (only colour differs from windowMenu); Pharo look is a down triangle, as arrow_drop_down; grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear)
-windowMenuInverted	arrow_drop_down	0	200	-	-	high	the dark theme's window menu triangle (PharoDarkTheme): same symbol for the four windowMenu keys
+windowMenu	arrow_drop_down	0	200	-	140	high	Window menu button (UITheme windowMenuFormSet), profiler 'Expand All' and selected toolbar item; black down triangle, as windowMenuInactiveInverted; trimmed with a margin of 140: a 10x6 triangle as large as svgPack's (untrimmed it was 6x4)
+windowMenuInactive	arrow_drop_down	0	200	9E9E9E	140	high	svgPack draws the same triangle as windowMenu, greyed: same symbol for the four windowMenu keys; grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear); trimmed with a margin of 140: a 10x6 triangle as large as svgPack's (untrimmed it was 6x4)
+windowMenuInactiveInverted	arrow_drop_down	0	200	9E9E9E	140	high	Window menu button, inactive inverted variant (only colour differs from windowMenu); Pharo look is a down triangle, as arrow_drop_down; grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear); trimmed with a margin of 140: a 10x6 triangle as large as svgPack's (untrimmed it was 6x4)
+windowMenuInverted	arrow_drop_down	0	200	-	140	high	the dark theme's window menu triangle (PharoDarkTheme): same symbol for the four windowMenu keys; trimmed with a margin of 140: a 10x6 triangle as large as svgPack's (untrimmed it was 6x4)
 windowMinimize	remove	0	200	-	-	high	Window minimize bar (also collapse in profiler and Iceberg 'load less'); minimize; remove, a centred bar in line with maximize and close (minimize sits on the baseline)
 windowMinimizeInactive	remove	0	200	9E9E9E	-	high	minimize title-bar button of an inactive window; minimize, only the state differs; remove, a centred bar in line with maximize and close (minimize sits on the baseline); grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear)
 windowMinimizeInactiveInverted	remove	0	200	9E9E9E	-	high	No sender; grey bar of the inactive inverted minimize button; same as windowMinimize (only colour differs); remove, a centred bar in line with maximize and close (minimize sits on the baseline); grey (9E9E9E), the passive look of svgPack (UITheme windowClosePassiveFormSet, notebook-tab close, search-field clear)

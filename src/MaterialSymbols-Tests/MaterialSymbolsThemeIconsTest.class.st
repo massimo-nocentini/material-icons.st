@@ -115,6 +115,8 @@ MaterialSymbolsThemeIconsTest >> testExportZip [
 		self
 			assert: (archive memberNamed: name , '/NOTICE') contents asString
 			equals: MaterialSymbolsThemeIconsArt noticeText withUnixLineEndings.
+		self assert: ((archive memberNamed: name , '/NOTICE') contents asString
+				 includesSubstring: '(see ' , MaterialSymbolsThemeIcons licenseFileName , ')').
 		self deny: (archive memberNames anySatisfy: [ :each | each includesSubstring: '/symbol_' ]).
 		self assert: (archive memberNames includes: name , '/png-scale2.0/add.png') ].
 	loaded := ThemeIcons named: name.
@@ -252,7 +254,7 @@ MaterialSymbolsThemeIconsTest >> testTrimmedKeys [
 
 	| pack |
 	pack := MaterialSymbolsThemeIcons install.
-	#( #arrowDown #arrowUp #play #go #checkBoxOff #checkBoxOn ) do: [ :key |
+	#( #arrowDown #arrowUp #play #go #checkBoxOff #checkBoxOn #checkBoxPressed ) do: [ :key |
 		self assert: ((self entryOf: key) sixth includesSubstring: '_trim').
 		MaterialIcons scales do: [ :scale |
 			| form inked |

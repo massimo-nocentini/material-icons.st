@@ -1107,7 +1107,7 @@ def symbols_notice_text(manifest, rasterizer):
         f'  commit {upstream["commit"]},',
         f'  {upstream["path"]}',
         '  (variants 24px, fill1_24px, grad200_24px and grad200fill1_24px)',
-        '  Licensed under the Apache License, Version 2.0 (see LICENSE-material-icons).',
+        '  Licensed under the Apache License, Version 2.0 (see LICENSE-material-symbols).',
         '',
         'Its PNG files of the Material Symbols are modified forms of those SVG files:',
         f'rasterized by material-icons.st (scripts/generate.py, {rasterizer.description}),',
