@@ -1,0 +1,25 @@
+# Pharo icon key -> Material Symbols Rounded, for MaterialSymbolsThemeIcons (scripts/generate.py reads it).
+# Tab-separated. Lines that begin with # are comments; the first other line is the header. Columns (by name, in any order):
+#   pharoKey    a key of svgPack (scripts/pharo-icon-keys.tsv), mapped at most once
+#   symbolName  a Material Symbols Rounded icon at the pinned commit (scripts/manifest-symbols.json)
+#   fill        0 (outlined) or 1 (filled)
+#   grade       0, or 200: heavier strokes, the same size (closer to the weight of svgPack)
+#   colour      RRGGBB for a fixed colour (the status keys), or - for the text colour of the UI theme
+#   size        optional: WIDTHxHEIGHT at scale 1, or -; when given it must be that of scripts/pharo-icon-keys.tsv
+#   note        optional, free text; any other column is ignored too
+# Each key is drawn from the optical size 24 at the sizes svgPack draws it at (scales 1, 1.5 and 2), the symbol
+# centred at the side of the shorter edge when the key is not square. Keys left out keep the icon of the previous pack.
+# The generator stops on any unknown key or name, or wrong value, and lists every wrong line.
+pharoKey	symbolName	fill	grade	colour	note
+accept	check	0	200	-	14x14 in svgPack
+add	add	0	200	-	
+delete	delete	0	200	-	
+info	info	1	0	1E88E5	32x32 in svgPack
+play	play_arrow	1	200	-	7x10 in svgPack: not square
+refresh	refresh	0	200	-	
+separator	horizontal_rule	0	200	-	24x5 in svgPack: not square
+smallSave	save	0	200	-	
+testGreen	check_circle	1	0	43A047	
+testNotRun	circle	1	0	9E9E9E	filled, not a radio button
+testRed	cancel	1	0	E53935	
+testYellow	error	1	0	FFB300	
