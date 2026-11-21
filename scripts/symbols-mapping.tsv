@@ -20,7 +20,8 @@
 #   - outlined symbols take grade 200 (closer to svgPack's weight); filled ones grade 0
 #   - fixed colours only for status: tests, errors, warnings, information, questions and confirm, breakpoint and
 #     halt, uncommentedClass (red), the coloured dots (red, green, grey) and the buttons of inactive windows
-#     (*Inactive*, grey 9E9E9E, the passive look of svgPack); everything else follows the UI theme
+#     (*Inactive*, grey 9E9E9E, the passive look of svgPack), the tab close crosses (close, glamorousClose: a small
+#     grey 808080 X, as svgPack's) and flag (orange, as svgPack's); everything else follows the UI theme
 #   - trimmed (trim): the keys of 10 px or less whose symbol would be a speck in Material's padding (the small
 #     triangles, arrowUpAndDown, expandBox, removeCross, haloCollapse, tinyMenu), go/glamorousGo/smallDoIt (13 px),
 #     greenArrowUpAndDown, every 12x12 check box (a crisp box of the full 12 px), the rules separator and
@@ -79,7 +80,7 @@ classVarsPressed	data_object	0	200	-	-	low	no senders; old browser class-variabl
 classVarsSelected	data_object	0	200	-	-	medium	Class variables toggle ({c} in braces), used for pool dictionary dependency nodes; data_object is curly braces (shared dictionary/class vars); instVars* use variables, collection uses data_array to stay distinct; Selected/Unselected/Pressed differ only by colour in Pharo
 classVarsUnselected	data_object	0	200	-	-	low	22px {c} toggle button (class variables) of the old browser, no senders; braces = variables; family proposal: classVars* -> data_object, instVars* -> data_array, Selected/Pressed states differ by theme colour since these glyphs have no fill
 clearField	backspace	0	200	-	-	high	Grey backspace-with-X in search fields; backspace is the identical shape
-close	close	0	200	-	-	high	tab, notebook page and window close buttons; exact match
+close	close	0	0	808080	300	high	tab, notebook page and window close buttons; svgPack draws a small passive grey X: close at grade 0 in grey 808080 (both themes), trimmed with a wide margin so the X is about 7 px of the 16
 cloud	cloud	0	200	-	-	high	No sender (legacy); black cloud
 cloudPaused	cloud_off	0	200	-	-	low	no senders; no cloud_pause symbol exists, cloud_off is the closest 'cloud sync not running' concept (pause_circle loses the cloud)
 collection	data_array	0	200	-	-	medium	Collection class>>systemIconName (Pharo draws { } braces); data_array ([ ]) means array/collection and stays distinct from classVars (data_object)
@@ -111,7 +112,7 @@ example	lightbulb	0	200	-	-	high	Lightbulb with exclamation marks Spec/Morphic e
 exception	bolt	1	0	-	-	medium	Exception class>>#systemIconName, broken-critique and Finder exception classes; Pharo art is a lightning bolt in an orange disc, filled bolt keeps that look and stays distinct from error/warning/report
 expandBox	expand_all	0	200	-	48	medium	Finder 'Expand all' and the debugger inspector's side toolbar; svgPack draws two overlapping boxes (old zoom box); expand_all says 'expand all' and reads at 10 px (expand_content was two corner specks, filter_none copies the picture but is greyer); trimmed: the glyph fills the key instead of keeping Material's padding
 eyedropper	colorize	0	200	-	-	high	colour picker button of ColorSelectorDialogWindow; eyedropper
-flag	flag	1	0	-	-	high	Methods flagged with self flag: (Calypso decorator/query, FlagIconStyler); Pharo draws an orange ! circle but the concept is a flag; FILL 1 reads better as a marker at 16px; suggest orange tint
+flag	flag	1	0	FB8C00	-	high	Methods flagged with self flag: (Calypso decorator/query, FlagIconStyler); Pharo draws an orange ! circle but the concept is a flag; FILL 1 reads better as a marker at 16px; orange like svgPack's
 folder	folder	0	200	-	-	high	Closed folder in file browser and Iceberg branch items; exact match (smallOpen gets folder_open)
 forward	arrow_forward	0	200	-	-	high	Blue right arrow for history navigation forward (Calypso, file browser); pairs with back -> arrow_back
 fullscreen	fullscreen	0	200	-	-	high	same name and corner-bracket look
@@ -126,7 +127,7 @@ glamorousBookmark	bookmark	0	200	-	-	medium	same senders and picture as bookmark
 glamorousBrowse	open_in_browser	0	200	-	-	medium	same senders and picture as browse (Pharo 12 name)
 glamorousBug	bug_report	0	200	-	-	high	Green bug for debug points browser; exact concept
 glamorousCancel	cancel	0	200	-	-	medium	Red X used as a cancel button; same look and concept as smallCancel (both cancel), circled X keeps it distinct from windowClose (close)
-glamorousClose	close	0	200	-	-	high	close cross of headers and the protocol editor reset button; same concept as close
+glamorousClose	close	0	0	808080	300	high	close cross of headers and the protocol editor reset button; same picture as close
 glamorousCloud	cloud	0	200	-	-	high	No sender (legacy); the same black cloud as cloud, only the theme differs
 glamorousCloudPaused	cloud_off	0	200	-	-	low	glamorous duplicate of cloudPaused (same image style); same reasoning
 glamorousDiveAllRight	keyboard_double_arrow_right	0	200	-	-	medium	Dive all the way right (GT legacy, no sender); double chevron distinguishes it from diveRight (single arrow)
@@ -151,7 +152,7 @@ glamorousOpen	folder_open	0	200	-	-	high	Open (legacy, no sender); Pharo look is
 glamorousOpenFromUrl	input	0	200	-	-	medium	same picture as openFromUrl (renamed key), no senders
 glamorousOver	step_over	0	200	-	-	high	Sindarin debugger 'step over' command; step_over is the exact debugger concept
 glamorousPlay	play_arrow	1	0	-	48	high	solid green play triangle; filled play_arrow matches; trimmed: the glyph fills the key instead of keeping Material's padding (7x8 triangle in 7x10)
-glamorousPreferences	tune	0	200	-	-	medium	No sender (legacy); gear + wrench; preferences -> tune like preferences in chunk 2 (settings is used by configuration)
+glamorousPreferences	tune	0	200	-	-	medium	No sender (legacy); gear + wrench; tune, like preferences (settings is used by configuration)
 glamorousRedCircle	fiber_manual_record	1	0	E53935	400	high	same picture as redCircle (renamed key); trimmed with a margin of 400: a 6-7 px dot in 8 px, the size of svgPack's (untrimmed it was a 10 px disc)
 glamorousRedo	redo	0	200	-	-	high	Profiler 'show as root'/redo; Pharo look is the purple curved redo arrow; same concept as redo
 glamorousRefresh	refresh	0	200	-	-	high	Circling arrows for refresh commands (Iceberg, inspector, file browser); same concept as refresh (sync matches the two-arrow look but means synchronise)
@@ -160,7 +161,7 @@ glamorousRestart	restart_alt	0	200	-	-	high	same senders and picture as restart 
 glamorousRight	arrow_forward	0	200	-	-	medium	Roassal transition inspector 'Next frame' (P12); blue right arrow, same as right
 glamorousRightSide	keyboard_tab	0	200	-	-	medium	debugger 'run to selection' / Sindarin skip-to-selection and step-to-return: arrow running up to a bar (->|); login has the same look but means sign-in
 glamorousSave	save	0	200	-	-	high	Save (legacy, no sender); Pharo look is a floppy disk, as is save
-glamorousSaveToUrl	cloud_upload	0	200	-	-	medium	Arrow out of a box, used for Playground "publish" (save to a paste URL); cloud_upload pairs with cloud_download
+glamorousSaveToUrl	output	0	200	-	-	medium	same picture as saveToUrl (renamed key); output, the mirror of input (glamorousOpenFromUrl)
 glamorousSearch	search	0	200	-	-	high	Magnifying glass for search
 glamorousSpawn	open_in_new	0	200	-	-	high	spawn = open the selection in a new window/pane; arrow leaving a box
 glamorousTable	grid_on	0	200	-	-	high	Playground bindings command; same as table (grid_on)
@@ -235,7 +236,7 @@ overlayAdd	add_box	0	200	-	-	high	9x9 badge: svgPack draws a plus in a box
 overlayDirty	asterisk	0	200	-	-	medium	8px star overlay badge marking dirty/unsaved items (no senders); asterisk is the usual "modified" mark
 overlayModification	edit_square	0	200	-	-	medium	modification badge: the same symbol as changeUpdate (a modification)
 overlayRemove	indeterminate_check_box	0	200	-	-	high	9x9 badge: svgPack draws a minus in a box, the pair of overlayAdd
-package	package_2	0	200	-	-	medium	Pharo package in browsers/Iceberg/method nodes (22 senders); Pharo draws a folder with a blue dot; package_2 is the canonical package glyph (box also maps to it; packageColored maps to folder_data in chunk 2, align if a single family is wanted)
+package	package_2	0	200	-	-	medium	Pharo package in browsers/Iceberg/method nodes (22 senders); Pharo draws a folder with a blue dot; package_2 is the canonical package glyph (packageColored maps to folder_data)
 packageAdd	box_add	0	200	-	-	medium	no senders; add package; box with plus pairs with emptyPackage=package
 packageColored	folder_data	0	200	-	-	medium	Project/package manifest (ClyProjectIconTableDecorator, PackageManifest systemIconName, Microdown file resource); Pharo look is a folder with coloured squares; folder_data (folder with nodes) matches look and keeps it distinct from package and box
 packageDelete	delete_forever	0	200	-	-	low	Package delete (red X, no senders); no package+delete symbol in Symbols, delete_forever (bin with X) keeps it distinct from plain delete
@@ -283,7 +284,7 @@ right	arrow_forward	0	200	-	-	medium	Right/next (halo, button icon on the right,
 rightSide	keyboard_tab	0	200	-	-	medium	Green arrow to a right bar: Sindarin skip-to-selection / step-to-return and Iceberg write-to-files; keyboard_tab (arrow to bar) is the same picture; leftSide would be keyboard_tab_rtl
 rotate	rotate_right	0	200	-	-	medium	Halo simple rotate handle (24x22); circular arrow rotation
 save	save	0	200	-	-	high	floppy disk; exact match
-saveToUrl	cloud_upload	0	200	-	-	high	Playground 'Publish' (to the remote paste service); Pharo draws an arrow leaving a box; cloud_upload, distinct from smallPublish (publish) and smallExport (file_export)
+saveToUrl	output	0	200	-	-	high	Playground 'Publish' (to the remote paste service); Pharo draws an arrow leaving a box; output is that picture, the mirror of input (openFromUrl), distinct from smallPublish (publish) and smallExport (file_export)
 scale	open_in_full	0	200	-	-	medium	halo scale/resize handle and scale menu item (the Pharo image is a blank 22x21 placeholder); diagonal double arrow = scale up/down
 scriptManager	contract_edit	0	200	-	-	medium	Startup scripts manager, class-side <script> methods (ClyClassScript), method editor tool; Pharo look is a document with check and pencil; contract_edit (scroll with pencil) = edit a script
 search	search	0	200	-	-	high	Magnifier for search fields and previews; exact
@@ -313,13 +314,13 @@ smallFonts	font_download	0	200	-	-	medium	Fonts (SettingDeclaration default icon
 smallForward	arrow_forward	0	200	-	-	high	Blue right arrow for forward/next (merge next conflict, spotter, welcome); exact
 smallFullscreen	fullscreen	0	200	-	-	high	Four outward corners for fullscreen editor
 smallHelp	help	0	200	-	-	high	circled question mark: help items and potential dependencies; haloHelp uses question_mark to stay distinct
-smallHierarchyBrowser	account_tree	0	200	-	-	high	Browse class/method hierarchy (Iceberg snapshot browser, finder); tree diagram; account_tree like hierarchy (chunk 2)
+smallHierarchyBrowser	account_tree	0	200	-	-	high	Browse class/method hierarchy (Iceberg snapshot browser, finder); tree diagram; account_tree, like hierarchy
 smallHome	home	0	200	-	-	high	no senders; house
 smallInfo	info	1	0	1E88E5	-	high	Information (dialogs, doc comment styler, disabled breakpoint, critiques, About); Pharo look is a filled blue circle; FILL 1 matches it; suggest blue tint
 smallInformation	info	1	0	1E88E5	-	high	Blue "!" information disk; info with FILL 1 = solid disk like Pharo's
 smallInspectIt	eyeglasses	0	200	-	-	high	Pharo inspect-it icon is a pair of glasses; eyeglasses matches the look; inspect concept
 smallItalic	format_italic	0	200	-	-	high	italic text style; also reused by Sindarin 'jump to caret', which jump keys cover separately
-smallJump	jump_to_element	0	200	-	-	medium	No sender; green dot as jump; size-only variant of jump (chunk 2 jump_to_element), distinct from redo
+smallJump	jump_to_element	0	200	-	-	medium	No sender; green dot as jump; size-only variant of jump (jump_to_element), distinct from redo
 smallJustified	format_align_justify	0	200	-	-	high	format source code command and patch changes menu; justified lines
 smallLanguage	send	0	200	-	-	low	Used only for message-send dependency nodes (DAMessageSendNode, StMessageSendNode); send (paper plane) = message send; the name suggests language but no sender uses it so
 smallLeftFlush	format_align_left	0	200	-	-	medium	Left-aligned lines; used as the generic text-file icon in file dialogs/Microdown and for alignment; keeps the align family (smallRightFlush, smallCentered, smallJustified); description would be the pure file meaning

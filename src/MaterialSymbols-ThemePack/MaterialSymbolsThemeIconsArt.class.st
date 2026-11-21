@@ -283,6 +283,11 @@ MaterialSymbolsThemeIconsArt class >> art_circle_fill1_16x16_24x24_32x32 [
 ]
 
 { #category : 'icons' }
+MaterialSymbolsThemeIconsArt class >> art_close_default_16x16_24x24_32x32_trim300 [
+	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAPUlEQVR42mNgGEygiMEXzvYF8jCAL8NXhkAwKxDI8sVmhjfDZ6AkhMQBQHq/okozkeJMAlYQdCRBbw4cAADGfBITOd/ijwAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAAYklEQVR42mNgGAWkAkOGCgZWFBFWoIghbg0VDP8Z1iJpYQXy/gNFcQJmhmVIWpgZlqMZgFcLUcoRzlgLJVmJ8TrEFhzKmbBqYSQlaEl0EsKrqCFGUDlmIFMn4khOGqMAOwAAEzwrBUuPFSUAAAAASUVORK5CYII=' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAAl0lEQVR42u2SwQ2AIBAEV79SBiSaeBYmWreJTSgK0SAoAl/2wWPvGLgFoKjIJ4YZwlsRqsLCgAkbVpDjk3I3yDCAn41PBBmX/xmixXI2D5fTGYf+5mAjorfbiKTth3oztV77lAfVtwicXn8AqrwPRXkj3NG1KSHayUcj3IeLQgjv1BFfeXoJTSPGMKBRTfzlblJVi4o82gEwdE7uWOjOCAAAAABJRU5ErkJggg==' )
+]
+
+{ #category : 'icons' }
 MaterialSymbolsThemeIconsArt class >> art_close_grad200_10x10_15x15_20x20_trim96 [
 	^ #( 'iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAZ0lEQVR42mNgwAKYgTiOwZnhOJRfxKDCcAnEyGT4z9AMFmoEstJg6quBnCaGOiBZhWxMGVDgP1AYDJiggv+QSCgoBqrqYCgFktUwoTSwiSDQALEI5CQthsMM7WDBAwyfgPASNrczAADfdBwqMSWHugAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAQAAACR313BAAAAmUlEQVR42o2QWw6CQAxFDyJrMBE0E9gFJO7/xx+jMQGfbKQ2w6AD1sR+zdxz094W/qgl2UzJPkpKx50qgo4bF9V9LTgjPCkD3KpZ2JOM7kK9Qu87DO+WdTxrw1XFB40CUUMxjzcYxI9xVv464MaCK04Bt+Q27NmFYLkFq3eGKHnCYbK30w2E47h3qg2nVyv13+m5vi/8U7HqBY29N75NPqHXAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAQAAAAngNWGAAAApklEQVR42mNgoBXwA0Ls4v7IXE+G/0DYhqGsBSzugRBwAAv8Z2hFUdYAFvvHYIUsWARV2gUXKYWKlKFbUwyV6EThVWBzeDVUshFuWjkuv5dBFUBgDb5gaoArq0eVYEJT+BHO+oXPvAIUqysIKeuEBxZWz+QDgxYRkiW4lKajKEME+D+GPGRl1lBlqFHYCFVqjRDywJEoWsHibshCvkCIPZn50iplAwCdrWBmAvt/TQAAAABJRU5ErkJggg==' )
 ]
@@ -300,11 +305,6 @@ MaterialSymbolsThemeIconsArt class >> art_cloud_grad200_16x16_24x24_32x32 [
 { #category : 'icons' }
 MaterialSymbolsThemeIconsArt class >> art_cloud_off_grad200_16x16_24x24_32x32 [
 	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAA/ElEQVR42mNgIAJI4pcOZPjPUA9mqTFMZjjAcIJhFoMhsgIxhttAJQ1A1gQg/ZvhD5D8w1CErEQGqoSRwYGBhYGLIZThJZAfgKxEl+EH1BQIsASacREhHcHwBSj9H0XJESBPAsI0Aar+CHRmGMNjJCVzgeznDKkg5hog0x4sqMzwCK4knWETw2cgL5CB4RbDa7jBSgwPkUzRZ/jLsJ+B4RzQa0JwJYoMD5CUvGG4y8BQCRTYySAFV6IAV2ILpFczMLAz7AX74APDOyj8BvURI0M7gwIz0J7lQFdwMHxleA+Fr4HuZ2fwZPjO0AjUhgMoMtxhOIw/EtmApgIBAPoDWjJHHCHAAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAABZklEQVR42r2UvS8EQRTAf/fhozocUSh8RCU6GtUVoiHnfASVQqUREgVRUohCQ0GFP0HUPiolBUFyDcXFqkiQC+4Sx+zbtdmduXAU3kt233uzv3nz5s0s/Ic00ln6xyFiZKhiiUU3UsEA3TRR4I5D9sjpSIxHPpQ6QBu34n1phpSZJUHWQ0Jsi/3Ck4sUmP0eCTNDu0RbWONdkB+y+GVUkIyqTJNqdtwl6Mi6RIeDwREefIUGkVaJbfhDQ5LW1hz5Iohd/g1jRB23lnspbFNtaUTBJmK5052pFitZEGfZGx5UeYKI5S32iko4kqX4dyFlIBE6OJHYNFyqV1rbmX4DgQaJ7cOx9DWqIUneDCSt/AtYkYE5o5V9GhIX/wCaxcirgbiG9PLqQ+bFnrLNSW8XLK4DmvW1MswW55Q7c03wHDjUpjonuc5+OFLPOF3UFL1iCcpkSaul3sqk1HL6m1ufYJeeP/4xPgHlSrxoQjiuAgAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAB20lEQVR42mNgGPKAGYhZGAIZhBkekWcAIxDPZkgBko0MDSgyogwuDMZA8j/DK4bzDLsZ3uA25AJQEQgiDJBjWMrwEyoKgX8YFjIo4zIgieEfmhHTUDTD4GeGKFxG5KMZwcywHMp/x/Cc4S+SIbnEGsHCMIUhi0EIzOZliGC4DJX9y+BHrBGogJVhBlT2MdBAsoxgZFgGlS3Brp2dIZbhCdyv2IwQZHgLlruCTbs9w120MMdmxESonBi6RBDDLyzRhmlEIFTGHVVYh+EbPLmcYFjDsBKnERZwdbsZbBDCR6HCOxjkoSJ9OIwwRnLfX4ZyiKAtVGAnMO4RoAerEcZonkwACfaCmf8wUnoXFiMEGUKBsJThDFTmA1CEYRfOqOnEGRYswMwGkcljYDgGZhzEmjbacRrBz/AVLL6GgWETmPEAR+psxWnEKbDoUQaGFqgCGxxGNOMw4gZYbDsiZG8wiOAwohGLEa5QkQ4QZxOUc58hGJgjsIEGDCPmQ9OCNogjzfAUruA7MDTuYoF/0YxgAefNaTAbdBkeYi3EsENYqVXOwIFwpDjDAmAKJ80IeLEOA7IM3gxawIKcGWf5LcLgCGVlI5xPGoAlrQPk12VV4AAtpKQ61GQwpGLlCgDS+VOuYUVjRQAAAABJRU5ErkJggg==' )
-]
-
-{ #category : 'icons' }
-MaterialSymbolsThemeIconsArt class >> art_cloud_upload_grad200_16x16_24x24_32x32 [
-	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAA/UlEQVR42qWRv0vCURTFP5Vgli4iNLhKU+ao4OAsuAjS4iYZLdFSs4STf4Bbu1OBY1Oog9Ag2mRL0NIPhNRAHfx53tdQyTbfgffOvedy7rvvwaZra4X7uMTPLs/kaayXnjJkykgw+8VfOcqELxLsCSdiE2Krske2I0KLOKSovpRT9GRbFtunKDjFysoczOUwY7pkCEouKT2lgotbnR+kTcGdaMQqzVqyQY4zOf2IxeGF1m+rI654F64JWPGxvB/RZYa4F/d5E5arRXObe2wU8P7zhOeaTrM4ZGP6drhRuirbbwtmsi6+HU1ckJWdvsQnahwyoC188kCS140/kxlaIlOHEIoUZQAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAABfklEQVR42s2TPSxDYRSGH/8kFoRoGz/B0tliMzCwNKRBghisfgarGAwdLIJE2Awmq0kkDBIMIiHVaCNU0hAR0TAQkvY699zbqz/U6pzc3PO+33u++51zzwf/zgpymBJ8dNNEkhh7bPOZf4MebjHSPEpvPvk0CVv4wqsdJZj4Te6TY5iCRZoVt7CsGyR+/koZd7o4kMEOaUqU0mx5FQt6gKWcjVaU78skR3m2T9yi2M2BuFvjVuVX0+VjTk9ebXlYUQSPYrP8GwYptuQuJZKs4VUqJTf9igZh7m10RqOZMKcg4HzvMOM/nKYlGIQoh30JPszAtnPBVkVxecLKFdHOiXJTcOHQltXTz7AujkiLPQ7vkW0NduFIXm+pgmzza4I/q8ER4YKFHEtYwcyfY1qtJT8Wsq7zGGCemjxyF1ta544JJp0uxLmmS5hORQ+CLI85ba608sed2TTY0LkKZTTX8kvavi9QrYxHh5zznVmCguvk7U27Xk9ymTalT//RvgBRE69Cow+x+gAAAABJRU5ErkJggg==' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAACHElEQVR42u1Vz0sbURD+TCJWaU1KsYJINYggVKTWHlL0pIhQilAhoAgiSMGLxUsR+zeUgrdS+uNUCq2CHjUgiKhQQqglRg8tKiqIMWJAaWizSWffzr683W7S5O4M7O77Zr7Jvm9mX4ArK8sbuYVePEANsjhBBCEkSilbhw9IETXnf/AejcXSg0hayKYnMVAMfQIZSdFwTK7JdQZP/0d/LNO/YxA3BFaNIUQZTaOvEN2LI058DY8lUo43HNlFVf4C05z00aE7ZfjE0UlnchVGaL96QgI+x4ybFNHjm07BRziQUs1ItBXrWKOraTOcUWOnjylKZ2Wz2hAX6zjuMfKEM2xCPsRvqfFXzKHFQtf9FO0CC8i8ELpy4nxjeAl+WVSlG7rcJ7RDQTRMGandDISUxvlYTtXjtPMOGzaqJ7/kGWtWNhVwHOUe6kOQ/DnCjJwTgkXxuGVRpYLUz5IeMRGLCUIYlTLuoUkxSjwDNsTDiq0vbtTDhVURW6VVk20yvbgUsVkXzgTQYCug4ZC2lVv9JOVVS/I717mwzQW6SjyKasX1woV5Bt7+O18FrB93xD2qX0IsyB4pfM2SZmoA25c5TBs3OAEd8CtdT2Gf9vuZRNJtQWC/CFE9d9h9MWu2K5+S4S8EPuk4D6ZH6KiRdpuO0bQSHOeXXc5D1vAO1+3Hej191HeplJuG5hW3zU2nRKf6S6KFO7S5H1f/iab9BW3aN8B/9E0fAAAAAElFTkSuQmCC' )
 ]
 
 { #category : 'icons' }
@@ -893,6 +893,11 @@ MaterialSymbolsThemeIconsArt class >> art_open_in_new_grad200_16x16_24x24_32x32 
 ]
 
 { #category : 'icons' }
+MaterialSymbolsThemeIconsArt class >> art_output_grad200_16x16_24x24_32x32 [
+	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAtElEQVR42mNgIAAYwWQggxmUhQD/GU4xrIcwg4Ac7DCQgYEFqMAUiAsZrjD8YfiMZIIewzygDNiMDqBaGzQLFBi4GGYx6ENMwARaDFeBesMZfjMwMGFVcJthL9D+lQysqCYIMuxkEIay2cF+m86QwoQ3EP5DKExHsjDsAYqtBVmB3QQVBmeGdQwRuB15g0GZIZZhCsybIJvUGb6jKbJnSGN4y3AREhN4ghoSRQEM5vgiCy8AANSXPRTPgOGbAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAA50lEQVR42mNgoDVghNLxDDEMgnjUvWdYwrAQwU1g+E8EjEPYsJvBheE3w2M8NsgysAJVuTEwsIC5IMfcZ1DHo+EGUBbsZCYi/boBiqHgDNCFN3EozWY4y+AHpNmRBfFpuAOU+8UQhCqIT0MSwz9kLSxYlBgyqCDxPjPsYnAHhtEKhgiGddhsMAGbiA3+ZFDAHkr/cYbVf2xOOsNgxKCGIpIMdBIDMGIjGR6S4WnCGm6SGqxZDOcZfIE0B7EaIKADqKKGlLTkD8XQUHoPxIoMd/Emb4gqeH4jMQMxADmxBLLoIobFDHQBAOU5davgg3sYAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAABTUlEQVR42mNgGGjAiMLjYWAlQs9vhi/YhJMZHjD8JxLeZ0hC155KtGYYTEY14AHJBtxHDgMehs9gejvDQSLCwJ7BE0zzgsKCBcyEBd1Bhk4iDPgLNYAJTpAIDgGNYGA4y/AJxGEhSasrgxLDUoZTDOYMOgwbkCUEoQFTjld7IFjNRQYRZEFSvKANJvUY9iIbQYoB8xieYhpBigHPGByBGGLEIQYJiCCuQGRmaAQGFSb4DKU1GXYCjXuHOxAjiEiLveSmAxSAywurgTGNzQtyDGpQ1iWGVlLTAQODKjAe/qOmBlK8IM1wgEEKarsLwxv8XsAG4uHanWHaSXPBVUztpLlgI4MHgyLDEmApYMygC8xMH0gPRAgwZ/gDVHuWdC/AgB0wnTIwGDHwIbzwG15YEQMcoPQ/ygrVe6imppBsQCJmxXKfBNuTaFC1DRQAANYg6tj1hMdBAAAAAElFTkSuQmCC' )
+]
+
+{ #category : 'icons' }
 MaterialSymbolsThemeIconsArt class >> art_overview_grad200_16x16_24x24_32x32 [
 	^ #( 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAABC0lEQVR42mNgIAAYwaQ7gwEWuYsMOyAMf4b/OKAfAwMLUIEFEBcyXEHTr8PQz2DJsIkFas0Zhu8MxWDlIPCHoRcoApZhgeuwZYhE0n8aCMEAoWACw2oGdij7J8NToBUMDB8h3A6gc2wYfBhuMNwFwia4FgsGLmQTuBgEGNiAND8YGwPJswzfkE1gYOCBKo1g+AD25HsgC0lBOsNfho1AnhnDbyD/BsNNIPmbwRRhxRWGXQz7gXQm2NoLDEwMakBWJhOQ8x+I1Rl+MNQwzAGyFMHKZRiOgmklEBEGD9ptQN5MKHsq0MT/DDMYweEVxmAIVr8TaIkGwzkGTqi136HiaMCb4TnYjIcMTgwMAJ4vUR9W73pPAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAABgElEQVR42rWTzytEURTHP2NGRGRkgWnYoGRhyo4VNlKjbDQ2qFHkP8Den2Bh5cfGjpSUbGkWU6SJRmLlR8kQ05Tfzrx35725b55h43u6951z3ve8c88598F/w6Oew0SoLcJLsc6GbY7y9QeJZKk+I2Bc1gdPRTJU42VCsijEJT5Z9OhJYcTtDHZFY9Q7qLesCtmCHjDEssvXH9iyjRLt1SWZAnpGvPyU4ZhAQXNTPMr+qZYjABokxMSFiI1V5lizzVyXuqW5ua6/0OLWLr2GijzbR7lbgH6kPXppU/oRCcqYkaG2i3Uq/VvktXBwXvxWFj8H2tXYp8YZ0MqdaNcEDe+OIt6ImNq2s4YQdUanOmTvZ0B5l0RMDNKn17DJPM2cs2tMPYe8i0FYD3hjwdIDllbFoaUHzSNlZ9kklZiyQqnYzxYpygmzSle/wJTjV+kS32SefU9YVlaLetS1nmZEUptICPmdSs5odEztypqSK3pIa3nTcnV+QYiYRY/RmXV9A3drkHok9QhfAAAAAElFTkSuQmCC' 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAB/ElEQVR42tVVSyhEURj+xiPjkZqFZJQUip1GKKnRKJKNFIVkJ4mk1JRSVrK1kJVipTyysFOEFRaKLKaYhTyGECKPzMM/Z647/7333Gtm6T917znff+53/ue5wL8XmzprhxclSEngmzD8mMa6FuxGJMnRpSXwJ01wxl3IxquY7eAgARdq0UDPCHLw/gs5FFZvQnHzKrsd0UWaZEMu3LBL8E+y8FUPGgkyyI1yk7N9qMSXFjKmrdj0c5CmWA8ZCfzYMyXYxfnfLgThQQU5IouBDyERf0sC0KZTyyz4xDOAZzOCVvQwPIBJPGn0GximYM5yS3gd5JGp2pqbszInRZLGdB2SZUVgdOEKQ+hj+A0mxDsVjWiCk2bX2MQW9STkLsilngLL3TpBnRVBFiHctk6qP303fqJDTmDDIpkXwQta1O6LhzVEdfI7/0C1jKBM3bCtNPwBO3cQA2y1D5sxCwHcKbMj8axCDdM+0uA3g8uYhTeC26idL7Es1h7LqvTIKvECM2zl1OjslFYuhWlKA8XEzW7eY8o218WkF80Yx5S6/o6Xj/Ha7BeaIR26RCU1yYKqyKiEYF5oSkVS+VjBiDIL059E7Ykx3Gu2PajRXzO92lf5nykqBchUY3Clel+EQ+RLgn1LR1wm9gN0Uez1p18TmoQ4qcDjRRzEAlkr5AdhlCAqTG8XiAAAAABJRU5ErkJggg==' )
 ]
@@ -1284,7 +1289,7 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #classVarsSelected 'data_object' 0 200 nil #art_data_object_grad200_22x22_33x33_44x44 )
 		#( #classVarsUnselected 'data_object' 0 200 nil #art_data_object_grad200_22x22_33x33_44x44 )
 		#( #clearField 'backspace' 0 200 nil #art_backspace_grad200_16x16_24x24_32x32 )
-		#( #close 'close' 0 200 nil #art_close_grad200_16x16_24x24_32x32 )
+		#( #close 'close' 0 0 '808080' #art_close_default_16x16_24x24_32x32_trim300 )
 		#( #cloud 'cloud' 0 200 nil #art_cloud_grad200_16x16_24x24_32x32 )
 		#( #cloudPaused 'cloud_off' 0 200 nil #art_cloud_off_grad200_16x16_24x24_32x32 )
 		#( #collection 'data_array' 0 200 nil #art_data_array_grad200_16x16_24x24_32x32 )
@@ -1316,7 +1321,7 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #exception 'bolt' 1 0 nil #art_bolt_fill1_16x16_24x24_32x32 )
 		#( #expandBox 'expand_all' 0 200 nil #art_expand_all_grad200_10x10_15x15_20x20_trim48 )
 		#( #eyedropper 'colorize' 0 200 nil #art_colorize_grad200_38x36_57x54_76x72 )
-		#( #flag 'flag' 1 0 nil #art_flag_fill1_16x16_24x24_32x32 )
+		#( #flag 'flag' 1 0 'FB8C00' #art_flag_fill1_16x16_24x24_32x32 )
 		#( #folder 'folder' 0 200 nil #art_folder_grad200_16x16_24x24_32x32 )
 		#( #forward 'arrow_forward' 0 200 nil #art_arrow_forward_grad200_16x16_24x24_32x32 )
 		#( #fullscreen 'fullscreen' 0 200 nil #art_fullscreen_grad200_28x28_42x42_56x56 )
@@ -1331,7 +1336,7 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #glamorousBrowse 'open_in_browser' 0 200 nil #art_open_in_browser_grad200_16x16_24x24_32x32 )
 		#( #glamorousBug 'bug_report' 0 200 nil #art_bug_report_grad200_16x16_24x24_32x32 )
 		#( #glamorousCancel 'cancel' 0 200 nil #art_cancel_grad200_16x16_24x24_32x32 )
-		#( #glamorousClose 'close' 0 200 nil #art_close_grad200_16x16_24x24_32x32 )
+		#( #glamorousClose 'close' 0 0 '808080' #art_close_default_16x16_24x24_32x32_trim300 )
 		#( #glamorousCloud 'cloud' 0 200 nil #art_cloud_grad200_16x16_24x24_32x32 )
 		#( #glamorousCloudPaused 'cloud_off' 0 200 nil #art_cloud_off_grad200_16x16_24x24_32x32 )
 		#( #glamorousDiveAllRight 'keyboard_double_arrow_right' 0 200 nil #art_keyboard_double_arrow_right_grad200_16x16_24x24_32x32 )
@@ -1365,7 +1370,7 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #glamorousRight 'arrow_forward' 0 200 nil #art_arrow_forward_grad200_16x16_24x24_32x32 )
 		#( #glamorousRightSide 'keyboard_tab' 0 200 nil #art_keyboard_tab_grad200_16x16_24x24_32x32 )
 		#( #glamorousSave 'save' 0 200 nil #art_save_grad200_16x16_24x24_32x32 )
-		#( #glamorousSaveToUrl 'cloud_upload' 0 200 nil #art_cloud_upload_grad200_16x16_24x24_32x32 )
+		#( #glamorousSaveToUrl 'output' 0 200 nil #art_output_grad200_16x16_24x24_32x32 )
 		#( #glamorousSearch 'search' 0 200 nil #art_search_grad200_16x16_24x24_32x32 )
 		#( #glamorousSpawn 'open_in_new' 0 200 nil #art_open_in_new_grad200_16x16_24x24_32x32 )
 		#( #glamorousTable 'grid_on' 0 200 nil #art_grid_on_grad200_16x16_24x24_32x32 )
@@ -1488,7 +1493,7 @@ MaterialSymbolsThemeIconsArt class >> entries [
 		#( #rightSide 'keyboard_tab' 0 200 nil #art_keyboard_tab_grad200_16x16_24x24_32x32 )
 		#( #rotate 'rotate_right' 0 200 nil #art_rotate_right_grad200_24x22_36x33_48x44 )
 		#( #save 'save' 0 200 nil #art_save_grad200_16x16_24x24_32x32 )
-		#( #saveToUrl 'cloud_upload' 0 200 nil #art_cloud_upload_grad200_16x16_24x24_32x32 )
+		#( #saveToUrl 'output' 0 200 nil #art_output_grad200_16x16_24x24_32x32 )
 		#( #scale 'open_in_full' 0 200 nil #art_open_in_full_grad200_22x21_33x32_44x42 )
 		#( #scriptManager 'contract_edit' 0 200 nil #art_contract_edit_grad200_16x16_24x24_32x32 )
 		#( #search 'search' 0 200 nil #art_search_grad200_16x16_24x24_32x32 )
