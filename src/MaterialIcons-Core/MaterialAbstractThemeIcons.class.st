@@ -1,27 +1,47 @@
 "
-I am the abstract root of the icon packs of Pharo's UI (ThemeIcons, the class of `Smalltalk ui icons`) drawn with Material icons: `MaterialThemeIcons` (package MaterialIcons-ThemePack, Material Icons Rounded) and `MaterialSymbolsThemeIcons` (package MaterialSymbols-ThemePack, Material Symbols Rounded). A pack of mine:
+I am the abstract root of the icon packs of Pharo's UI (`ThemeIcons`, the class of `Smalltalk ui icons`) drawn with Material icons: `MaterialThemeIcons` (package `MaterialIcons-ThemePack`, Material Icons Rounded) and `MaterialSymbolsThemeIcons` (package `MaterialSymbols-ThemePack`, Material Symbols Rounded). A pack of mine:
 
 - maps the Pharo icon keys of the `entries` of its `artClass` (`#add`, `#delete`, `#refresh`, `#smallSave`, `#testGreen`...) to Material icons, at the size the default pack draws them;
 - keeps the icon of the pack it replaces, its `fallback`, for every other key (check boxes, radio buttons, arrows, window buttons, halos, logos...);
 - answers `<materialPrefix><name>` (`#material_arrow_back`, `#symbol_home`) with the icon of that name of its `provider`, decoded on first use.
 
-```
-MaterialThemeIcons install.		""Material icons in the UI: the windows opened from now on""
-MaterialThemeIcons uninstall.	""the previous pack again""
+```smalltalk
+MaterialThemeIcons install.
+	""Material icons in the UI: the windows opened from now on""
+MaterialThemeIcons uninstall.
+	""the previous pack again""
 MaterialThemeIcons isInstalled.
-MaterialThemeIcons installColor: Color gray.	""a fixed colour instead of that of the UI theme""
-MaterialThemeIcons installMonochrome.	""the status keys too in the colour of the UI theme""
-MaterialThemeIcons installColor: Color gray monochrome: true.	""every key in gray""
-MaterialThemeIcons exportToIconPacks.	""list it in Settings > Appearance (see below)""
+MaterialThemeIcons installColor: Color gray.
+	""a fixed colour instead of that of the UI theme""
+MaterialThemeIcons installMonochrome.
+	""the status keys too in the colour of the UI theme""
+MaterialThemeIcons installColor: Color gray monochrome: true.
+	""every key in gray""
+MaterialThemeIcons exportToIconPacks.
+	""list it in Settings > Appearance (see below)""
 ```
 
-Loading the packages changes nothing: only `install` does. `install` keeps the current pack as the fallback (installing again keeps the first one), and `uninstall` makes it current again; both go through `ThemeIcons current:`, so the tools of Pharo 12 and 15 (Morphic, Spec, Commander) pick the new icons in the windows they open next. Installing one Material pack while another is installed goes over the fallback of the other: the two replace each other, they do not pile up. The icons are in the colour of the UI theme (`provider themeColor`), redrawn when the theme changes, except the status keys, of the fixed colours of the entries (tests, errors, warnings, information, the coloured dots, the buttons of inactive windows). A `monochrome` pack draws those in its colour too: the status keys keep their own shapes (a check, an X, a ! in a disc...), not their colours.
+## Installing and uninstalling
+
+Loading the packages changes nothing: only `install` does. `install` keeps the current pack as the fallback (installing again keeps the first one), and `uninstall` makes it current again; both go through `ThemeIcons current:`, so the tools of Pharo 12 and 15 (Morphic, Spec, Commander) pick the new icons in the windows they open next. Installing one Material pack while another is installed goes over the fallback of the other: the two replace each other, they do not pile up.
+
+The icons are in the colour of the UI theme (`provider themeColor`), redrawn when the theme changes, except the status keys, of the fixed colours of the entries (tests, errors, warnings, information, the coloured dots, the buttons of inactive windows). A `monochrome` pack draws those in its colour too: the status keys keep their own shapes (a check, an X, a ! in a disc...), not their colours.
+
+## The Settings of Pharo
 
 Saving the Settings of Pharo while a pack of mine is installed records its fallback as the icon pack: a pack restored from stored settings is read from a zip named after it, which only `exportToIconPacks` writes, so a new image could not restore mine. To get it at every start, put its `install` in a startup script.
 
-The Settings of Pharo (the Icon Set of Pharo 12, the Icons Pack Manager of Pharo 15) list the current pack and the zips of `ThemeIcons destinationPath`. `exportToIconPacks` writes the pack there as such a zip (`<packName>.zip`, the layout of pharo-project/pharo-icon-packs: png-scale1.0, png-scale1.5, png-scale2.0), and its fallback too when that zip is missing, so that both can be chosen there, offline. A pack chosen there is a plain ThemeIcons read from the zip: a snapshot, without the keys of `materialPrefix` (the export leaves them out, even those already used) and without the redraw on theme changes. `install` and `exportToIconPacks` over such a snapshot take the pack replaced before (or the default pack, svgPack) as the fallback, not the snapshot. The zip holds the Apache License 2.0 of the icons and a NOTICE (`licenseText` and `artClass noticeText`) next to the PNGs.
+The Settings of Pharo (the Icon Set of Pharo 12, the Icons Pack Manager of Pharo 15) list the current pack and the zips of `ThemeIcons destinationPath`. `exportToIconPacks` writes the pack there as such a zip (`<packName>.zip`, the layout of `pharo-project/pharo-icon-packs`: `png-scale1.0`, `png-scale1.5`, `png-scale2.0`), and its fallback too when that zip is missing, so that both can be chosen there, offline.
+
+A pack chosen there is a plain `ThemeIcons` read from the zip: a snapshot, without the keys of `materialPrefix` (the export leaves them out, even those already used) and without the redraw on theme changes. `install` and `exportToIconPacks` over such a snapshot take the pack replaced before (or the default pack, `svgPack`) as the fallback, not the snapshot.
+
+The zip holds the Apache License 2.0 of the icons and a NOTICE (`licenseText` and `artClass noticeText`) next to the PNGs.
+
+## The cache
 
 `uninstall` also empties the cache of the provider, which holds the Forms the pack was drawn with.
+
+## My subclasses
 
 My subclasses define, on the class side, `packName`, `materialPrefix`, `providerStyle`, `artClass`, `licenseText`, `licenseFileName` and `unload` (Monticello sends it to the class it removes), and on the instance side `addEntry:to:`.
 "

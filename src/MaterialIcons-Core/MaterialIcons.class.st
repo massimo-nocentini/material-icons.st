@@ -1,34 +1,58 @@
 "
 I give the Material icons of one style as Forms, by their Material names:
 
-- `MaterialIcons rounded`: Material Icons Rounded (fonts.google.com/icons, icon.set=Material+Icons, icon.style=Rounded), 2127 icons;
-- `MaterialIcons symbolsRounded`: Material Symbols Rounded (icon.set=Material+Symbols, icon.style=Rounded), 3944 icons, in their default variant (FILL 0, wght 400, GRAD 0);
-- `MaterialIcons symbolsRoundedFilled`: the same icons filled (FILL 1), when the optional group SymbolsRoundedFilled is loaded.
+- `MaterialIcons rounded`: Material Icons Rounded (fonts.google.com/icons, `icon.set=Material+Icons`, `icon.style=Rounded`), 2127 icons;
+- `MaterialIcons symbolsRounded`: Material Symbols Rounded (`icon.set=Material+Symbols`, `icon.style=Rounded`), 3944 icons, in their default variant (FILL 0, wght 400, GRAD 0);
+- `MaterialIcons symbolsRoundedFilled`: the same icons filled (FILL 1), when the optional group `SymbolsRoundedFilled` is loaded.
 
-```
-MaterialIcons rounded iconNamed: #home.				""a 16x16 Form""
-MaterialIcons rounded formNamed: #arrow_back scale: 2.		""32x32""
-MaterialIcons rounded formNamed: #arrow_back size: 128.		""128x128, from the 192-pixel master""
-MaterialIcons rounded formSetNamed: #search.			""a FormSet for HiDPI: 16, 24 and 32 pixels""
+```smalltalk
+MaterialIcons rounded iconNamed: #home.
+	""a 16x16 Form""
+MaterialIcons rounded formNamed: #arrow_back scale: 2.
+	""32x32""
+MaterialIcons rounded formNamed: #arrow_back size: 128.
+	""128x128, from the 192-pixel master""
+MaterialIcons rounded formSetNamed: #search.
+	""a FormSet for HiDPI: 16, 24 and 32 pixels""
 MaterialIcons rounded formNamed: #delete scale: 1 color: Color red.
-MaterialIcons rounded iconNamed: #'10k'.			""names that begin with a digit are quoted Symbols""
+MaterialIcons rounded iconNamed: #'10k'.
+	""names that begin with a digit are quoted Symbols""
 MaterialIcons symbolsRounded iconNamed: #home.
-MaterialIcons symbolsRounded masterFormNamed: #home.	""192x192""
+MaterialIcons symbolsRounded masterFormNamed: #home.
+	""192x192""
 
-MaterialIcons rounded iconNames.			""the 2127 names, sorted""
-MaterialIcons rounded categories.			""#('action' 'alert' 'av' ...)""
+MaterialIcons rounded iconNames.
+	""the 2127 names, sorted""
+MaterialIcons rounded categories.
+	""#('action' 'alert' 'av' ...)""
 MaterialIcons rounded iconNamesInCategory: 'navigation'.
-MaterialIcons rounded search: 'trash'.			""by name and by tag""
-MaterialIcons rounded entryNamed: #home.		""a MaterialIcon: category, codepoint, tags""
+MaterialIcons rounded search: 'trash'.
+	""by name and by tag""
+MaterialIcons rounded entryNamed: #home.
+	""a MaterialIcon: category, codepoint, tags""
 ```
 
-The icons are drawn in my `color`: by default (nil) the text colour of the current UI theme, so that they read on a light and on a dark theme alike; `color: aColor` fixes it, `color: nil` follows the theme again. `MaterialIcons rounded` is one instance shared by every client, so `color:` changes the colour for all of them: a client that wants its own colour passes it, `formNamed:scale:color:`, `formNamed:size:color:` and `formSetNamed:color:` (nil there too means the colour of the theme).
+## Colours
 
-The scales are 1, 1.5 and 2 (16, 24 and 32 pixels), those of the Pharo icon packs, and those three sizes are drawn ahead, from the vector icons. A FormSet holds the three, so that a canvas scaled for HiDPI picks the sharp one. Every other size comes from the master of the icon, its PNG at 192 pixels (`masterSize`; the packages `MaterialIcons-Rounded-192`, `MaterialSymbols-Rounded-192`...): `formNamed:size:` answers it averaged down over the area of each pixel (a box filter), or interpolated up (bilinear) beyond 192. Without the masters (`hasMasters` false) the other sizes come from the 32-pixel icon instead.
+The icons are drawn in my `color`: by default (nil) the text colour of the current UI theme, so that they read on a light and on a dark theme alike; `color: aColor` fixes it, `color: nil` follows the theme again.
 
-I decode an icon the first time it is asked for, and keep its Form, per name, size and colour, until `flushCache`, the next save of the image (the class empties the caches of its instances when the image is saved, so that the saved image does not carry them) or the next start. Nothing else empties the cache: every new colour adds Forms to it (MaterialThemeIcons flushes it when the UI theme changes). My index of names is built at the first use and rebuilt by `MaterialIcons reset`.
+`MaterialIcons rounded` is one instance shared by every client, so `color:` changes the colour for all of them: a client that wants its own colour passes it, `formNamed:scale:color:`, `formNamed:size:color:` and `formSetNamed:color:` (nil there too means the colour of the theme).
 
-My icons do not change the icons of Pharo's UI: `MaterialThemeIcons install` (package MaterialIcons-ThemePack) and `MaterialSymbolsThemeIcons install` (package MaterialSymbols-ThemePack) do.
+## Sizes
+
+The scales are 1, 1.5 and 2 (16, 24 and 32 pixels), those of the Pharo icon packs, and those three sizes are drawn ahead, from the vector icons. A FormSet holds the three, so that a canvas scaled for HiDPI picks the sharp one.
+
+Every other size comes from the master of the icon, its PNG at 192 pixels (`masterSize`; the packages `MaterialIcons-Rounded-192`, `MaterialSymbols-Rounded-192`...): `formNamed:size:` answers it averaged down over the area of each pixel (a box filter), or interpolated up (bilinear) beyond 192. Without the masters (`hasMasters` false) the other sizes come from the 32-pixel icon instead.
+
+## Caches
+
+I decode an icon the first time it is asked for, and keep its Form, per name, size and colour, until `flushCache`, the next save of the image (the class empties the caches of its instances when the image is saved, so that the saved image does not carry them) or the next start. Nothing else empties the cache: every new colour adds Forms to it (`MaterialThemeIcons` flushes it when the UI theme changes).
+
+My index of names is built at the first use and rebuilt by `MaterialIcons reset`.
+
+## The icons of Pharo's UI
+
+My icons do not change the icons of Pharo's UI: `MaterialThemeIcons install` (package `MaterialIcons-ThemePack`) and `MaterialSymbolsThemeIcons install` (package `MaterialSymbols-ThemePack`) do.
 "
 Class {
 	#name : 'MaterialIcons',

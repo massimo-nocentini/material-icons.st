@@ -1,23 +1,48 @@
 "
-I give method protocols a Material Symbol: `accessing` the key, `testing` the question mark, `tests` the lab flask, `printing` the printer, `instance creation` a plus in a box... The table is data, scripts/protocol-symbols.tsv, written as MaterialProtocolSymbolsTable by scripts/protocol_symbols.py.
+I give method protocols a Material Symbol: `accessing` the key, `testing` the question mark, `tests` the lab flask, `printing` the printer, `instance creation` a plus in a box... The table is data, `scripts/protocol-symbols.tsv`, written as `MaterialProtocolSymbolsTable` by `scripts/protocol_symbols.py`.
 
+```smalltalk
+MaterialProtocolSymbols symbolNameForProtocol: 'accessing'.
+	""#key""
+MaterialProtocolSymbols symbolNameForProtocol: 'Accessing-defaults'.
+	""#settings_backup_restore""
+MaterialProtocolSymbols symbolNameForProtocol: 'tests - printing'.
+	""#labs, the family tests - ""
+MaterialProtocolSymbols symbolNameForProtocol: '*Roassal-Examples'.
+	""#extension""
+MaterialProtocolSymbols symbolNameForProtocol: 'zork'.
+	""nil: not mapped""
+MaterialProtocolSymbols symbolNameForProtocol:
+	(OrderedCollection protocolNamed: #accessing).
+MaterialProtocolSymbols formSetForProtocol: 'printing'.
+	""a FormSet, 16x16 with its 24 and 32 pixel Forms""
+MaterialProtocolSymbols formForProtocol: 'printing'.
+	""a Form, 16x16""
+MaterialProtocolSymbols enabled: false.
+	""the browsers without these icons (Settings > Appearance)""
 ```
-MaterialProtocolSymbols symbolNameForProtocol: 'accessing'.			""#key""
-MaterialProtocolSymbols symbolNameForProtocol: 'Accessing-defaults'.	""#settings_backup_restore""
-MaterialProtocolSymbols symbolNameForProtocol: 'tests - printing'.	""#labs, the family tests - ""
-MaterialProtocolSymbols symbolNameForProtocol: '*Roassal-Examples'.	""#extension""
-MaterialProtocolSymbols symbolNameForProtocol: 'zork'.				""nil: not mapped""
-MaterialProtocolSymbols symbolNameForProtocol: (OrderedCollection protocolNamed: #accessing).
-MaterialProtocolSymbols formSetForProtocol: 'printing'.	""a FormSet, 16x16 with its 24 and 32 pixel Forms""
-MaterialProtocolSymbols formForProtocol: 'printing'.		""a Form, 16x16""
-MaterialProtocolSymbols enabled: false.	""the browsers without these icons (Settings > Appearance)""
-```
 
-A name is normalised (`normalise:`: trimmed, lower case, one blank between words, ' - ' around every '-'), then it takes its exact row, else its longest prefix row (the pattern followed by a non-letter: `private` covers `private - accessing`, `test` does not cover `testing`); a protocol of an extension method (`*Package`) takes the extension rows. A name of no row has no symbol: nil, never a placeholder, and so has a symbol that the loaded Material Symbols lack.
+## From a name to its symbol
 
-The icons are in the colour of the installed Material pack of the UI (MaterialSymbolsThemeIcons or MaterialThemeIcons, its `effectiveColor`: grey after `installColor: Color gray`), else in that of `MaterialIcons symbolsRounded` (the text colour of the UI theme unless `color:` fixed it), and they follow theme changes. Never a fixed status colour.
+A name is normalised (`normalise:`: trimmed, lower case, one blank between words, `' - '` around every `'-'`), then it takes its exact row, else its longest prefix row (the pattern followed by a non-letter: `private` covers `private - accessing`, `test` does not cover `testing`); a protocol of an extension method (`*Package`) takes the extension rows.
 
-The browsers show them through the package MaterialSymbols-Protocols-Calypso (the protocol pane of the system browser, the protocol of the method editor's status bar, the protocol column of the query browsers), where Pharo shows no icon of its own, while `enabled` (default true, in the Settings browser under Appearance). `browserFormSetForProtocol:` is the icon those places show: nil when I am disabled, the icon of Pharo where Pharo has one for the protocol (`browserPharoIconNameForProtocol:`: the one Calypso's protocol pane draws itself on the names it decorates, `pharoIconNameForProtocol:`, and the one of the meaning of the row, `pharoIconNameForSymbol:`: initialization, class initialization, finalization, protected, private, extensions), so that a protocol has one icon everywhere, else mine. The symbols of those rows are answered by the API only.
+A name of no row has no symbol: nil, never a placeholder, and so has a symbol that the loaded Material Symbols lack.
+
+## Colours
+
+The icons are in the colour of the installed Material pack of the UI (`MaterialSymbolsThemeIcons` or `MaterialThemeIcons`, its `effectiveColor`: grey after `installColor: Color gray`), else in that of `MaterialIcons symbolsRounded` (the text colour of the UI theme unless `color:` fixed it), and they follow theme changes. Never a fixed status colour.
+
+## The browsers
+
+The browsers show them through the package `MaterialSymbols-Protocols-Calypso` (the protocol pane of the system browser, the protocol of the method editor's status bar, the protocol column of the query browsers), where Pharo shows no icon of its own, while `enabled` (default true, in the Settings browser under Appearance).
+
+`browserFormSetForProtocol:` is the icon those places show:
+
+- nil when I am disabled,
+- the icon of Pharo where Pharo has one for the protocol (`browserPharoIconNameForProtocol:`: the one Calypso's protocol pane draws itself on the names it decorates, `pharoIconNameForProtocol:`, and the one of the meaning of the row, `pharoIconNameForSymbol:`: initialization, class initialization, finalization, protected, private, extensions), so that a protocol has one icon everywhere,
+- else mine.
+
+The symbols of those rows are answered by the API only.
 "
 Class {
 	#name : 'MaterialProtocolSymbols',

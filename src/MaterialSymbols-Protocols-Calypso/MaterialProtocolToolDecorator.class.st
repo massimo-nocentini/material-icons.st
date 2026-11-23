@@ -1,5 +1,5 @@
 "
-I put a MaterialProtocolIconKeeper in the status bar of a method editor of Calypso (my browserTool, a ClyMethodCodeEditorToolMorph): it shows the icon of the protocol of the method before 'Edit protocol: ...' and keeps it there, since the editor builds its status bar again on every change of the browser without decorating it again.
+I put a `MaterialProtocolIconKeeper` in the status bar of a method editor of Calypso (my `browserTool`, a `ClyMethodCodeEditorToolMorph`): it shows the icon of the protocol of the method before 'Edit protocol: ...' and keeps it there, since the editor builds its status bar again on every change of the browser without decorating it again.
 "
 Class {
 	#name : 'MaterialProtocolToolDecorator',

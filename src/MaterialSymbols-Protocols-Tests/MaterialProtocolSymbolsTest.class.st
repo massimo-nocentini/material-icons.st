@@ -1,5 +1,16 @@
 "
-I test `MaterialProtocolSymbols`: the normalisation of protocol names, the exact, prefix (longest first, followed by a non-letter) and extension rows, the names of the survey's top list and their symbols, that every symbol exists, reads at 16 pixels and looks unlike the others there, that distinct meanings have distinct symbols and that the spellings of one meaning share its symbol, that the table agrees with scripts/protocol-symbols.tsv (when the clone it was loaded from is on disk), the colour (a Material pack installed in a fixed colour, monochrome or not, in the colour of the theme, none installed, a change of the UI theme), the icons a browser shows (Pharo's own for the names Calypso decorates and for the meanings Pharo has an icon for), the switch `enabled` (I switch it on for myself, and the user may have switched it off), and the session handling: the FormSets are not saved with the image, unload and initialize leave one subscription.
+I test `MaterialProtocolSymbols`:
+
+- the normalisation of protocol names,
+- the exact, prefix (longest first, followed by a non-letter) and extension rows,
+- the names of the survey's top list and their symbols,
+- that every symbol exists, reads at 16 pixels and looks unlike the others there,
+- that distinct meanings have distinct symbols and that the spellings of one meaning share its symbol,
+- that the table agrees with `scripts/protocol-symbols.tsv` (when the clone it was loaded from is on disk),
+- the colour (a Material pack installed in a fixed colour, monochrome or not, in the colour of the theme, none installed, a change of the UI theme),
+- the icons a browser shows (Pharo's own for the names Calypso decorates and for the meanings Pharo has an icon for),
+- the switch `enabled` (I switch it on for myself, and the user may have switched it off),
+- and the session handling: the FormSets are not saved with the image, `unload` and `initialize` leave one subscription.
 
 I leave the UI as I found it: its icon pack, its theme and the switch.
 "

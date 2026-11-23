@@ -1,5 +1,16 @@
 "
-I test `MaterialSymbolsThemeIcons`, the Material Symbols icon pack of the UI: install and uninstall restore the previous pack, every mapped key is a key of the previous pack drawn at its sizes, the status keys keep their colours, the buttons of inactive windows are grey, the small trimmed keys fill their key, the keys symbol_<name>, the zip for the Settings, and the swap with MaterialThemeIcons when both packages are loaded. I leave the UI's pack as I found it: a Material pack installed before the tests is put aside and made current again after each of them.
+I test `MaterialSymbolsThemeIcons`, the Material Symbols icon pack of the UI:
+
+- install and uninstall restore the previous pack,
+- every mapped key is a key of the previous pack drawn at its sizes,
+- the status keys keep their colours,
+- the buttons of inactive windows are grey,
+- the small trimmed keys fill their key,
+- the keys `symbol_<name>`,
+- the zip for the Settings,
+- and the swap with `MaterialThemeIcons` when both packages are loaded.
+
+I leave the UI's pack as I found it: a Material pack installed before the tests is put aside and made current again after each of them.
 "
 Class {
 	#name : 'MaterialSymbolsThemeIconsTest',

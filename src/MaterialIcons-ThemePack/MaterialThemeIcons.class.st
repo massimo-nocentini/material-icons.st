@@ -1,24 +1,41 @@
 "
-I am an icon pack of Pharo's UI (a ThemeIcons, the class of `Smalltalk ui icons`) drawn with Material Icons Rounded (MaterialAbstractThemeIcons holds the mechanism, shared with MaterialSymbolsThemeIcons):
+I am an icon pack of Pharo's UI (a `ThemeIcons`, the class of `Smalltalk ui icons`) drawn with Material Icons Rounded (`MaterialAbstractThemeIcons` holds the mechanism, shared with `MaterialSymbolsThemeIcons`):
 
 - the 243 Pharo icon keys of `MaterialThemeIconsArt entries` (`#add`, `#delete`, `#refresh`, `#smallSave`, `#testGreen`...) are Material icons, at the size the default pack draws them;
 - every other key (check boxes, radio buttons, arrows, window buttons, halos, logos...) keeps the icon of the pack I replace, my `fallback`;
 - `material_<name>`, for every Material icon (`#material_arrow_back`, `#material_10k`), is that icon, decoded on first use: `Smalltalk ui icons iconNamed: #material_cloud_sync`.
 
-```
-MaterialThemeIcons install.		""Material icons in the UI: the windows opened from now on""
-MaterialThemeIcons uninstall.	""the previous pack again""
+```smalltalk
+MaterialThemeIcons install.
+	""Material icons in the UI: the windows opened from now on""
+MaterialThemeIcons uninstall.
+	""the previous pack again""
 MaterialThemeIcons isInstalled.
-MaterialThemeIcons installColor: Color gray.	""a fixed colour instead of that of the UI theme""
-MaterialThemeIcons installMonochrome.	""the status keys too in the colour of the UI theme""
-MaterialThemeIcons exportToIconPacks.	""list me in Settings > Appearance (see below)""
+MaterialThemeIcons installColor: Color gray.
+	""a fixed colour instead of that of the UI theme""
+MaterialThemeIcons installMonochrome.
+	""the status keys too in the colour of the UI theme""
+MaterialThemeIcons exportToIconPacks.
+	""list me in Settings > Appearance (see below)""
 ```
 
-Loading the package changes nothing: only `install` does. `install` keeps the current pack as my fallback (installing again keeps the first one, and installing over MaterialSymbolsThemeIcons takes its fallback), and `uninstall` makes it current again; both go through `ThemeIcons current:`, so the tools of Pharo 12 and 15 (Morphic, Spec, Commander) pick the new icons in the windows they open next. The icons are in the colour of the UI theme (`MaterialIcons rounded themeColor`), redrawn when the theme changes, except the status keys, of fixed colour: tests, errors, warnings, information, breakpoint and confirm (green, red, amber, blue, red and green; see `MaterialThemeIconsArt entries`).
+## Installing and uninstalling
+
+Loading the package changes nothing: only `install` does. `install` keeps the current pack as my fallback (installing again keeps the first one, and installing over `MaterialSymbolsThemeIcons` takes its fallback), and `uninstall` makes it current again; both go through `ThemeIcons current:`, so the tools of Pharo 12 and 15 (Morphic, Spec, Commander) pick the new icons in the windows they open next.
+
+The icons are in the colour of the UI theme (`MaterialIcons rounded themeColor`), redrawn when the theme changes, except the status keys, of fixed colour: tests, errors, warnings, information, breakpoint and confirm (green, red, amber, blue, red and green; see `MaterialThemeIconsArt entries`).
+
+## The Settings of Pharo
 
 Saving the Settings of Pharo while I am installed records my fallback as the icon pack, not me: a pack restored from stored settings is read from a zip named after it, which only `exportToIconPacks` writes, so a new image could not restore me. To get me at every start, put `MaterialThemeIcons install` in a startup script.
 
-The Settings of Pharo (the Icon Set of Pharo 12, the Icons Pack Manager of Pharo 15) list the current pack and the zips of `ThemeIcons destinationPath`. `exportToIconPacks` writes me there as such a zip (`materialRound.zip`, the layout of pharo-project/pharo-icon-packs: png-scale1.0, png-scale1.5, png-scale2.0), and my fallback too when its zip is missing, so that both can be chosen there, offline. A pack chosen there is a plain ThemeIcons read from the zip: a snapshot of me, without the `material_` keys (the export leaves them out, even those already used) and without the redraw on theme changes. `install` and `exportToIconPacks` over such a snapshot take the pack that I replaced before (or the default pack, svgPack) as the fallback, not the snapshot. The zip holds the Apache License 2.0 of the icons and a NOTICE (`MaterialIconsRoundedCategory licenseText` and `MaterialThemeIconsArt noticeText`) next to the PNGs.
+The Settings of Pharo (the Icon Set of Pharo 12, the Icons Pack Manager of Pharo 15) list the current pack and the zips of `ThemeIcons destinationPath`. `exportToIconPacks` writes me there as such a zip (`materialRound.zip`, the layout of `pharo-project/pharo-icon-packs`: `png-scale1.0`, `png-scale1.5`, `png-scale2.0`), and my fallback too when its zip is missing, so that both can be chosen there, offline.
+
+A pack chosen there is a plain `ThemeIcons` read from the zip: a snapshot of me, without the `material_` keys (the export leaves them out, even those already used) and without the redraw on theme changes. `install` and `exportToIconPacks` over such a snapshot take the pack that I replaced before (or the default pack, `svgPack`) as the fallback, not the snapshot.
+
+The zip holds the Apache License 2.0 of the icons and a NOTICE (`MaterialIconsRoundedCategory licenseText` and `MaterialThemeIconsArt noticeText`) next to the PNGs.
+
+## The cache
 
 `uninstall` also empties the cache of `MaterialIcons rounded`, which holds the Forms I was drawn with.
 "

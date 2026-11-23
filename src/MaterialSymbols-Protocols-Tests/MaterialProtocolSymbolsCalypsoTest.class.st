@@ -1,7 +1,14 @@
 "
-I test the icons of MaterialSymbols-Protocols-Calypso in real Calypso browsers, opened (headless too) and drawn: the protocol pane of the system browser (a symbol on the mapped protocols, in the colour of MaterialProtocolSymbols; Pharo's own icon on private and initialization; nothing on an unmapped protocol, on the groups of extensions and on the virtual groups), the status bar of the method editor, the protocol column of a query browser (Pharo's own icon on private), the switch `MaterialProtocolSymbols enabled`, which takes every icon away and gives it back, the layout of the status bar, which stays Pharo's, and `MaterialProtocolBrowserPlugin detachFrom:`, what unloading the package does to the open browsers.
+I test the icons of `MaterialSymbols-Protocols-Calypso` in real Calypso browsers, opened (headless too) and drawn:
 
-The methods browsed are those of MaterialProtocolSymbolsFixture. I close the windows I open and leave the switch and the icon pack of the UI as I found them.
+- the protocol pane of the system browser (a symbol on the mapped protocols, in the colour of `MaterialProtocolSymbols`; Pharo's own icon on `private` and `initialization`; nothing on an unmapped protocol, on the groups of extensions and on the virtual groups),
+- the status bar of the method editor,
+- the protocol column of a query browser (Pharo's own icon on `private`),
+- the switch `MaterialProtocolSymbols enabled`, which takes every icon away and gives it back,
+- the layout of the status bar, which stays Pharo's,
+- and `MaterialProtocolBrowserPlugin detachFrom:`, what unloading the package does to the open browsers.
+
+The methods browsed are those of `MaterialProtocolSymbolsFixture`. I close the windows I open and leave the switch and the icon pack of the UI as I found them.
 "
 Class {
 	#name : 'MaterialProtocolSymbolsCalypsoTest',

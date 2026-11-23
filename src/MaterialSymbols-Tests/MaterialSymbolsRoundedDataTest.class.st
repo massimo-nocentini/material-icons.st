@@ -1,5 +1,10 @@
 "
-I check the generated data of Material Symbols Rounded (package MaterialSymbols-Rounded, MaterialSymbols-Rounded-192 when it is loaded, and the filled variant when its packages are loaded): the count of the source (3944 icons: all that the family Material Symbols Rounded supports in the metadata of Google Fonts, 15 of them from fonts.gstatic.com because the pinned commit does not have them yet; scripts/manifest-symbols.json), unique names, one method per icon and one master when the masters are loaded, and that every PNG decodes to a Form of 16, 24 and 32 pixels, and 192 for a master.
+I check the generated data of Material Symbols Rounded (package `MaterialSymbols-Rounded`, `MaterialSymbols-Rounded-192` when it is loaded, and the filled variant when its packages are loaded):
+
+- the count of the source (3944 icons: all that the family Material Symbols Rounded supports in the metadata of Google Fonts, 15 of them from fonts.gstatic.com because the pinned commit does not have them yet; `scripts/manifest-symbols.json`),
+- unique names,
+- one method per icon and one master when the masters are loaded,
+- and that every PNG decodes to a Form of 16, 24 and 32 pixels, and 192 for a master.
 "
 Class {
 	#name : 'MaterialSymbolsRoundedDataTest',

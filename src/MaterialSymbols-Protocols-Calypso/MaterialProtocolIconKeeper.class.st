@@ -1,5 +1,11 @@
 "
-I am an invisible Morph (0x0, out of the table layout of the bar, which stays as Pharo lays it out) in the status bar of a method editor of Calypso (my tool). Every 300 ms I make sure that its protocol editor ('Edit protocol: accessing') shows the icon of the protocol of the method (`MaterialProtocolSymbols browserFormSetForProtocol:`) before its label, the icon of the current protocol in the current colours: the editor builds its status bar again whenever the browser changes, and the protocol, the colour of the icons or `MaterialProtocolSymbols enabled` may change at any time. There is no icon for an extension method (the label is its package then), for a protocol without a symbol, nor while `MaterialProtocolSymbols enabled` is false. When my package is unloaded, my instances leave the open browsers (`unload`, `detach`); an instance left behind takes itself out at its next step.
+I am an invisible Morph (0x0, out of the table layout of the bar, which stays as Pharo lays it out) in the status bar of a method editor of Calypso (my tool).
+
+Every 300 ms I make sure that its protocol editor ('Edit protocol: accessing') shows the icon of the protocol of the method (`MaterialProtocolSymbols browserFormSetForProtocol:`) before its label, the icon of the current protocol in the current colours: the editor builds its status bar again whenever the browser changes, and the protocol, the colour of the icons or `MaterialProtocolSymbols enabled` may change at any time.
+
+There is no icon for an extension method (the label is its package then), for a protocol without a symbol, nor while `MaterialProtocolSymbols enabled` is false.
+
+When my package is unloaded, my instances leave the open browsers (`unload`, `detach`); an instance left behind takes itself out at its next step.
 "
 Class {
 	#name : 'MaterialProtocolIconKeeper',

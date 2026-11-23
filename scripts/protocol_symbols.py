@@ -74,7 +74,7 @@ def smalltalk(rows):
     body = '\n'.join(
         f"\t\t#( '{r['protocol']}' #{r['match']} #'{r['symbolName']}' )" for _, r in rows)
     return f'''"
-I am the table of MaterialProtocolSymbols: method protocols to Material Symbols Rounded. scripts/protocol_symbols.py writes me from scripts/protocol-symbols.tsv (where every row has its reason): edit that file and run the script, not me.
+I am the table of `MaterialProtocolSymbols`: method protocols to Material Symbols Rounded. `scripts/protocol_symbols.py` writes me from `scripts/protocol-symbols.tsv` (where every row has its reason): edit that file and run the script, not me.
 
 {len(rows)} rows ({count['exact']} exact, {count['prefix']} prefix, {count['extension']} extension), {symbols} symbols.
 "

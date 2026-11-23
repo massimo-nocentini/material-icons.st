@@ -1,5 +1,9 @@
 "
-I am the abstract root of the classes that hold the Material icons, one class per style and category. The generated packages hold the styles `#rounded` (`MaterialIcons-Rounded`, Material Icons Rounded), `#symbolsRounded` (`MaterialSymbols-Rounded`, Material Symbols Rounded) and `#symbolsRoundedFilled` (`MaterialSymbols-Rounded-Filled`, its filled variant).
+I am the abstract root of the classes that hold the Material icons, one class per style and category. The generated packages hold the styles:
+
+- `#rounded` (`MaterialIcons-Rounded`, Material Icons Rounded),
+- `#symbolsRounded` (`MaterialSymbols-Rounded`, Material Symbols Rounded) and
+- `#symbolsRoundedFilled` (`MaterialSymbols-Rounded-Filled`, its filled variant).
 
 The data is on the class side of my concrete subclasses:
 

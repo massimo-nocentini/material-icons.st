@@ -1,23 +1,33 @@
 "
-I am an icon pack of Pharo's UI (a ThemeIcons, the class of `Smalltalk ui icons`) drawn with Material Symbols Rounded, as MaterialThemeIcons is with Material Icons Rounded (MaterialAbstractThemeIcons holds the mechanism):
+I am an icon pack of Pharo's UI (a `ThemeIcons`, the class of `Smalltalk ui icons`) drawn with Material Symbols Rounded, as `MaterialThemeIcons` is with Material Icons Rounded (`MaterialAbstractThemeIcons` holds the mechanism):
 
-- the Pharo icon keys of `MaterialSymbolsThemeIconsArt entries` (scripts/symbols-mapping.tsv: `#add`, `#delete`, `#refresh`, `#smallSave`, `#testGreen`...) are Material Symbols, each in its own fill (outlined or filled) and grade (0, or 200 for heavier strokes of the same size, closer to the weight of the default pack), drawn at the sizes the default pack (svgPack) draws that key at the scales 1, 1.5 and 2, so that rows and menus keep their layout;
+- the Pharo icon keys of `MaterialSymbolsThemeIconsArt entries` (`scripts/symbols-mapping.tsv`: `#add`, `#delete`, `#refresh`, `#smallSave`, `#testGreen`...) are Material Symbols, each in its own fill (outlined or filled) and grade (0, or 200 for heavier strokes of the same size, closer to the weight of the default pack), drawn at the sizes the default pack (`svgPack`) draws that key at the scales 1, 1.5 and 2, so that rows and menus keep their layout;
 - every other key keeps the icon of the pack I replace, my `fallback`;
 - `symbol_<name>`, for every icon of Material Symbols Rounded (`#symbol_home`, `#symbol_10k`), is that icon in its default variant, decoded on first use: `Smalltalk ui icons iconNamed: #symbol_cloud_sync`.
 
-```
-MaterialSymbolsThemeIcons install.		""Material Symbols in the UI: the windows opened from now on""
-MaterialSymbolsThemeIcons uninstall.	""the previous pack again""
+```smalltalk
+MaterialSymbolsThemeIcons install.
+	""Material Symbols in the UI: the windows opened from now on""
+MaterialSymbolsThemeIcons uninstall.
+	""the previous pack again""
 MaterialSymbolsThemeIcons isInstalled.
-MaterialSymbolsThemeIcons installColor: Color gray.	""a fixed colour instead of that of the UI theme""
-MaterialSymbolsThemeIcons installMonochrome.	""the status keys too in the colour of the UI theme""
-MaterialSymbolsThemeIcons installColor: Color gray monochrome: true.	""every key in gray""
-MaterialSymbolsThemeIcons exportToIconPacks.	""materialSymbolsRounded.zip, for the Settings""
+MaterialSymbolsThemeIcons installColor: Color gray.
+	""a fixed colour instead of that of the UI theme""
+MaterialSymbolsThemeIcons installMonochrome.
+	""the status keys too in the colour of the UI theme""
+MaterialSymbolsThemeIcons installColor: Color gray monochrome: true.
+	""every key in gray""
+MaterialSymbolsThemeIcons exportToIconPacks.
+	""materialSymbolsRounded.zip, for the Settings""
 ```
 
-The icons are in the colour of the UI theme, redrawn when the theme changes, except the status keys, of the fixed colours of the mapping (tests, errors, warnings, information...); a `monochrome` pack draws them in its colour too, so that only their shapes tell them apart. Installing me while MaterialThemeIcons is installed goes over its fallback, and the other way round: the two packs replace each other. Everything else (uninstall, stored settings, the zip for the Settings, with LICENSE-material-symbols and NOTICE) is as described in MaterialAbstractThemeIcons.
+The icons are in the colour of the UI theme, redrawn when the theme changes, except the status keys, of the fixed colours of the mapping (tests, errors, warnings, information...); a `monochrome` pack draws them in its colour too, so that only their shapes tell them apart.
 
-My pixels are those of MaterialSymbolsThemeIconsArt: I need the package MaterialSymbols-Rounded only for the keys `symbol_<name>` and the colour of the theme, and neither the masters nor the filled variant.
+Installing me while `MaterialThemeIcons` is installed goes over its fallback, and the other way round: the two packs replace each other.
+
+Everything else (uninstall, stored settings, the zip for the Settings, with `LICENSE-material-symbols` and `NOTICE`) is as described in `MaterialAbstractThemeIcons`.
+
+My pixels are those of `MaterialSymbolsThemeIconsArt`: I need the package `MaterialSymbols-Rounded` only for the keys `symbol_<name>` and the colour of the theme, and neither the masters nor the filled variant.
 "
 Class {
 	#name : 'MaterialSymbolsThemeIcons',

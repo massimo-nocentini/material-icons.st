@@ -1,5 +1,11 @@
 "
-I test the facade `MaterialIcons` on Material Symbols Rounded (`MaterialIcons symbolsRounded`): the same protocol as on Material Icons Rounded, the tags held as one String, the other sizes from the masters or, without them (group `SymbolsRoundedSmall`), from the 32-pixel icon. The tests of the masters skip themselves when `MaterialSymbols-Rounded-192` is not loaded.
+I test the facade `MaterialIcons` on Material Symbols Rounded (`MaterialIcons symbolsRounded`):
+
+- the same protocol as on Material Icons Rounded,
+- the tags held as one String,
+- the other sizes from the masters or, without them (group `SymbolsRoundedSmall`), from the 32-pixel icon.
+
+The tests of the masters skip themselves when `MaterialSymbols-Rounded-192` is not loaded.
 "
 Class {
 	#name : 'MaterialSymbolsIconsTest',

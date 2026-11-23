@@ -1,5 +1,13 @@
 "
-I test `MaterialThemeIcons`, the Material icon pack of the UI: install and uninstall restore the previous pack, mapped keys are Material at the size of the previous pack, the others are those of the previous pack, the keys material_<name>, HiDPI, the zip for the Settings. I leave the UI's pack as I found it: a Material pack (of Material Icons or of Material Symbols) installed before the tests is put aside and made current again after each of them.
+I test `MaterialThemeIcons`, the Material icon pack of the UI:
+
+- install and uninstall restore the previous pack,
+- mapped keys are Material at the size of the previous pack, the others are those of the previous pack,
+- the keys `material_<name>`,
+- HiDPI,
+- the zip for the Settings.
+
+I leave the UI's pack as I found it: a Material pack (of Material Icons or of Material Symbols) installed before the tests is put aside and made current again after each of them.
 "
 Class {
 	#name : 'MaterialThemeIconsTest',

@@ -1,5 +1,5 @@
 "
-I am the table of MaterialProtocolSymbols: method protocols to Material Symbols Rounded. scripts/protocol_symbols.py writes me from scripts/protocol-symbols.tsv (where every row has its reason): edit that file and run the script, not me.
+I am the table of `MaterialProtocolSymbols`: method protocols to Material Symbols Rounded. `scripts/protocol_symbols.py` writes me from `scripts/protocol-symbols.tsv` (where every row has its reason): edit that file and run the script, not me.
 
 268 rows (206 exact, 61 prefix, 1 extension), 150 symbols.
 "

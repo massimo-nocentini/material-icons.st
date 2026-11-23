@@ -1,8 +1,15 @@
 "
-I describe one Material icon: its name (a Symbol, the Material one: `#arrow_back`, `#'10k'`), its category, the codepoint of its glyph in the fonts of its style (Material Icons or Material Symbols), its tags (the search words of fonts.google.com/icons) and the class that holds its pixels.
+I describe one Material icon:
 
-```
-MaterialIcons rounded entryNamed: #home.		""a MaterialIcon(#home action)""
+- its name (a Symbol, the Material one: `#arrow_back`, `#'10k'`),
+- its category,
+- the codepoint of its glyph in the fonts of its style (Material Icons or Material Symbols),
+- its tags (the search words of fonts.google.com/icons)
+- and the class that holds its pixels.
+
+```smalltalk
+MaterialIcons rounded entryNamed: #home.
+	""a MaterialIcon(#home action)""
 (MaterialIcons rounded entryNamed: #home) tags.
 (MaterialIcons symbolsRounded entryNamed: #home) tags.
 ```

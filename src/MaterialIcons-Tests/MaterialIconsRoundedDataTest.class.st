@@ -1,5 +1,10 @@
 "
-I check the generated data of Material Icons Rounded (packages MaterialIcons-Rounded and MaterialIcons-Rounded-192): the count of the source (2127 icons, the family Material Icons Round of the Google Fonts metadata, scripts/manifest.json), unique names, one method per icon and one master per icon, and that every PNG decodes to a Form of 16, 24 and 32 pixels, and every master to one of 192.
+I check the generated data of Material Icons Rounded (packages `MaterialIcons-Rounded` and `MaterialIcons-Rounded-192`):
+
+- the count of the source (2127 icons, the family Material Icons Round of the Google Fonts metadata, `scripts/manifest.json`),
+- unique names,
+- one method per icon and one master per icon,
+- and that every PNG decodes to a Form of 16, 24 and 32 pixels, and every master to one of 192.
 "
 Class {
 	#name : 'MaterialIconsRoundedDataTest',
