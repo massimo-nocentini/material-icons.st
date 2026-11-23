@@ -1,5 +1,5 @@
 "
-I check the generated data of Material Symbols Rounded (packages MaterialSymbols-Rounded and MaterialSymbols-Rounded-192, and the filled variant when its packages are loaded): the count of the source (3944 icons: all that the family Material Symbols Rounded supports in the metadata of Google Fonts, 15 of them from fonts.gstatic.com because the pinned commit does not have them yet; scripts/manifest-symbols.json), unique names, one method and one master per icon, and that every PNG decodes to a Form of 16, 24, 32 and 192 pixels.
+I check the generated data of Material Symbols Rounded (package MaterialSymbols-Rounded, MaterialSymbols-Rounded-192 when it is loaded, and the filled variant when its packages are loaded): the count of the source (3944 icons: all that the family Material Symbols Rounded supports in the metadata of Google Fonts, 15 of them from fonts.gstatic.com because the pinned commit does not have them yet; scripts/manifest-symbols.json), unique names, one method per icon and one master when the masters are loaded, and that every PNG decodes to a Form of 16, 24 and 32 pixels, and 192 for a master.
 "
 Class {
 	#name : 'MaterialSymbolsRoundedDataTest',
@@ -22,14 +22,19 @@ MaterialSymbolsRoundedDataTest >> categoryClassesOf: aStyle [
 
 { #category : 'helpers' }
 MaterialSymbolsRoundedDataTest >> checkEveryIconOfStyle: aStyle [
-	"Every PNG, at every scale and the master, is a Form of depth 32 of its size, grey and alpha, and not empty"
+	"Every PNG, at every scale and the master when the masters are loaded, is a Form of depth 32 of its size, grey and alpha, and not empty"
 
 	(self categoryClassesOf: aStyle) do: [ :class |
+		| sides |
+		sides := class hasMasters
+			         ifTrue: [ #( 16 24 32 192 ) ]
+			         ifFalse: [ #( 16 24 32 ) ].
 		class iconTable do: [ :row |
 			| pngs |
-			pngs := (class base64PNGsOf: row first) copyWith: (class base64MasterOf: row first).
-			self assert: pngs size equals: 4.
-			pngs with: #( 16 24 32 192 ) do: [ :png :side |
+			pngs := class base64PNGsOf: row first.
+			class hasMasters ifTrue: [ pngs := pngs copyWith: (class base64MasterOf: row first) ].
+			self assert: pngs size equals: sides size.
+			pngs with: sides do: [ :png :side |
 				| bytes form |
 				bytes := png base64Decoded.
 				self assert: (bytes at: 25) equals: 8.
@@ -42,10 +47,12 @@ MaterialSymbolsRoundedDataTest >> checkEveryIconOfStyle: aStyle [
 
 { #category : 'helpers' }
 MaterialSymbolsRoundedDataTest >> checkMethodsOfStyle: aStyle [
-	"One method icon_<name> and one master_<name> per row of the tables, and no other"
+	"One method icon_<name> per row of the tables, one master_<name> too when the masters are loaded, and no other"
 
 	(self categoryClassesOf: aStyle) do: [ :class |
-		#( 'icon_' 'master_' ) do: [ :prefix |
+		(class hasMasters
+			 ifTrue: [ #( 'icon_' 'master_' ) ]
+			 ifFalse: [ #( 'icon_' ) ]) do: [ :prefix |
 			| selectors |
 			selectors := (class class selectors select: [ :each |
 				              each beginsWith: prefix ]) asSet.
@@ -116,7 +123,11 @@ MaterialSymbolsRoundedDataTest >> testEveryIconDecodes [
 { #category : 'tests' }
 MaterialSymbolsRoundedDataTest >> testEveryIconHasItsMethods [
 
-	self assert: MaterialSymbolsRoundedCategory masterSize equals: 192.
+	MaterialSymbolsRoundedCategory hasMasters
+		ifTrue: [ self assert: MaterialSymbolsRoundedCategory masterSize equals: 192 ]
+		ifFalse: [
+			self assert: (MaterialSymbolsRoundedCategory class selectors noneSatisfy: [ :each |
+					 each beginsWith: 'master_' ]) ].
 	self checkMethodsOfStyle: #symbolsRounded
 ]
 
@@ -155,7 +166,8 @@ MaterialSymbolsRoundedDataTest >> testLicence [
 	self assert: commit equals: '10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7'.
 	self assert: (MaterialSymbolsRoundedCategory upstreamDescription includesSubstring: commit).
 	self assert: (MaterialSymbolsRoundedCategory upstreamDescription includesSubstring: 'materialsymbolsrounded').
-	self assert: (MaterialSymbolsRoundedCategory masterDescription includesSubstring: '48px').
+	MaterialSymbolsRoundedCategory hasMasters ifTrue: [
+		self assert: (MaterialSymbolsRoundedCategory masterDescription includesSubstring: '48px') ].
 	self assert: (MaterialSymbolsRoundedCategory comment includesSubstring: commit).
 	self assert: (MaterialSymbolsRoundedCategory licenseText includesSubstring: 'Apache License').
 	self assert: (MaterialSymbolsRoundedCategory licenseText includesSubstring: 'Version 2.0').

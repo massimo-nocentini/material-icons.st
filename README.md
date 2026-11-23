@@ -30,11 +30,11 @@ Metacello new
 | `SymbolsRoundedFilled` | `MaterialSymbols-Rounded-Filled`, `MaterialSymbols-Rounded-Filled-192` | `MaterialIcons symbolsRoundedFilled`, all sizes | 15.2 MB |
 | `ThemePack` | `MaterialIcons-ThemePack` (with `Core`) | `MaterialThemeIcons` | 0.04 MB |
 | `SymbolsThemePack` | `MaterialSymbols-ThemePack` (with `SymbolsRoundedSmall`) | `MaterialSymbolsThemeIcons` | 0.4 MB |
-| `Tests` | `MaterialIcons-Tests`, `MaterialSymbols-Tests` (`IconsTests`, `SymbolsTests`) | the tests, with the masters | |
-| `default` | `SymbolsRounded`, `SymbolsThemePack`, `SymbolsTests` | the symbols only, without Material Icons Rounded | 18.1 MB |
+| `Tests` | `MaterialIcons-Tests`, `MaterialSymbols-Tests` (`IconsTests`, `SymbolsTests`) | the tests; `IconsTests` loads the masters of Material Icons Rounded, `SymbolsTests` skips the tests of the masters when they are not loaded | |
+| `default` | `SymbolsRoundedSmall`, `SymbolsThemePack`, `SymbolsTests` | the symbols at 16, 24 and 32 pixels, without their masters and without Material Icons Rounded | 7.1 MB |
 | `Full` | all of them | | 40.7 MB |
 
-Material Icons Rounded is not in `default`: `load: #( 'IconsRounded' 'ThemePack' 'IconsTests' )` loads it with its masters, its pack and its tests, and `load: 'Full'` loads everything. `load: 'Core'` loads what the earlier versions loaded. The image grows by more than the Tonel loaded, and by twice as much until the caches of Monticello are emptied: see [Sizes, load times, image growth](#sizes-load-times-image-growth).
+The masters are not in `default`: without them a size other than 16, 24 and 32 is drawn from the 32-pixel icon, so large icons are soft, and `masterFormNamed:` is not available. `load: 'SymbolsRounded'` adds the masters of the symbols. Material Icons Rounded is not in `default` either: `load: #( 'IconsRounded' 'ThemePack' 'IconsTests' )` loads it with its masters, its pack and its tests, and `load: 'Full'` loads everything. `load: 'Core'` loads what the earlier versions loaded. The image grows by more than the Tonel loaded, and by twice as much until the caches of Monticello are emptied: see [Sizes, load times, image growth](#sizes-load-times-image-growth).
 
 The icon data is generated: `scripts/generate.py` rasterizes the pinned SVGs of Google's repository, see [Regenerating](#regenerating).
 
@@ -216,7 +216,7 @@ Measured on stock images: Pharo 15 build 117 and Pharo 12 build 1599. Each group
 | `IconsRounded` | 4.9 MB | 7.3 MB | 6.4 s | 15.4 s | +9.8 MB | +12.0 MB |
 | `SymbolsRoundedSmall` | 3.6 MB | 6.6 MB | 6.0 s | 24.6 s | +8.7 MB | +10.8 MB |
 | `SymbolsRounded` | 11.6 MB | 17.7 MB | 13.5 s | 44.5 s | +20.0 MB | +22.4 MB |
-| `default` (*) | | 18.1 MB | 12.7 s | 14.4 s | +20.4 MB | +23.0 MB |
+| `default` (*) | | 7.1 MB | 5.8 s | 5.7 s | +9.0 MB | +11.4 MB |
 | `Full` | 27.4 MB | 40.7 MB | 30.3 s | 90.8 s | +43.7 MB | +47.2 MB |
 
 (*) `default` was measured later, on its own: two images loading at once instead of 14, so its load times are not comparable with the other rows.
@@ -232,7 +232,7 @@ Measured on stock images: Pharo 15 build 117 and Pharo 12 build 1599. Each group
 - **Pharo 12** loads the large packages more slowly than Pharo 15: about 1.5 minutes for `Full`.
 - **Unloading.** Unloading a package leaves the names of its classes as Undeclared bindings that nothing refers to, as Monticello does for any removed class; `Smalltalk image cleanOutUndeclared` removes them.
 - **Files and methods.** The largest generated file is 1.4 MB (`MaterialSymbolsRoundedSocial.extension.st`, 384 masters). The largest method is 171 KB, the `iconTable` of the 527 symbols of `Text`. Neither Pharo 12 nor Pharo 15 hits a limit of Tonel, Monticello or the compiler.
-- **Tests.** The 74 tests of `Tests` pass on both versions, the filled ones included. They take about 3 minutes, most of it decoding every PNG at every size, masters included.
+- **Tests.** The 76 tests of `Tests` pass on both versions, the filled ones included; `testWithoutMasters` skips itself when the masters are loaded, and `testMasters` and `testOpticalSizes` when they are not. They take about 3 minutes, most of it decoding every PNG at every size, masters included.
 
 ## Regenerating
 

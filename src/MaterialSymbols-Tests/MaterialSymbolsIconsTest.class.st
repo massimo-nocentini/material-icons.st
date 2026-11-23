@@ -1,5 +1,5 @@
 "
-I test the facade `MaterialIcons` on Material Symbols Rounded (`MaterialIcons symbolsRounded`): the same protocol as on Material Icons Rounded, the tags held as one String, sizes from the masters.
+I test the facade `MaterialIcons` on Material Symbols Rounded (`MaterialIcons symbolsRounded`): the same protocol as on Material Icons Rounded, the tags held as one String, the other sizes from the masters or, without them (group `SymbolsRoundedSmall`), from the 32-pixel icon. The tests of the masters skip themselves when `MaterialSymbols-Rounded-192` is not loaded.
 "
 Class {
 	#name : 'MaterialSymbolsIconsTest',
@@ -16,6 +16,13 @@ MaterialSymbolsIconsTest >> setUp [
 
 	super setUp.
 	icons := MaterialIcons new setStyle: #symbolsRounded
+]
+
+{ #category : 'running' }
+MaterialSymbolsIconsTest >> skipUnlessMasters [
+
+	icons hasMasters ifFalse: [
+		self skip: 'the masters (MaterialSymbols-Rounded-192, group SymbolsRounded) are not loaded' ]
 ]
 
 { #category : 'tests' }
@@ -51,11 +58,29 @@ MaterialSymbolsIconsTest >> testFormNamedSize [
 			assert: (icons formNamed: #home size: side)
 			identicalTo: (icons formNamed: #home scale: scale) ].
 	#( 12 48 64 96 192 256 ) do: [ :side |
-		self assert: (icons formNamed: #'10k' size: side) extent equals: side @ side ].
+		self assert: (icons formNamed: #'10k' size: side) extent equals: side @ side ]
+]
+
+{ #category : 'tests' }
+MaterialSymbolsIconsTest >> testMasters [
+
+	self skipUnlessMasters.
 	self assert: icons hasMasters.
 	self assert: icons masterSize equals: 192.
 	self assert: (icons masterFormNamed: #eco) extent equals: 192 @ 192.
 	self assert: ((icons masterPNGBytesNamed: #eco) first: 8) equals: #[ 137 80 78 71 13 10 26 10 ]
+]
+
+{ #category : 'tests' }
+MaterialSymbolsIconsTest >> testWithoutMasters [
+	"Without MaterialSymbols-Rounded-192 the other sizes are the 32-pixel icon resampled"
+
+	| derived |
+	icons hasMasters ifTrue: [ self skip: 'the masters (MaterialSymbols-Rounded-192) are loaded' ].
+	self assert: icons masterSize isNil.
+	derived := icons formNamed: #home size: 64.
+	self assert: derived extent equals: 64 @ 64.
+	self assert: (derived bits anySatisfy: [ :pixel | (pixel bitShift: -24) > 0 ])
 ]
 
 { #category : 'tests' }
@@ -88,6 +113,7 @@ MaterialSymbolsIconsTest >> testOpticalSizes [
 	"The small sizes are drawn from the optical size 24 and the master from the optical size 48: both are the same symbol, so the master averaged down is close to the small icon, not equal"
 
 	| derived drawn difference |
+	self skipUnlessMasters.
 	derived := MaterialIcons resample: (icons masterMaskNamed: #home) to: 32.
 	drawn := icons maskNamed: #home scale: 2.
 	difference := 0.
