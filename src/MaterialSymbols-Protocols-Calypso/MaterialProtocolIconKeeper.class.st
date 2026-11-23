@@ -1,5 +1,5 @@
 "
-I am an invisible Morph (0x0) in the status bar of a method editor of Calypso (my tool). Every 300 ms I make sure that its protocol editor ('Edit protocol: accessing') shows the icon of the protocol of the method (`MaterialProtocolSymbols browserFormSetForProtocol:`) before its label, the icon of the current protocol in the current colours: the editor builds its status bar again whenever the browser changes, and the protocol, the colour of the icons or `MaterialProtocolSymbols enabled` may change at any time. There is no icon for an extension method (the label is its package then), for a protocol without a symbol, nor while `MaterialProtocolSymbols enabled` is false.
+I am an invisible Morph (0x0, out of the table layout of the bar, which stays as Pharo lays it out) in the status bar of a method editor of Calypso (my tool). Every 300 ms I make sure that its protocol editor ('Edit protocol: accessing') shows the icon of the protocol of the method (`MaterialProtocolSymbols browserFormSetForProtocol:`) before its label, the icon of the current protocol in the current colours: the editor builds its status bar again whenever the browser changes, and the protocol, the colour of the icons or `MaterialProtocolSymbols enabled` may change at any time. There is no icon for an extension method (the label is its package then), for a protocol without a symbol, nor while `MaterialProtocolSymbols enabled` is false. When my package is unloaded, my instances leave the open browsers (`unload`, `detach`); an instance left behind takes itself out at its next step.
 "
 Class {
 	#name : 'MaterialProtocolIconKeeper',
@@ -10,6 +10,33 @@ Class {
 	#category : 'MaterialSymbols-Protocols-Calypso',
 	#package : 'MaterialSymbols-Protocols-Calypso'
 }
+
+{ #category : 'detaching' }
+MaterialProtocolIconKeeper class >> detachFromToolsOf: aBrowserOrNil [
+	"Take my instances out of the status bars of the method editors of aBrowserOrNil, of every browser when nil, with their icons"
+
+	self allInstances do: [ :each |
+		(aBrowserOrNil isNil or: [
+			 each tool notNil and: [ each tool browser == aBrowserOrNil ] ]) ifTrue: [
+			each detach ] ]
+]
+
+{ #category : 'class initialization' }
+MaterialProtocolIconKeeper class >> unload [
+
+	self detachFromToolsOf: nil
+]
+
+{ #category : 'detaching' }
+MaterialProtocolIconKeeper >> detach [
+	"Take my icon out of the protocol editor and myself out of the status bar"
+
+	self stopStepping.
+	tool ifNotNil: [
+		self protocolEditor ifNotNil: [ :editor |
+			(self iconIn: editor) ifNotNil: [ :icon | icon delete ] ] ].
+	self delete
+]
 
 { #category : 'accessing' }
 MaterialProtocolIconKeeper >> formSet [
@@ -37,7 +64,8 @@ MaterialProtocolIconKeeper >> initialize [
 		extent: 0 @ 0;
 		color: Color transparent;
 		hResizing: #rigid;
-		vResizing: #rigid
+		vResizing: #rigid;
+		disableTableLayout: true
 ]
 
 { #category : 'accessing' }
@@ -48,7 +76,9 @@ MaterialProtocolIconKeeper >> protocolEditor [
 
 { #category : 'stepping' }
 MaterialProtocolIconKeeper >> step [
+	"An instance left in a browser opened before my package was unloaded takes itself out"
 
+	self class isObsolete ifTrue: [ ^ self detach ].
 	self updateIcon
 ]
 

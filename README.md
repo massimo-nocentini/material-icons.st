@@ -167,23 +167,24 @@ MaterialProtocolSymbols formForProtocol: 'printing'.		"a 16-pixel Form"
 MaterialProtocolSymbols enabled: false.	"no protocol symbol in the browsers (Settings > Appearance)"
 ```
 
-- **The mapping** is data: `scripts/protocol-symbols.tsv`, 255 rows and 150 symbols, each row with its confidence, its counts and why. `scripts/protocol_symbols.py` checks it (every symbol must be one of Material Symbols Rounded, every pattern normalised, no row twice) and writes it as the class `MaterialProtocolSymbolsTable`; a test checks that the class and the file agree. The names come from a survey of the protocols of Pharo 12, Pharo 15 and Pharo 15 with Roassal, CMark and the other usual packages: the rows give a symbol to 91% of the protocols of each image (90% in Pharo 12), and the survey's top list is mapped. Pharo's own conventions were followed: `MethodClassifier`'s names, the spellings that Renraku corrects (they share the symbol of the right one), `Protocol unclassified`.
+- **The mapping** is data: `scripts/protocol-symbols.tsv`, 268 rows and 150 symbols, each row with its confidence, its counts and why. `scripts/protocol_symbols.py` checks it (every symbol must be one of Material Symbols Rounded, every pattern normalised, no row twice) and writes it as the class `MaterialProtocolSymbolsTable`; a test checks that the class and the file agree. The names come from a survey of the protocols of Pharo 12, Pharo 15 and Pharo 15 with Roassal, CMark and the other usual packages: the rows give a symbol to 92% of the protocols of each image (91% in Pharo 12), and the survey's top list is mapped, with the usual plurals and verb forms of its names (`transformations`, `configurations`, `query`, `assertions`…). Pharo's own conventions were followed: `MethodClassifier`'s names, the spellings that Renraku corrects (they share the symbol of the right one), `Protocol unclassified`.
 - **Matching.** A name is trimmed, lowered, its blanks made single and `-` spaced as ` - ` (`Accessing-defaults` is `accessing - defaults`). Then it takes its exact row, else its longest prefix row, the prefix followed by a non-letter (`private` covers `private - accessing`; `test` does not cover `testing`), so that the families `accessing - …`, `private - …`, `tests - …`, `testing - …`, `api - …` share the symbol of their head unless a row of their own says otherwise (`accessing - defaults`, `tests - fixture`). Every extension protocol (`*Package`) takes the one `extension` symbol.
-- **The main symbols.** Distinct meanings have distinct symbols; where a key of the Material Symbols pack means the same thing its symbol is reused.
+- **The main symbols.** Distinct meanings have distinct symbols; where a key of the Material Symbols pack means the same thing its symbol is reused. Every symbol reads at 16 pixels, the size the browsers draw: the symbols that are a smudge there (`fiber_new`, `sprint`, `keyboard`, `swords`…) are not used, and no two symbols of the table look alike there (a test compares their 16-pixel forms).
 
   | protocol | symbol | protocol | symbol | protocol | symbol |
   |---|---|---|---|---|---|
   | accessing | `key` | testing | `question_mark` | tests | `labs` |
-  | initialization | `power_settings_new` | class initialization | `settings_power` | instance creation | `fiber_new` |
-  | private | `lock_person` | public | `public` | api | `api` |
-  | printing | `print` | converting | `swap_horiz` | comparing | `compare_arrows` |
-  | copying | `content_copy` | enumerating | `repeat` | adding / removing | `add` / `remove` |
-  | running | `sprint` | tests - fixture | `home_repair_service` | asserting | `verified` |
+  | instance creation | `add_box` | running | `directions_run` | printing | `print` |
+  | public | `public` | api | `api` | converting | `swap_horiz` |
+  | comparing | `compare_arrows` | copying | `content_copy` | enumerating | `repeat` |
+  | adding / removing | `add` / `remove` | tests - fixture | `home_repair_service` | asserting | `verified` |
   | visiting | `tour` | actions | `bolt` | examples | `lightbulb` |
   | updating | `sync` | drawing | `draw` | rendering | `brush` |
   | events | `touch_app` | settings | `settings` | utilities | `handyman` |
   | hooks | `phishing` | deprecated | `auto_delete` | debugging | `bug_report` |
-  | as yet unclassified | `label_off` | `*Package` | `extension` | trait protocol conflict | `swords` |
+  | documentation | `book_2` | as yet unclassified | `label_off` | trait protocol conflict | `warning` |
+
+  For some meanings the browsers show Pharo's own icon, not the row's symbol, which only the API answers (`symbolNameForProtocol:`, `formSetForProtocol:`): `private…` (`lock_person`; the browsers show `protocolPrivate`), `initialization`, `class initialization`, `instance initialization`, `finalization`, `protected` (`power_settings_new`, `settings_power`, `recycling`, `shield`; the browsers show `protocolProtected`) and the extensions, `*Package` and a protocol named `extensions` (`extension`; the browsers show `protocolExtension`).
 
 - **Where they show.** In Pharo 12, 13, 14 and 15, through the package `MaterialSymbols-Protocols-Calypso`, with Calypso's own extension points (table decorators, a browser plugin), no Pharo method overridden:
   - the protocol pane of the system browser, in the icon slot of each protocol;
@@ -191,9 +192,10 @@ MaterialProtocolSymbols enabled: false.	"no protocol symbol in the browsers (Set
   - the protocol column of Calypso's query browsers (senders, implementors…, opened from the system browser).
 
   The method list, the dialogs that choose a protocol, the debugger, the inspector and Iceberg show no protocol icon: they have no place for one without overriding Pharo.
-- **When.** Only on real protocols: not on Calypso's virtual groups (`instance side`, `extensions`, `overrides`, `deprecated`, `breakpoints`, `flags`…) nor on the `*Package` groups, which keep their look. Where Calypso draws its own icon (`private…` with `protocolPrivate`, `initial…`, `releas…`, `finali…` with `protocolProtected`, the extensions with `protocolExtension`), it keeps it, and the status bar and the protocol column show that icon too, so a protocol has one icon everywhere. A protocol without a row has no icon. A browser opened before the package was loaded gets the status bar icon when it is opened again.
+- **When.** Only on real protocols: not on Calypso's virtual groups (`instance side`, `extensions`, `overrides`, `deprecated`, `breakpoints`, `flags`…) nor on the `*Package` groups, which keep their look. Where Calypso draws its own icon (`private…` with `protocolPrivate`, `initial…`, `releas…`, `finali…` with `protocolProtected`, the extensions with `protocolExtension`), it keeps it, and the status bar and the protocol column show that icon too, so a protocol has one icon everywhere; the other names of those meanings show the same icon of Pharo (`instance initialization` looks like `initialization`, `protected` like the protected protocols): `browserPharoIconNameForProtocol:`. A protocol without a row has no icon. A browser opened before the package was loaded gets the status bar icon when it is opened again.
 - **Colour.** That of the installed Material pack (`effectiveColor`: grey after `MaterialSymbolsThemeIcons installColor: Color gray monochrome: true`), else that of `MaterialIcons symbolsRounded`, the text colour of the UI theme. The icons are drawn again when the theme changes; protocols never take the fixed colours of the status keys.
-- **The switch.** `MaterialProtocolSymbols enabled: false`, or "Material Symbols of protocols" under Appearance in the Settings browser, takes every protocol symbol out of the open browsers and gives them their look back; `enabled: true` puts them back.
+- **The switch.** `MaterialProtocolSymbols enabled: false`, or "Material Symbols of protocols" under Appearance in the Settings browser, takes every protocol symbol out of the open browsers and gives them their look back, the layout of the status bar included; `enabled: true` puts them back. The tests switch the icons on for themselves, so they pass with the switch off.
+- **Unloading** `MaterialSymbols-Protocols-Calypso` takes its icons, its plugin and the keepers of the status bars out of the open browsers too (`MaterialProtocolBrowserPlugin detachFrom:` does it for one browser).
 
 ## What is in it
 
@@ -281,7 +283,7 @@ Measured on stock images: Pharo 15 build 117 and Pharo 12 build 1599. Each group
 
   A `github://` load goes through Iceberg, whose growth was not measured here.
 - **Pharo 12** loads the large packages more slowly than Pharo 15: about 1.5 minutes for `Full`.
-- **Unloading.** Unloading a package leaves the names of its classes as Undeclared bindings that nothing refers to, as Monticello does for any removed class; `Smalltalk image cleanOutUndeclared` removes them.
+- **Unloading.** Unloading a package leaves the names of its classes as Undeclared bindings, as Monticello does for any removed class (the protocol packages first take their icons and the objects that drew them out of the open browsers); `Smalltalk image cleanOutUndeclared` removes them.
 - **Files and methods.** The largest generated file is 1.4 MB (`MaterialSymbolsRoundedSocial.extension.st`, 384 masters). The largest method is 171 KB, the `iconTable` of the 527 symbols of `Text`. Neither Pharo 12 nor Pharo 15 hits a limit of Tonel, Monticello or the compiler.
 - **Tests.** The 76 tests of `Tests` pass on both versions, the filled ones included; `testWithoutMasters` skips itself when the masters are loaded, and `testMasters` and `testOpticalSizes` when they are not. They take about 3 minutes, most of it decoding every PNG at every size, masters included.
 

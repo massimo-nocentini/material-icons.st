@@ -1,5 +1,5 @@
 "
-I test `MaterialProtocolSymbols`: the normalisation of protocol names, the exact, prefix (longest first, followed by a non-letter) and extension rows, the names of the survey's top list and their symbols, that every symbol exists and that distinct meanings have distinct symbols, that the table agrees with scripts/protocol-symbols.tsv (when the clone it was loaded from is on disk), the colour (a Material pack installed in a fixed colour, monochrome or not, in the colour of the theme, none installed, a change of the UI theme), the icons a browser shows (Pharo's own for the names Calypso decorates) and the switch `enabled`.
+I test `MaterialProtocolSymbols`: the normalisation of protocol names, the exact, prefix (longest first, followed by a non-letter) and extension rows, the names of the survey's top list and their symbols, that every symbol exists, reads at 16 pixels and looks unlike the others there, that distinct meanings have distinct symbols and that the spellings of one meaning share its symbol, that the table agrees with scripts/protocol-symbols.tsv (when the clone it was loaded from is on disk), the colour (a Material pack installed in a fixed colour, monochrome or not, in the colour of the theme, none installed, a change of the UI theme), the icons a browser shows (Pharo's own for the names Calypso decorates and for the meanings Pharo has an icon for), the switch `enabled` (I switch it on for myself, and the user may have switched it off), and the session handling: the FormSets are not saved with the image, unload and initialize leave one subscription.
 
 I leave the UI as I found it: its icon pack, its theme and the switch.
 "
@@ -58,7 +58,16 @@ MaterialProtocolSymbolsTest >> setUp [
 	(Smalltalk globals at: #MaterialSymbolsThemeIcons ifAbsent: [ nil ]) ifNotNil: [ :class |
 		lastFallbackBefore := class instVarNamed: #lastFallback ].
 	installedBefore ifNotNil: [ installedBefore class uninstall ].
-	previousPack := ThemeIcons current
+	previousPack := ThemeIcons current.
+	MaterialProtocolSymbols classVarNamed: #Enabled put: true
+]
+
+{ #category : 'accessing' }
+MaterialProtocolSymbolsTest >> unreadableSymbols [
+	"Symbols that are a smudge, a blob or a grey bar at 16 pixels (the review of 2026-11-23, on sheets of the 16-pixel forms at 1x and 3x): the table must not use them"
+
+	^ #( #fiber_new #sprint #keyboard #emoji_symbols #precision_manufacturing #stream #pattern #style #swords
+	     #app_registration #swipe_vertical )
 ]
 
 { #category : 'accessing' }
@@ -92,19 +101,56 @@ MaterialProtocolSymbolsTest >> testBrowserIconsArePharosWhereCalypsoDecorates [
 	#( #( 'private' #protocolPrivate ) #( 'private - accessing' #protocolPrivate )
 	   #( 'initialization' #protocolProtected ) #( 'class initialization' #protocolProtected )
 	   #( 'initialize-release' #protocolProtected ) #( 'finalization' #protocolProtected )
+	   #( 'release' #protocolProtected ) #( 'releasing' #protocolProtected ) #( 'Releasing' #protocolProtected )
+	   #( 'realize' #nil ) #( 'finalizing' #protocolProtected )
 	   #( '*Roassal-Examples' #protocolExtension ) ) do: [ :each |
+		| key |
+		key := each second = #nil ifFalse: [ each second ].
 		self
 			assert: (MaterialProtocolSymbols pharoIconNameForProtocol: each first)
-			equals: each second.
-		self
-			assert: (MaterialProtocolSymbols browserFormSetForProtocol: each first)
-			identicalTo: (Smalltalk ui icons iconFormSetNamed: each second) ].
+			equals: key.
+		key ifNotNil: [
+			self
+				assert: (MaterialProtocolSymbols browserPharoIconNameForProtocol: each first)
+				equals: key.
+			self
+				assert: (MaterialProtocolSymbols browserFormSetForProtocol: each first)
+				identicalTo: (Smalltalk ui icons iconFormSetNamed: key) ] ].
 	#( 'accessing' 'printing' 'tests' 'instance creation' ) do: [ :each |
 		self assert: (MaterialProtocolSymbols pharoIconNameForProtocol: each) isNil.
+		self assert: (MaterialProtocolSymbols browserPharoIconNameForProtocol: each) isNil.
 		self
 			assert: (MaterialProtocolSymbols browserFormSetForProtocol: each)
 			identicalTo: (MaterialProtocolSymbols formSetForProtocol: each) ].
 	self assert: (MaterialProtocolSymbols browserFormSetForProtocol: 'zork') isNil
+]
+
+{ #category : 'tests' }
+MaterialProtocolSymbolsTest >> testBrowserIconsArePharosForItsMeanings [
+	"A protocol of a meaning Pharo has an icon for, whose name Calypso does not decorate, shows Pharo's icon too: 'instance initialization' as 'initialization', 'protected' as the protected protocols. Every row of such a meaning does; the API still answers the Material Symbol"
+
+	#( #( 'instance initialization' #protocolProtected #power_settings_new )
+	   #( 'protected' #protocolProtected #shield ) #( 'extensions' #protocolExtension #extension ) ) do: [ :each |
+		self assert: (MaterialProtocolSymbols pharoIconNameForProtocol: each first) isNil.
+		self
+			assert: (MaterialProtocolSymbols browserPharoIconNameForProtocol: each first)
+			equals: each second.
+		self
+			assert: (MaterialProtocolSymbols browserFormSetForProtocol: each first)
+			identicalTo: (Smalltalk ui icons iconFormSetNamed: each second).
+		self
+			assert: (MaterialProtocolSymbols symbolNameForProtocol: each first)
+			equals: each third ].
+	MaterialProtocolSymbolsTable rows do: [ :row |
+		| name |
+		name := row second = #extension
+			        ifTrue: [ row first , 'Some-Package' ]
+			        ifFalse: [ row first ].
+		(MaterialProtocolSymbols pharoIconNameForSymbol: row third) ifNotNil: [ :key |
+			(MaterialProtocolSymbols pharoIconNameForProtocol: name) ifNil: [
+				self
+					assert: (MaterialProtocolSymbols browserFormSetForProtocol: name)
+					identicalTo: (Smalltalk ui icons iconFormSetNamed: key) ] ] ]
 ]
 
 { #category : 'tests' }
@@ -170,7 +216,13 @@ MaterialProtocolSymbolsTest >> testDistinctMeaningsHaveDistinctSymbols [
 	            'adding' 'removing' 'visiting' 'actions' 'examples' 'deprecated'
 	            'debugging' 'settings' 'utilities' 'hooks' 'drawing' 'rendering'
 	            'events' 'as yet unclassified' '*Foo' 'updating' 'querying'
-	            'layout' 'factory' 'helpers' 'asserting' 'tests - fixture' ).
+	            'layout' 'factory' 'helpers' 'asserting' 'tests - fixture'
+	            'importing' 'exporting' 'reading' 'writing' 'loading' 'documentation'
+	            'accessing - method dictionary' 'defaults' 'versions' 'positioning'
+	            'debugger extension' 'execution' 'keymapping' 'commands' 'styling'
+	            'theme' 'error handling' 'signalling' 'scheduling' 'navigation'
+	            'trait protocol conflict' 'streaming' 'matching' 'icons' 'operations'
+	            'registration' 'scrolling' 'expanding - collapsing' 'opening' ).
 	symbols := names collect: [ :each |
 		           MaterialProtocolSymbols symbolNameForProtocol: each ].
 	self deny: (symbols includes: nil).
@@ -215,9 +267,9 @@ MaterialProtocolSymbolsTest >> testExactRows [
 
 	#( #( 'printing' #print ) #( 'Printing' #print ) #( '  printing ' #print )
 	   #( 'testing' #question_mark ) #( 'tests' #labs ) #( 'class initialization' #settings_power )
-	   #( 'instance creation' #fiber_new ) #( 'Instance   Creation' #fiber_new )
+	   #( 'instance creation' #add_box ) #( 'Instance   Creation' #add_box )
 	   #( 'as yet unclassified' #label_off ) #( 'utilities' #handyman ) #( 'utils' #handyman )
-	   #( 'conversion' #swap_horiz ) #( 'trait protocol conflict' #swords ) ) do: [ :each |
+	   #( 'conversion' #swap_horiz ) #( 'trait protocol conflict' #warning ) ) do: [ :each |
 		self
 			assert: (MaterialProtocolSymbols symbolNameForProtocol: each first)
 			equals: each second ]
@@ -302,6 +354,95 @@ MaterialProtocolSymbolsTest >> testSetting [
 ]
 
 { #category : 'tests' }
+MaterialProtocolSymbolsTest >> testRunsWithTheSwitchOff [
+	"A user who switched the icons off still has a green suite: each test switches them on for itself and leaves the switch as it found it"
+
+	| result |
+	MaterialProtocolSymbols classVarNamed: #Enabled put: false.
+	result := (self class selector: #testBrowserIconsArePharosWhereCalypsoDecorates) run.
+	self assert: result hasPassed.
+	result := (self class selector: #testBrowserIconsArePharosForItsMeanings) run.
+	self assert: result hasPassed.
+	self deny: MaterialProtocolSymbols enabled
+]
+
+{ #category : 'tests' }
+MaterialProtocolSymbolsTest >> testShutDownForgetsTheFormSets [
+	"The FormSets drawn so far are not saved with the image"
+
+	self assert: (MaterialProtocolSymbols formSetForProtocol: 'accessing') notNil.
+	self assert: (MaterialProtocolSymbols classVarNamed: #FormSets) notEmpty.
+	MaterialProtocolSymbols shutDown: false.
+	self assert: (MaterialProtocolSymbols classVarNamed: #FormSets) isNil.
+	self assert: (MaterialProtocolSymbols formSetForProtocol: 'accessing') notNil
+]
+
+{ #category : 'tests' }
+MaterialProtocolSymbolsTest >> testSiblingSpellings [
+	"The common plurals, singulars and verb forms of a mapped name share its symbol, so that siblings look alike in a pane"
+
+	#( #( 'transformations' 'transforming' ) #( 'transformation' 'transforming' )
+	   #( 'configurations' 'configuration' ) #( 'navigating' 'navigation' )
+	   #( 'query' 'querying' ) #( 'queries' 'querying' ) #( 'lookups' 'lookup' ) #( 'resolving' 'lookup' )
+	   #( 'assertions' 'asserting' ) #( 'coloring' 'colors' ) #( 'mappings' 'mapping' )
+	   #( 'enumeration' 'enumerating' ) #( 'documenting' 'documentation' ) #( 'properties' 'meta data' )
+	   #( 'conversions' 'converting' ) #( 'removal' 'removing' ) #( 'utils' 'utilities' ) ) do: [ :each |
+		self assert: (MaterialProtocolSymbols symbolNameForProtocol: each first) notNil.
+		self
+			assert: (MaterialProtocolSymbols symbolNameForProtocol: each first)
+			equals: (MaterialProtocolSymbols symbolNameForProtocol: each second) ]
+]
+
+{ #category : 'tests' }
+MaterialProtocolSymbolsTest >> testSymbolsLookDifferentAt16Pixels [
+	"The browsers draw the symbols at 16 pixels: no two symbols of the table look alike there. The similarity of two 16-pixel forms is the weighted Jaccard index of their alpha (the sum over the pixels of the smaller alpha, over the sum of the larger one): 1 for one form, 0.94 for move_to_inbox and outbox (2 pixels differ), 0.92 for dictionary and menu_book, 0.88 for settings_backup_restore and history; the table stays below 0.8"
+
+	| symbols alphas worst |
+	symbols := (MaterialProtocolSymbolsTable rows collect: [ :row | row third ]) asSet asSortedCollection asArray.
+	alphas := symbols collect: [ :each |
+		          | form |
+		          form := MaterialProtocolSymbols provider formNamed: each scale: 1 color: Color black.
+		          form unhibernate.
+		          self assert: form extent equals: 16 @ 16.
+		          form bits asArray collect: [ :pixel | pixel bitShift: -24 ] ].
+	worst := 0 -> nil.
+	1 to: symbols size do: [ :i |
+		i + 1 to: symbols size do: [ :j |
+			| a b low high similarity |
+			a := alphas at: i.
+			b := alphas at: j.
+			low := 0.
+			high := 0.
+			1 to: a size do: [ :k |
+				low := low + ((a at: k) min: (b at: k)).
+				high := high + ((a at: k) max: (b at: k)) ].
+			similarity := low / high.
+			similarity > worst key ifTrue: [
+				worst := similarity -> {
+					         (symbols at: i).
+					         (symbols at: j) } ] ] ].
+	self
+		assert: worst key < (8 / 10)
+		description: [ worst value printString , ' look alike at 16 pixels: ' , (worst key asFloat printShowingDecimalPlaces: 3) ]
+]
+
+{ #category : 'tests' }
+MaterialProtocolSymbolsTest >> testSymbolsReadAt16Pixels [
+	"The browsers draw the symbols at 16 pixels: the table uses none of the symbols that a review of their 16-pixel forms found unreadable (unreadableSymbols), and every symbol has ink there"
+
+	| used |
+	used := (MaterialProtocolSymbolsTable rows collect: [ :row | row third ]) asSet.
+	self assert: (used select: [ :each | self unreadableSymbols includes: each ]) isEmpty.
+	used do: [ :each |
+		| form |
+		form := MaterialProtocolSymbols provider formNamed: each scale: 1 color: Color black.
+		form unhibernate.
+		self
+			assert: (form bits anySatisfy: [ :pixel | (pixel bitShift: -24) >= 128 ])
+			description: each ]
+]
+
+{ #category : 'tests' }
 MaterialProtocolSymbolsTest >> testTableAgreesWithTheTsv [
 	"MaterialProtocolSymbolsTable is scripts/protocol-symbols.tsv, read from the clone the package was loaded from"
 
@@ -359,8 +500,8 @@ MaterialProtocolSymbolsTest >> testTopProtocols [
 	"The most used protocols of Pharo 15 with its usual packages (the survey of the batteries image), and their symbols"
 
 	#( #( 'accessing' #key ) #( 'testing' #question_mark ) #( 'initialization' #power_settings_new )
-	   #( '*Some-Package' #extension ) #( 'tests' #labs ) #( 'instance creation' #fiber_new )
-	   #( 'private' #lock_person ) #( 'running' #sprint ) #( 'printing' #print ) #( 'removing' #remove )
+	   #( '*Some-Package' #extension ) #( 'tests' #labs ) #( 'instance creation' #add_box )
+	   #( 'private' #lock_person ) #( 'running' #directions_run ) #( 'printing' #print ) #( 'removing' #remove )
 	   #( 'visiting' #tour ) #( 'comparing' #compare_arrows ) #( 'converting' #swap_horiz )
 	   #( 'querying' #manage_search ) #( 'organization' #folder_open )
 	   #( 'accessing - method dictionary' #dictionary ) #( 'trait composition' #layers )
@@ -370,19 +511,38 @@ MaterialProtocolSymbolsTest >> testTopProtocols [
 	   #( 'adding' #add ) #( 'utilities' #handyman ) #( 'copying' #content_copy ) #( 'public' #public )
 	   #( 'hooks' #phishing ) #( 'enumerating' #repeat ) #( 'updating' #sync )
 	   #( 'accessing - defaults' #settings_backup_restore ) #( 'drawing' #draw )
-	   #( 'operations' #precision_manufacturing ) #( 'default' #settings_backup_restore )
+	   #( 'operations' #manufacturing ) #( 'default' #settings_backup_restore )
 	   #( 'factory' #factory ) #( 'visitor' #tour ) #( 'rendering' #brush ) #( 'event handling' #touch_app )
 	   #( 'building' #construction ) #( 'displaying' #monitor ) #( 'preconditions' #rule )
 	   #( 'settings' #settings ) #( 'events' #touch_app ) #( 'baselines' #schema ) #( 'specs' #view_quilt )
 	   #( 'transforming' #transform ) #( 'activation' #toggle_on ) #( 'defaults' #settings_backup_restore )
 	   #( 'configuration' #tune ) #( 'evaluating' #function ) #( 'asserting' #verified )
 	   #( 'writing' #output ) #( 'requirements' #line_end_circle ) #( 'tests - fixture' #home_repair_service )
-	   #( 'documentation' #menu_book ) #( 'parsing' #data_object ) #( 'storing' #save )
+	   #( 'documentation' #book_2 ) #( 'parsing' #data_object ) #( 'storing' #save )
 	   #( 'reading' #input ) #( 'menu' #menu ) #( 'system startup' #rocket_launch ) #( 'deprecated' #auto_delete )
 	   #( 'debugging' #bug_report ) #( 'as yet unclassified' #label_off ) ) do: [ :each |
 		self
 			assert: (MaterialProtocolSymbols symbolNameForProtocol: each first)
 			equals: each second ]
+]
+
+{ #category : 'tests' }
+MaterialProtocolSymbolsTest >> testUnloadAndInitialize [
+	"unload takes the subscription to theme changes and the session handler away, initialize gives them back, once"
+
+	| subscriptions |
+	subscriptions := [
+	                 (MaterialProtocolSymbols codeSupportAnnouncer subscriptions subscriptionsForClass:
+		                  MaterialProtocolSymbols class) size ].
+	[
+	MaterialProtocolSymbols unload.
+	self assert: subscriptions value equals: 0.
+	self deny: (SessionManager default hasRegistered: MaterialProtocolSymbols name) ]
+		ensure: [ MaterialProtocolSymbols initialize ].
+	self assert: subscriptions value equals: 1.
+	self assert: (SessionManager default hasRegistered: MaterialProtocolSymbols name).
+	MaterialProtocolSymbols initialize.
+	self assert: subscriptions value equals: 1
 ]
 
 { #category : 'tests' }

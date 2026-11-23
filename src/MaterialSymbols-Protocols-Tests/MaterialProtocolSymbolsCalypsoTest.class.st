@@ -1,5 +1,5 @@
 "
-I test the icons of MaterialSymbols-Protocols-Calypso in real Calypso browsers, opened (headless too) and drawn: the protocol pane of the system browser (a symbol on the mapped protocols, in the colour of MaterialProtocolSymbols; Pharo's own icon on private and initialization; nothing on an unmapped protocol, on the groups of extensions and on the virtual groups), the status bar of the method editor, the protocol column of a query browser, and the switch `MaterialProtocolSymbols enabled`, which takes every icon away and gives it back.
+I test the icons of MaterialSymbols-Protocols-Calypso in real Calypso browsers, opened (headless too) and drawn: the protocol pane of the system browser (a symbol on the mapped protocols, in the colour of MaterialProtocolSymbols; Pharo's own icon on private and initialization; nothing on an unmapped protocol, on the groups of extensions and on the virtual groups), the status bar of the method editor, the protocol column of a query browser (Pharo's own icon on private), the switch `MaterialProtocolSymbols enabled`, which takes every icon away and gives it back, the layout of the status bar, which stays Pharo's, and `MaterialProtocolBrowserPlugin detachFrom:`, what unloading the package does to the open browsers.
 
 The methods browsed are those of MaterialProtocolSymbolsFixture. I close the windows I open and leave the switch and the icon pack of the UI as I found them.
 "
@@ -205,8 +205,17 @@ MaterialProtocolSymbolsCalypsoTest >> testProtocolPane [
 		self assert: (icon valueOfProperty: #materialProtocolSymbol) equals: each second.
 		self assert: (self definitionMorphOf: (self cellNamed: each first in: window)) identicalTo: icon.
 		self assertForm: icon form isInColor: MaterialProtocolSymbols color ].
+	"Pharo's icon of its meaning, where Calypso draws none: as on initialization"
+	icon := self materialIconIn: (self cellNamed: 'instance initialization' in: window).
+	self assert: (icon valueOfProperty: #materialProtocolSymbol) equals: #protocolProtected.
+	self
+		assert: (icon valueOfProperty: #materialProtocolFormSet)
+		identicalTo: (Smalltalk ui icons iconFormSetNamed: #protocolProtected).
+	self
+		assert: ((self materialIconIn: (self cellNamed: 'accessing' in: window)) valueOfProperty: #materialProtocolFormSet)
+		identicalTo: (MaterialProtocolSymbols formSetForProtocol: 'accessing').
 	"Calypso's own icons"
-	#( 'private' 'initialization' ) do: [ :each |
+	#( 'private' 'initialization' 'releasing' ) do: [ :each |
 		| cell |
 		cell := self cellNamed: each in: window.
 		self assert: (self materialIconIn: cell) isNil.
@@ -227,6 +236,18 @@ MaterialProtocolSymbolsCalypsoTest >> testQueryBrowserColumn [
 	self assert: icons size equals: 1.
 	self assert: (icons first valueOfProperty: #materialProtocolSymbol) equals: 'printing'.
 	self assert: (icons first owner label contents asString) equals: 'printing'.
+	self
+		assert: (icons first valueOfProperty: #materialProtocolFormSet)
+		identicalTo: (MaterialProtocolSymbols browserFormSetForProtocol: 'printing').
+	"the icon of the protocol pane: Pharo's own on private"
+	window := self open: (ClyQueryBrowserMorph openOn: (ClyMessageImplementorsQuery of: #materialFixturePrivate)).
+	icons := window allMorphs select: [ :each |
+		         (each hasProperty: #materialProtocolSymbol) and: [ each owner isMemberOf: ClyItemCellMorph ] ].
+	self assert: icons size equals: 1.
+	self assert: (icons first valueOfProperty: #materialProtocolSymbol) equals: 'private'.
+	self
+		assert: (icons first valueOfProperty: #materialProtocolFormSet)
+		identicalTo: (Smalltalk ui icons iconFormSetNamed: #protocolPrivate).
 	window := self open: (ClyQueryBrowserMorph openOn: (ClyMessageImplementorsQuery of: #materialFixtureUnmapped)).
 	self assert: (window allMorphs select: [ :each | each hasProperty: #materialProtocolSymbol ]) isEmpty
 ]
@@ -252,12 +273,98 @@ MaterialProtocolSymbolsCalypsoTest >> testStatusBar [
 	self
 		assert: (icon valueOfProperty: #materialProtocolSymbol)
 		identicalTo: (Smalltalk ui icons iconFormSetNamed: #protocolPrivate).
+	#( #materialFixtureRelease #materialFixtureInstanceInitialization ) do: [ :each |
+		browser selectMethod: self fixture >> each.
+		self draw: window.
+		icon := self materialIconIn: (self protocolEditorIn: window).
+		self
+			assert: (icon valueOfProperty: #materialProtocolSymbol)
+			identicalTo: (Smalltalk ui icons iconFormSetNamed: #protocolProtected) ].
 	browser selectMethod: self fixture >> #materialFixturePrinting.
 	self draw: window.
 	icon := self materialIconIn: (self protocolEditorIn: window).
 	self
 		assert: (icon valueOfProperty: #materialProtocolSymbol)
 		identicalTo: (MaterialProtocolSymbols formSetForProtocol: 'printing')
+]
+
+{ #category : 'tests' }
+MaterialProtocolSymbolsCalypsoTest >> testStatusBarOfAnExtensionMethod [
+	"The status bar of an extension method shows its package: no icon there"
+
+	| window |
+	window := self openBrowserOn: MaterialProtocolSymbols >> #materialFixtureExtension.
+	self assert: (window allMorphs anySatisfy: [ :each | each isKindOf: MaterialProtocolIconKeeper ]).
+	self draw: window.
+	(window allMorphs select: [ :each | each isKindOf: ClyStatusBarMorph ]) do: [ :bar |
+		self assert: (self materialIconIn: bar) isNil ]
+]
+
+{ #category : 'tests' }
+MaterialProtocolSymbolsCalypsoTest >> testStatusBarLayoutIsPharos [
+	"The keeper is out of the table layout of the status bar: the bar lays its contents out where it does without the keeper"
+
+	| window keeper bar before |
+	MaterialProtocolSymbols classVarNamed: #Enabled put: false.
+	window := self openBrowserOn: self fixture >> #materialFixtureAccessing.
+	keeper := window allMorphs detect: [ :each | each isKindOf: MaterialProtocolIconKeeper ].
+	self assert: keeper extent equals: 0 @ 0.
+	self assert: keeper disableTableLayout.
+	bar := keeper owner.
+	bar fullBounds.
+	before := (bar submorphs copyWithout: keeper) collect: [ :each | each bounds ].
+	self assert: before notEmpty.
+	keeper delete.
+	bar layoutChanged.
+	bar fullBounds.
+	self assert: (bar submorphs collect: [ :each | each bounds ]) equals: before
+]
+
+{ #category : 'tests' }
+MaterialProtocolSymbolsCalypsoTest >> testDetachFromABrowser [
+	"What unloading the package does to every open browser: detachFrom: takes the plugin, the decorators of the method editors, the keepers and their icons out of a browser for good; removeIconsFrom: takes every icon of the package out of a morph"
+
+	| browser window |
+	browser := ClyFullBrowserMorph openOnMethod: self fixture >> #materialFixtureAccessing.
+	window := self open: browser.
+	self assert: (self materialIconIn: (self protocolEditorIn: window)) notNil.
+	MaterialProtocolBrowserPlugin detachFrom: browser.
+	self deny: (browser plugins anySatisfy: [ :each | each isKindOf: MaterialProtocolBrowserPlugin ]).
+	self deny: (MaterialProtocolToolDecorator allInstances anySatisfy: [ :each |
+			 each browserTool notNil and: [
+				 each browserTool browser == browser and: [
+					 (each browserTool instVarNamed: #decorators) includes: each ] ] ]).
+	self deny: (window allMorphs anySatisfy: [ :each | each isKindOf: MaterialProtocolIconKeeper ]).
+	self assert: (self materialIconIn: (self protocolEditorIn: window)) isNil.
+	browser selectMethod: self fixture >> #materialFixturePrinting.
+	self draw: window.
+	self deny: (window allMorphs anySatisfy: [ :each | each isKindOf: MaterialProtocolIconKeeper ]).
+	self assert: (self materialIconIn: (self protocolEditorIn: window)) isNil.
+	"the protocol pane keeps its icons while the package is loaded"
+	self assert: (self materialIconIn: window) notNil.
+	MaterialProtocolGroupTableDecorator removeIconsFrom: window.
+	self assert: (self materialIconIn: window) isNil
+]
+
+{ #category : 'tests' }
+MaterialProtocolSymbolsCalypsoTest >> testVirtualGroupsKeepTheirLook [
+	"Calypso's virtual groups are not protocols, even where the table maps their name: the fixture's 'abstract' group (and 'deprecated', where Calypso has that group) and 'instance side' get no icon of mine, and the decorator of the pane does not want them"
+
+	| window virtual |
+	window := self openBrowserOn: self fixture >> #materialFixtureAccessing.
+	virtual := (self protocolCellsIn: window) reject: [ :each |
+		           #( #ClyMethodsInProtocolGroup #ClyUnclassifiedMethodGroup ) includes:
+			           each item actualObject class name ].
+	self assert: (MaterialProtocolSymbols symbolNameForProtocol: 'abstract') notNil.
+	self assert: (MaterialProtocolSymbols symbolNameForProtocol: 'deprecated') notNil.
+	self assert: (virtual anySatisfy: [ :each | each item name = 'abstract' ]).
+	self assert: (virtual anySatisfy: [ :each | each item actualObject isKindOf: ClyAllMethodGroup ]).
+	virtual do: [ :each |
+		self deny: (MaterialProtocolGroupTableDecorator wantsDecorateTableCellOf: each item).
+		self assert: (self materialIconIn: each) isNil ].
+	virtual
+		detect: [ :each | each item name = 'abstract' ]
+		ifFound: [ :cell | self assert: (self definitionMorphOf: cell) isNil ]
 ]
 
 { #category : 'tests' }

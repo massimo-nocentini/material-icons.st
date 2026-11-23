@@ -33,6 +33,7 @@ MaterialProtocolColumnTableDecorator class >> decorateTableCell: anItemCellMorph
 		           ifNil: [ ^ self ].
 	anItemCellMorph addMorphBack: (formSet asMorph
 			 setProperty: #materialProtocolSymbol toValue: protocol;
+			 setProperty: #materialProtocolFormSet toValue: formSet;
 			 yourself)
 ]
 

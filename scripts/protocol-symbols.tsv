@@ -18,20 +18,23 @@
 #   methods      fork + CMark + Delimcc + Containers + MaterialIcons), and their methods; p15 / p12: behaviours in the
 #   p15 p12      stock P15 b117 / P12 b1599 images (informative: nothing reads them)
 #   note         why: who uses the name (MethodClassifier, Renraku rules, Calypso, pragmas) and why this symbol
+# Every symbol must read at 16 px, the size the browsers draw: the symbols a review of the 16 px forms found unreadable
+# (MaterialProtocolSymbolsTest>>#unreadableSymbols) are not used, and no two symbols of the table have 16 px forms that
+# look alike (weighted Jaccard similarity of their alpha below 0.8; testSymbolsLookDifferentAt16Pixels).
 # Distinct meanings take distinct symbols; rows that share a symbol are spellings or synonyms of one meaning (Renraku's
 # bad names: conversion(s), remove/removal, utils/utility, test, adding/removing, file in/out variants). Where a key of
 # MaterialSymbolsThemeIcons already means the same thing its symbol is reused (protocolPrivate lock_person,
 # protocolPublic public, protocolExtension extension, protocolProtected shield, abstract frame_source,
 # traitRequiredMethod line_end_circle, inspect eyeglasses, smallDebug bug_report, example lightbulb, testRunner labs,
-# smallPrint print, smallCopy content_copy, tools handyman, trait layers, announcement campaign, catalog menu_book,
+# smallPrint print, smallCopy content_copy, tools handyman, trait layers, announcement campaign,
 # settings settings). Every '*Package' extension protocol takes the one extension symbol.
-# 255 rows (193 exact, 61 prefix, 1 extension), 150 symbols. They give a symbol to 91.4% of the 48100 protocols of the
-# batteries image (89.4% of its methods), 91.5% in stock P15 and 90.3% in stock P12.
+# 268 rows (206 exact, 61 prefix, 1 extension), 150 symbols. They give a symbol to 91.7% of the 48100 protocols of the
+# batteries image (89.9% of its methods), 91.8% in stock P15 and 90.6% in stock P12.
 # Only real protocols are rows: Calypso's virtual groups (instance side / class side, overrides, breakpoints, ffi calls...)
 # are not protocols and keep Pharo's look. 'as yet unclassified' (Protocol unclassified) is a protocol.
 protocol	match	symbolName	confidence	behaviours	methods	p15	p12	note
 as yet unclassified	exact	label_off	high	32	115	11	10	Protocol unclassified, the protocol of every new method until it is classified; Calypso lists it as its own group (ClyUnclassifiedMethodGroup, priority 8): a label crossed out = no protocol yet
-trait protocol conflict	exact	swords	low	1	1	1	1	Protocol traitConflictName: a method two traits bring under different protocols; crossed swords = a conflict, distinct from errors, warnings and signalling
+trait protocol conflict	exact	warning	low	1	1	1	1	Protocol traitConflictName: a method two traits bring under different protocols; a warning triangle, distinct from error handling (a circle) and signalling (swords are a smudge at 16 px)
 extensions	exact	extension	high	8	30	7	5	a protocol named like Calypso's group of every extension method of the class (the group itself keeps Pharo's protocolExtension icon); the puzzle piece of protocolExtension
 *	extension	extension	high	2614	6209	2249	2445	any '*Package' or '*Package-tag' protocol: an extension method, the puzzle piece of the protocolExtension key; Calypso's protocol pane already shows protocolExtension on these groups and keeps it
 abstract	exact	frame_source	medium	12	49	12	13	a protocol of abstract methods (subclassResponsibility), named like Calypso's virtual group (which keeps its look); the symbol of the abstract icon key
@@ -50,23 +53,24 @@ methods for tests	exact	labs	low	14	33	14	11	helper methods of test resources; t
 tests - fixture	prefix	home_repair_service	medium	78	398	78	80	the fixture of a test class (78 behaviours): a toolbox, distinct from the test flask
 fixtures	prefix	home_repair_service	medium	13	67	10	6	same as tests - fixture
 setup	exact	home_repair_service	medium	10	27	10	9	fixture setup, as running
-running	prefix	sprint	medium	1187	2133	1107	978	setUp/tearDown (MethodClassifier exact mapping), 1176 behaviours; a runner, distinct from execution (play)
+running	prefix	directions_run	medium	1187	2133	1107	978	setUp/tearDown (MethodClassifier exact mapping), 1176 behaviours; a runner, distinct from execution (play); sprint, the runner it replaces, is a blob at 16 px, and play_circle would be a ring like explore and error
 building suites	exact	playlist_add_check	medium	76	86	58	52	TestCase class-side suite building; a list being checked
 asserting	prefix	verified	high	93	317	86	77	assert:/deny:/should: (MethodClassifier prefixes); a verified seal
-initialization	prefix	power_settings_new	high	3311	6011	3124	2876	initialize/reset/set (MethodClassifier; Renraku rule for instance-side #initialize); 3rd most used; power on; Calypso marks it with protocolProtected today
-initialize	prefix	power_settings_new	high	27	70	9	174	'initialize-release' (Squeak, 96 in P12, mostly renamed by P15) and 'initialize'; same as initialization
-initializing	exact	power_settings_new	medium	1	2	1	14	variant of initialization
-instance initialization	exact	power_settings_new	medium	3	3	3	3	variant of initialization
-class initialization	exact	settings_power	high	363	478	352	389	class-side #initialize/#reset (Renraku ReClassSide* rules); distinct from instance initialization: the power button inside a gear (once per class)
+assertions	exact	verified	medium	7	37	7	7	same as asserting
+initialization	prefix	power_settings_new	high	3311	6011	3124	2876	initialize/reset/set (MethodClassifier; Renraku rule for instance-side #initialize); 3rd most used; power on; Calypso marks it with protocolProtected today; the browsers show Calypso's own icon (the name begins with initial)
+initialize	prefix	power_settings_new	high	27	70	9	174	'initialize-release' (Squeak, 96 in P12, mostly renamed by P15) and 'initialize'; same as initialization; the browsers show Calypso's own icon (the name begins with initial)
+initializing	exact	power_settings_new	medium	1	2	1	14	variant of initialization; the browsers show Calypso's own icon (the name begins with initial)
+instance initialization	exact	power_settings_new	medium	3	3	3	3	variant of initialization; the browsers show protocolProtected, as on initialization (power_settings_new is Calypso's)
+class initialization	exact	settings_power	high	363	478	352	389	class-side #initialize/#reset (Renraku ReClassSide* rules); distinct from instance initialization: the power button inside a gear (once per class); the browsers show Calypso's own icon (the name begins with initial)
 system startup	exact	rocket_launch	medium	63	99	61	59	startUp:/shutDown: of SessionManager clients; the image is launched
-finalization	prefix	recycling	high	42	63	40	36	#finalize (Renraku rule) and weak finalization; resources given back
-finalizing	exact	recycling	medium	3	3	3	3	variant of finalization
-instance creation	prefix	fiber_new	high	2018	3830	1907	1858	new/from* (MethodClassifier, Renraku: not 'instance-creation'); 6th most used, mostly class side; the NEW badge
-creation	exact	fiber_new	medium	15	25	15	12	variant of instance creation
-construction	exact	fiber_new	low	16	69	16	16	variant of instance creation (Roassal, compiler)
+finalization	prefix	recycling	high	42	63	40	36	#finalize (Renraku rule) and weak finalization; resources given back; the browsers show Calypso's own icon (the name begins with finali)
+finalizing	exact	recycling	medium	3	3	3	3	variant of finalization; the browsers show Calypso's own icon (the name begins with finali)
+instance creation	prefix	add_box	high	2018	3830	1907	1858	new/from* (MethodClassifier, Renraku: not 'instance-creation'); 6th most used, mostly class side; a plus in a box = a new object, distinct from adding (a bare plus); fiber_new (the NEW badge) is unreadable at 16 px
+creation	exact	add_box	medium	15	25	15	12	variant of instance creation
+construction	exact	add_box	low	16	69	16	16	variant of instance creation (Roassal, compiler)
 factory	prefix	factory	high	163	342	162	158	factory methods (146 behaviours); a factory, related to but distinct from instance creation
 class factory	exact	factory	medium	7	12	7	3	variant of factory
-private	prefix	lock_person	high	2384	8072	2228	2138	private methods and every 'private - foo' (165 sub-protocols); the symbol of protocolPrivate, which Calypso draws on every protocol that begins with private
+private	prefix	lock_person	high	2384	8072	2228	2138	private methods and every 'private - foo' (165 sub-protocols); the symbol of protocolPrivate, which Calypso draws on every protocol that begins with private; the browsers show Calypso's own icon (the name begins with private)
 public	prefix	public	high	302	1171	277	285	public API (Roassal 'public - hooks' etc.); the symbol of protocolPublic
 api	prefix	api	high	632	2583	627	552	Spec's 'api', 'api - events', 'api - selection' (48 sub-protocols); the api symbol
 public api	exact	api	medium	16	49	16	14	same as api
@@ -80,9 +84,12 @@ converting	prefix	swap_horiz	high	454	979	418	414	as* (MethodClassifier 'as'; Re
 conversion	exact	swap_horiz	medium	9	29	0	0	the name Renraku rewrites to converting
 conversions	exact	swap_horiz	medium	0	0	0	0	the name Renraku rewrites to converting
 transforming	exact	transform	medium	113	367	113	113	RB transformations, Roassal transforms (113 behaviours); the transform frame, distinct from converting
+transformation	exact	transform	medium	9	20	9	9	same as transforming
+transformations	exact	transform	medium	12	118	12	12	plural of transformation; same as transforming
 copying	prefix	content_copy	high	226	429	206	209	copy/postCopy/deepCopy (MethodClassifier 'copy'); the symbol of smallCopy
 copy	exact	content_copy	low	0	0	0	0	variant of copying
 enumerating	prefix	repeat	high	188	581	169	162	do:/collect:/select:/detect: (MethodClassifier keyword suffixes); a loop
+enumeration	exact	repeat	medium	9	25	8	12	same as enumerating
 iterating	exact	repeat	medium	19	36	18	18	variant of enumerating
 adding	prefix	add	high	258	586	230	226	add* (MethodClassifier 'add'); plus
 removing	prefix	remove	high	512	828	459	459	remove* (MethodClassifier; Renraku: not remove/removal); minus
@@ -111,7 +118,7 @@ layout	prefix	dashboard	high	364	563	352	312	layout (361 behaviours, Morphic/Spe
 layouting	exact	dashboard	low	6	7	2	2	variant of layout
 specs	exact	view_quilt	medium	115	132	114	130	Spec layout methods on the class side (115 behaviours); quilt of panes
 geometry	prefix	square_foot	medium	84	339	83	82	bounds/extent/position (74 behaviours); a set square
-positioning	exact	open_with	low	22	83	19	15	move/position; four arrows
+positioning	exact	my_location	low	22	83	19	15	move/position; a crosshair (open_with was api's four arrows at 16 px)
 events	prefix	touch_app	high	154	499	149	159	Morphic/Spec events (117 behaviours, 7 sub-protocols); a touching hand
 event	prefix	touch_app	medium	57	138	57	59	'event', 'event type', 'event processing'; same as events
 event handling	exact	touch_app	high	139	667	138	127	mouseDown:/keyStroke: handlers (139 behaviours); same as events
@@ -131,6 +138,7 @@ setting	exact	settings	medium	14	33	14	15	singular of settings
 system settings	exact	settings	medium	2	31	2	2	variant of settings
 default - settings	exact	settings	low	9	9	9	9	'default-settings' (Roassal); settings
 configuration	prefix	tune	medium	106	237	103	62	configuration (103 behaviours); sliders, distinct from settings
+configurations	exact	tune	medium	12	104	12	11	plural of configuration
 configuring	exact	tune	medium	28	51	26	22	variant of configuration
 options	exact	tune	low	15	168	14	16	variant of configuration
 utilities	exact	handyman	high	246	713	233	224	utilities (Renraku: not utils/utility); the toolbox of the tools key
@@ -143,12 +151,15 @@ hooks	prefix	phishing	medium	192	404	175	180	template-method hooks for subclasse
 hook	exact	phishing	medium	47	112	42	41	singular of hooks
 templatemethod	exact	phishing	low	14	26	14	13	template method = hooks
 building	prefix	construction	medium	169	511	155	151	build* (Spec, Calypso 'building groups'); construction works
-operations	exact	precision_manufacturing	low	168	530	166	170	generic operations (RB, files); a robot arm doing work, distinct from actions
+operations	exact	manufacturing	low	168	530	166	170	generic operations (RB, files); gears at work, distinct from actions (precision_manufacturing, a robot arm, is unreadable at 16 px)
 querying	exact	manage_search	high	444	562	400	408	queries (444 behaviours, Calypso/RB); a search over a list
+query	exact	manage_search	medium	7	47	7	8	singular of queries; same as querying
 queries	prefix	manage_search	high	82	232	82	85	variant of querying
 searching	exact	search	medium	17	69	17	13	search/find; the magnifying glass of search
 finding/searching	exact	search	medium	21	93	8	7	variant of searching
 lookup	exact	search	medium	14	32	14	14	variant of searching
+resolving	exact	search	medium	36	86	36	28	resolving a name to what it stands for (FileSystemResolver, Metacello, Ring); same meaning as lookup
+lookups	exact	search	medium	2	42	2	2	plural of lookup
 organization	exact	folder_open	medium	383	578	339	2	Behavior's organization protocol copied by class-side traits (383 behaviours in P15, new since P13); an open folder
 categories	exact	category	medium	380	381	336	340	Behavior's category accessors (380 behaviours, copied by traits); the category shapes
 classification	exact	category	low	8	22	8	8	same as categories
@@ -168,18 +179,20 @@ validation	exact	fact_check	medium	28	79	27	26	same as checking
 validating	exact	fact_check	medium	23	29	23	19	same as checking
 reading	exact	input	medium	67	151	64	60	read* of streams/files; an arrow into a box, the pair of writing
 writing	exact	output	medium	92	266	75	75	write* (MethodClassifier 'write'); an arrow out of a box (as saveToUrl)
-streaming	exact	stream	medium	15	91	15	15	stream protocols; the stream symbol
-streams	exact	stream	low	10	62	10	11	variant of streaming
+streaming	exact	waves	medium	15	91	15	15	stream protocols; waves = a flow (stream, a ring of dots, reads as a spinner at 16 px)
+streams	exact	waves	low	10	62	10	11	variant of streaming
 parsing	exact	data_object	medium	75	260	58	47	parse* (MethodClassifier 'parse'); a structured object built from text
 serialize/materialize	prefix	archive	medium	54	169	54	54	Fuel serialisation (53 behaviours); an archive box
 serializing	exact	archive	medium	8	18	8	9	same as serialize/materialize
 serialization	exact	archive	medium	4	4	4	6	same as serialize/materialize
 ston	prefix	archive	medium	30	42	30	28	'ston-core' STON serialisation; same as serialization
-documentation	exact	menu_book	medium	77	123	76	76	class/package documentation methods; a book (the symbol of catalog)
+documentation	exact	book_2	medium	77	123	76	76	class/package documentation methods; a closed book (menu_book was the open book of accessing - method dictionary's dictionary at 16 px)
+documenting	exact	book_2	medium	5	16	5	5	same as documentation
 description	exact	description	medium	30	40	30	21	description methods (Magritte-like, Roassal); a page of text
 descriptions	exact	description	low	3	4	3	3	plural of description
 meta - data	prefix	sell	medium	133	135	133	76	'meta-data - dependency analyser' of manifests (126 behaviours); a tag = metadata
 meta data	exact	sell	low	19	45	19	4	variant of meta - data
+properties	exact	sell	medium	27	250	27	26	property dictionaries (propertyAt:, RSObjectWithProperty, Package, AST nodes): data attached to an object, as meta data
 meta - object - protocol	exact	flip	medium	27	58	27	26	reflective MOP methods; a mirror (flip)
 reflective operations	exact	flip	medium	26	36	23	20	instVarAt:/perform: and friends; a mirror
 code - critics	exact	rate_review	medium	72	165	72	69	Renraku critique overrides (72 behaviours); a review
@@ -196,15 +209,15 @@ menu	prefix	menu	high	106	424	105	95	menus (<worldMenu>, <contextMenu> methods);
 menus	exact	menu	medium	12	51	12	16	plural of menu
 world menu	exact	menu	medium	29	53	28	23	<worldMenu> items (34 of 72 pragmas)
 context menu	exact	menu	medium	18	23	18	15	<contextMenu> methods; menu
-keymapping	exact	keyboard	medium	22	40	22	22	<keymap> methods (10 of 16); the keyboard
-keymaps	prefix	keyboard	medium	16	134	16	15	variant of keymapping, with sub-protocols
-shortcuts	exact	keyboard	medium	6	7	6	6	variant of keymapping
+keymapping	exact	keyboard_alt	medium	22	40	22	22	<keymap> methods (10 of 16); a keyboard with its keys (keyboard has no opaque pixel at 16 px: a grey bar)
+keymaps	prefix	keyboard_alt	medium	16	134	16	15	variant of keymapping, with sub-protocols
+shortcuts	exact	keyboard_alt	medium	6	7	6	6	variant of keymapping
 commands	exact	keyboard_command_key	medium	49	138	49	49	Commander commands (49 behaviours); the command key
 command line	exact	terminal	medium	15	19	15	8	CLI handlers (15 behaviours); a terminal
 stepping	exact	step	medium	45	118	45	46	Morphic step/stepTime and debugger stepping; steps
 debugging	exact	bug_report	high	27	42	26	26	debugging helpers; the bug of smallDebug
 debug	prefix	bug_report	medium	14	51	14	22	'debug', 'debug - stepping'; same as debugging
-debugger extension	exact	pest_control	medium	14	62	14	12	debugger extensions (14 behaviours); a bug being treated, distinct from debugging
+debugger extension	exact	troubleshoot	medium	14	62	14	12	debugger extensions (14 behaviours); a magnifier on a trace, distinct from debugging (pest_control was bug_report's beetle at 16 px)
 inspector	prefix	eyeglasses	high	19	51	14	12	inspector extensions (<inspectorPresentationOrder:title:>: 15 in 'inspector', 7 in 'inspector extensions'); the eyeglasses of inspect/glamorousInspect
 inspecting	exact	eyeglasses	medium	4	4	4	4	variant of inspector
 inspection	exact	eyeglasses	medium	1	1	1	1	variant of inspector
@@ -212,7 +225,7 @@ spotter	prefix	travel_explore	medium	13	24	13	6	'spotter-extensions', 'spotter-a
 deprecation	exact	auto_delete	high	16	16	16	4	deprecated methods; same as deprecated
 toremove	exact	auto_delete	medium	20	75	19	17	'TOREMOVE' (20 behaviours); scheduled for removal
 obsolete	exact	auto_delete	low	5	7	5	4	same as deprecated
-initialization - deprecated	exact	auto_delete	medium	8	11	8	8	deprecated initializers (8 behaviours): deprecated wins over initialization
+initialization - deprecated	exact	auto_delete	medium	8	11	8	8	deprecated initializers (8 behaviours): deprecated wins over initialization; the browsers show Calypso's own icon (the name begins with initial)
 accessing - deprecated	exact	auto_delete	medium	2	2	2	1	deprecated accessors; deprecated wins over accessing
 compatibility	exact	handshake	medium	33	83	33	30	compatibility methods (33 behaviours); a handshake with older code
 backward compatibility	exact	handshake	medium	7	11	7	7	same as compatibility
@@ -223,10 +236,11 @@ arithmetic	exact	calculate	high	31	146	28	28	+ - * / (31 behaviours); a calculat
 mathematical functions	exact	calculate	medium	7	33	6	6	sin/exp/ln; same as arithmetic
 theme	exact	palette	medium	27	39	27	18	UI theme methods (27 behaviours); a palette
 colors	exact	palette	medium	11	270	11	8	colour accessors; palette
-styling	exact	style	medium	22	44	22	22	styles of widgets/text (22 behaviours); the style symbol, distinct from theme
-styles	exact	style	low	15	43	14	11	plural of styling
-style	prefix	style	low	26	108	21	21	Roassal 'style - dashes/join/cap'; styling
-icons	prefix	emoji_symbols	medium	51	4267	33	39	icon accessors (47 behaviours, 4249 methods in the batteries image: the theme packs' icon methods); emoji_symbols
+coloring	exact	palette	medium	3	37	3	3	variant of colors
+styling	exact	text_format	medium	22	44	22	22	styles of text and widgets (Shout stylers, 22 behaviours); a styled letter, distinct from theme (style is unreadable at 16 px)
+styles	exact	text_format	low	15	43	14	11	plural of styling
+style	prefix	text_format	low	26	108	21	21	Roassal 'style - dashes/join/cap'; styling
+icons	prefix	image	medium	51	4267	33	39	icon accessors (47 behaviours, 4249 methods in the batteries image: the theme packs' icon methods); a picture (emoji_symbols is unreadable at 16 px)
 callbacks	exact	phone_callback	medium	27	53	27	18	FFI/announcement callbacks (27 behaviours); a call back
 dependencies	exact	hub	medium	25	65	22	20	dependency declarations (25 behaviours); a hub of links
 selection	prefix	arrow_selector_tool	medium	55	226	55	52	selection state of lists/text (23 behaviours); the selection cursor
@@ -244,11 +258,12 @@ binding	exact	link	low	19	37	19	19	variable/key bindings; a link
 merging	exact	merge	medium	19	44	19	23	merges (Iceberg, Epicea); merge
 replacing	exact	find_replace	medium	18	54	18	17	replace*; find and replace
 expanding - collapsing	exact	unfold_more	medium	15	62	15	14	tree expansion; unfold
-scrolling	exact	swipe_vertical	low	15	52	15	15	scroll methods; a vertical swipe
+scrolling	exact	mouse	low	15	52	15	15	scroll methods; a mouse and its wheel (swipe_vertical is unreadable at 16 px)
 navigation	exact	explore	low	14	97	12	9	navigation; a compass
+navigating	exact	explore	medium	9	70	9	9	variant of navigation
 importing	exact	move_to_inbox	low	14	19	14	12	import methods; into the inbox
-exporting	exact	outbox	low	2	6	0	0	export methods; the pair of importing
-registration	exact	app_registration	low	14	56	14	11	register:/unregister (14 behaviours)
+exporting	exact	ios_share	low	2	6	0	0	export methods; an arrow out of a box, the pair of importing (outbox differed from move_to_inbox in 2 pixels at 16 px)
+registration	exact	how_to_reg	low	14	56	14	11	register:/unregister (14 behaviours); a person checked in (app_registration is unreadable at 16 px)
 resources	exact	inventory_2	low	14	41	14	20	resources (14 behaviours, test resources); a storage box
 cleanup	exact	cleaning_services	medium	53	68	53	61	cleanUp methods (53 behaviours); cleaning
 cleaning	exact	cleaning_services	medium	13	43	13	15	variant of cleanup
@@ -257,8 +272,8 @@ benchmarking	exact	speed	medium	4	8	4	4	the MethodClassifier name; speed
 profiling	exact	monitor_heart	low	6	25	6	6	profilers; a heartbeat monitor, distinct from benchmarks
 baselines	exact	schema	high	116	137	101	71	Metacello baseline: (Renraku rule; MethodClassifier 'baseline'); a schema of the project
 baseline	exact	schema	medium	14	18	14	17	singular of baselines
-versions	exact	history	medium	17	48	17	10	Metacello versions (MethodClassifier 'version'); history
-symbolic versions	exact	history	medium	0	0	0	0	<symbolicVersion:> methods (MethodClassifier pragma mapping); versions
+versions	exact	commit	medium	17	48	17	10	Metacello versions (MethodClassifier 'version'); a commit on a line (history was settings_backup_restore at 16 px)
+symbolic versions	exact	commit	medium	0	0	0	0	<symbolicVersion:> methods (MethodClassifier pragma mapping); versions
 installing	exact	install_desktop	low	39	84	37	32	install methods (39 behaviours)
 loading	exact	download	medium	36	84	35	33	load methods (36 behaviours); the download arrow of smallLoadProject
 opening	exact	open_in_new	medium	33	93	27	28	open methods (33 behaviours); open in a new window
@@ -266,11 +281,12 @@ open/close	exact	open_in_new	low	21	45	21	22	same as opening
 showing	exact	visibility	low	18	44	18	15	show/hide; an eye
 system changes	exact	change_history	low	34	68	34	36	system-change announcements (34 behaviours); change history
 sorting	exact	sort	high	51	104	48	44	sort* (MethodClassifier 'sort'); sort
-matching	exact	pattern	medium	62	126	62	60	matches*/pattern matching (62 behaviours); a pattern
+matching	exact	regular_expression	medium	62	126	62	60	matches*/pattern matching (62 behaviours); the regular-expression symbol (pattern, a grid of dots, is unreadable at 16 px)
 undo	prefix	undo	medium	9	27	9	9	'undo - redo' and friends; undo
 scanning	exact	document_scanner	low	24	90	23	24	scanners (24 behaviours); a scanner
 stack	exact	stacks	low	19	28	19	2	stack access (19 behaviours); stacks
 mapping	exact	map	low	22	63	14	14	mappings (22 behaviours); a map
+mappings	exact	map	medium	2	32	2	2	plural of mapping
 annotations	exact	sticky_note_2	medium	15	40	15	16	annotations (Calypso <classAnnotation>); a sticky note
 annotation	exact	sticky_note_2	low	2	4	2	0	singular of annotations
 filtering	exact	filter_alt	medium	30	63	30	31	Spotter/Epicea filters (30 behaviours); a funnel
@@ -281,7 +297,7 @@ protected	exact	shield	low	11	16	11	11	protected methods; the symbol of protocol
 subscription	exact	campaign	low	11	30	11	11	announcement subscriptions; same as announcements
 analyzing	exact	analytics	low	40	62	40	40	Fuel analysis (35 of 40 behaviours); a chart
 metrics	exact	analytics	low	9	35	9	8	metrics; same as analyzing
-scheduling	exact	schedule	low	11	81	11	5	process/task scheduling; a clock
+scheduling	exact	timer	low	11	81	11	5	process/task scheduling; a stopwatch (schedule, a clock in a ring, was error's ring at 16 px)
 file in/out	exact	drive_file_move	medium	10	36	10	11	the name Renraku asks for (not filein/out, fileIn/Out); a file moved in or out
 encoding	exact	swap_horiz	low	9	63	8	7	encoders; a conversion, as converting
 decoding	exact	swap_horiz	low	30	75	4	3	decoders (CMark); a conversion, as converting

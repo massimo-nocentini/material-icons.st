@@ -1,5 +1,5 @@
 "
-I give method protocols a Material Symbol: `accessing` the key, `testing` the question mark, `tests` the lab flask, `initialization` the power button, `private` the locked person, `printing` the printer... The table is data, scripts/protocol-symbols.tsv, written as MaterialProtocolSymbolsTable by scripts/protocol_symbols.py.
+I give method protocols a Material Symbol: `accessing` the key, `testing` the question mark, `tests` the lab flask, `printing` the printer, `instance creation` a plus in a box... The table is data, scripts/protocol-symbols.tsv, written as MaterialProtocolSymbolsTable by scripts/protocol_symbols.py.
 
 ```
 MaterialProtocolSymbols symbolNameForProtocol: 'accessing'.			""#key""
@@ -17,7 +17,7 @@ A name is normalised (`normalise:`: trimmed, lower case, one blank between words
 
 The icons are in the colour of the installed Material pack of the UI (MaterialSymbolsThemeIcons or MaterialThemeIcons, its `effectiveColor`: grey after `installColor: Color gray`), else in that of `MaterialIcons symbolsRounded` (the text colour of the UI theme unless `color:` fixed it), and they follow theme changes. Never a fixed status colour.
 
-The browsers show them through the package MaterialSymbols-Protocols-Calypso (the protocol pane of the system browser, the protocol of the method editor's status bar, the protocol column of the query browsers), where Pharo shows no icon of its own, while `enabled` (default true, in the Settings browser under Appearance). `browserFormSetForProtocol:` is the icon those places show: nil when I am disabled, the icon that Calypso's protocol pane draws itself for the names it decorates (`pharoIconNameForProtocol:`), so that a protocol has one icon everywhere, else mine.
+The browsers show them through the package MaterialSymbols-Protocols-Calypso (the protocol pane of the system browser, the protocol of the method editor's status bar, the protocol column of the query browsers), where Pharo shows no icon of its own, while `enabled` (default true, in the Settings browser under Appearance). `browserFormSetForProtocol:` is the icon those places show: nil when I am disabled, the icon of Pharo where Pharo has one for the protocol (`browserPharoIconNameForProtocol:`: the one Calypso's protocol pane draws itself on the names it decorates, `pharoIconNameForProtocol:`, and the one of the meaning of the row, `pharoIconNameForSymbol:`: initialization, class initialization, finalization, protected, private, extensions), so that a protocol has one icon everywhere, else mine. The symbols of those rows are answered by the API only.
 "
 Class {
 	#name : 'MaterialProtocolSymbols',
@@ -39,14 +39,23 @@ Class {
 
 { #category : 'icons' }
 MaterialProtocolSymbols class >> browserFormSetForProtocol: aStringOrProtocol [
-	"The icon a browser shows next to the protocol aStringOrProtocol: nil when I am disabled; the icon Calypso's protocol pane draws itself for that name (private..., initialization..., extensions), so that the protocol has the same icon everywhere; else mine, or nil"
+	"The icon a browser shows next to the protocol aStringOrProtocol: nil when I am disabled; Pharo's icon where Pharo has one for that protocol (browserPharoIconNameForProtocol:), so that the protocol has the same icon everywhere; else mine, or nil"
 
 	| name |
 	self enabled ifFalse: [ ^ nil ].
 	name := self nameOf: aStringOrProtocol.
-	(self pharoIconNameForProtocol: name) ifNotNil: [ :key |
+	(self browserPharoIconNameForProtocol: name) ifNotNil: [ :key |
 		^ Smalltalk ui icons iconFormSetNamed: key ifNone: [ nil ] ].
 	^ self formSetForProtocol: name
+]
+
+{ #category : 'icons' }
+MaterialProtocolSymbols class >> browserPharoIconNameForProtocol: aStringOrProtocol [
+	"The key of the icon of Pharo that the browsers show next to the protocol aStringOrProtocol instead of its Material Symbol, or nil: the icon Calypso's protocol pane draws itself on that name (pharoIconNameForProtocol:: private..., initial..., releas..., finali..., *Package), else the icon of Pharo for the meaning of its row (pharoIconNameForSymbol:), so that 'instance initialization' looks like 'initialization' and 'protected' like Calypso's protected protocols"
+
+	^ (self pharoIconNameForProtocol: aStringOrProtocol) ifNil: [
+		  (self symbolNameForProtocol: aStringOrProtocol) ifNotNil: [ :symbolName |
+			  self pharoIconNameForSymbol: symbolName ] ]
 ]
 
 { #category : 'accessing' }
@@ -173,6 +182,21 @@ MaterialProtocolSymbols class >> pharoIconNameForProtocol: aStringOrProtocol [
 	(#( 'initial' 'class initial' 'releaz' 'releas' 'finali' ) anySatisfy: [ :each |
 		 name beginsWith: each ]) ifTrue: [ ^ #protocolProtected ].
 	^ nil
+]
+
+{ #category : 'icons' }
+MaterialProtocolSymbols class >> pharoIconNameForSymbol: aSymbol [
+	"The key of the icon of Pharo for the meaning of the rows of the Material Symbol aSymbol, where Calypso draws that icon on the protocols of that meaning, or nil: the rows of initialization, class initialization, finalization and protected (protocolProtected), of private (protocolPrivate) and of extensions (protocolExtension)"
+
+	^ ({
+		   (#power_settings_new -> #protocolProtected).
+		   (#settings_power -> #protocolProtected).
+		   (#recycling -> #protocolProtected).
+		   (#shield -> #protocolProtected).
+		   (#lock_person -> #protocolPrivate).
+		   (#extension -> #protocolExtension) } asDictionary)
+		  at: aSymbol
+		  ifAbsent: [ nil ]
 ]
 
 { #category : 'accessing' }

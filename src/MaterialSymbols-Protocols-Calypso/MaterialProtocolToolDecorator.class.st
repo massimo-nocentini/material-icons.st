@@ -8,6 +8,22 @@ Class {
 	#package : 'MaterialSymbols-Protocols-Calypso'
 }
 
+{ #category : 'detaching' }
+MaterialProtocolToolDecorator class >> detachFromToolsOf: aBrowserOrNil [
+	"Take my instances out of the method editors of aBrowserOrNil, of every browser when nil: they would put a keeper in the status bars those editors build next"
+
+	self allInstances do: [ :each |
+		each browserTool ifNotNil: [ :tool |
+			(aBrowserOrNil isNil or: [ tool browser == aBrowserOrNil ]) ifTrue: [
+				(tool instVarNamed: #decorators) remove: each ifAbsent: [  ] ] ] ]
+]
+
+{ #category : 'class initialization' }
+MaterialProtocolToolDecorator class >> unload [
+
+	self detachFromToolsOf: nil
+]
+
 { #category : 'decoration' }
 MaterialProtocolToolDecorator >> decorateTool [
 	"The keeper is a submorph of the status bar itself, which ClyStatusBarMorph>>#clear (it empties only its two bars) leaves in place"
