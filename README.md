@@ -12,6 +12,8 @@ Every icon comes by its Material name, as a Form or a FormSet, at any size, in a
 
 Each pack replaces the icons of the tools (`#add`, `#delete`, `#refresh`, `#smallSave`, `#testGreen`…) and keeps the rest of the current pack. Either one can be installed or removed at any time.
 
+**`MaterialProtocolSymbols`** gives the common method protocols a Material Symbol (`accessing` a key, `testing` a question mark, `tests` a lab flask, `printing` a printer…), which the system browser shows next to them: see [Protocol symbols](#protocol-symbols).
+
 ```smalltalk
 Metacello new
 	baseline: 'MaterialIcons';
@@ -19,7 +21,7 @@ Metacello new
 	load
 ```
 
-`repository: 'tonel:///path/to/material-icons.st/src'` loads from a local clone. Loading changes nothing in the UI. `load:` takes a group, or an Array of groups, to load a part:
+`repository: 'tonel:///path/to/material-icons.st/src'` loads from a local clone. Loading changes no icon of the UI; it only adds the protocol symbols to the browsers (`MaterialProtocolSymbols enabled: false` takes them away). `load:` takes a group, or an Array of groups, to load a part:
 
 | group | packages | what | Tonel |
 |---|---|---|---:|
@@ -30,8 +32,10 @@ Metacello new
 | `SymbolsRoundedFilled` | `MaterialSymbols-Rounded-Filled`, `MaterialSymbols-Rounded-Filled-192` | `MaterialIcons symbolsRoundedFilled`, all sizes | 15.2 MB |
 | `ThemePack` | `MaterialIcons-ThemePack` (with `Core`) | `MaterialThemeIcons` | 0.04 MB |
 | `SymbolsThemePack` | `MaterialSymbols-ThemePack` (with `SymbolsRoundedSmall`) | `MaterialSymbolsThemeIcons` | 0.4 MB |
+| `SymbolsProtocols` | `MaterialSymbols-Protocols`, `MaterialSymbols-Protocols-Calypso` (with `SymbolsRoundedSmall`) | `MaterialProtocolSymbols`, the symbols of the protocols in the browsers | 0.04 MB |
 | `Tests` | `MaterialIcons-Tests`, `MaterialSymbols-Tests` (`IconsTests`, `SymbolsTests`) | the tests; `IconsTests` loads the masters of Material Icons Rounded, `SymbolsTests` skips the tests of the masters when they are not loaded | |
-| `default` | `SymbolsRoundedSmall`, `SymbolsThemePack`, `SymbolsTests` | the symbols at 16, 24 and 32 pixels, without their masters and without Material Icons Rounded | 7.1 MB |
+| `SymbolsProtocolsTests` | `MaterialSymbols-Protocols-Tests` | the tests of `SymbolsProtocols` | 0.03 MB |
+| `default` | `SymbolsRoundedSmall`, `SymbolsThemePack`, `SymbolsProtocols`, `SymbolsTests`, `SymbolsProtocolsTests` | the symbols at 16, 24 and 32 pixels, without their masters and without Material Icons Rounded, the pack and the protocol symbols | 7.2 MB |
 | `Full` | all of them | | 40.7 MB |
 
 The masters are not in `default`: without them a size other than 16, 24 and 32 is drawn from the 32-pixel icon, so large icons are soft, and `masterFormNamed:` is not available. `load: 'SymbolsRounded'` adds the masters of the symbols. Material Icons Rounded is not in `default` either: `load: #( 'IconsRounded' 'ThemePack' 'IconsTests' )` loads it with its masters, its pack and its tests, and `load: 'Full'` loads everything. `load: 'Core'` loads what the earlier versions loaded. The image grows by more than the Tonel loaded, and by twice as much until the caches of Monticello are emptied: see [Sizes, load times, image growth](#sizes-load-times-image-growth).
@@ -146,6 +150,51 @@ Everything below holds for both packs. Where they differ, the [Material Symbols 
 - **Pixels.** `MaterialSymbolsThemeIconsArt` holds the pixels of every mapped key. The pack therefore needs neither the masters nor the filled packages, only `MaterialSymbols-Rounded` for the `symbol_<name>` keys.
 - **Export.** `exportToIconPacks` writes `materialSymbolsRounded.zip`, with `LICENSE-material-symbols` and a `NOTICE` of its own.
 
+## Protocol symbols
+
+`MaterialProtocolSymbols` (group `SymbolsProtocols`, in `default`) maps method protocols to Material Symbols Rounded, and the system browser shows them next to the protocols where Pharo has no icon of its own. It needs `MaterialSymbols-Rounded`, not the theme pack.
+
+![The system browser of Pharo 15 on Morph: the protocol pane and the status bar of the method editor with their symbols](docs/protocol-symbols.png)
+
+```smalltalk
+MaterialProtocolSymbols symbolNameForProtocol: 'accessing'.			"#key"
+MaterialProtocolSymbols symbolNameForProtocol: 'Accessing-defaults'.	"#settings_backup_restore"
+MaterialProtocolSymbols symbolNameForProtocol: 'tests - printing'.	"#labs: the family 'tests - '"
+MaterialProtocolSymbols symbolNameForProtocol: '*Roassal-Examples'.	"#extension"
+MaterialProtocolSymbols symbolNameForProtocol: 'zork'.				"nil: no symbol, never a placeholder"
+MaterialProtocolSymbols formSetForProtocol: 'printing'.	"a FormSet of 16, 24 and 32 pixels, in the colour below"
+MaterialProtocolSymbols formForProtocol: 'printing'.		"a 16-pixel Form"
+MaterialProtocolSymbols enabled: false.	"no protocol symbol in the browsers (Settings > Appearance)"
+```
+
+- **The mapping** is data: `scripts/protocol-symbols.tsv`, 255 rows and 150 symbols, each row with its confidence, its counts and why. `scripts/protocol_symbols.py` checks it (every symbol must be one of Material Symbols Rounded, every pattern normalised, no row twice) and writes it as the class `MaterialProtocolSymbolsTable`; a test checks that the class and the file agree. The names come from a survey of the protocols of Pharo 12, Pharo 15 and Pharo 15 with Roassal, CMark and the other usual packages: the rows give a symbol to 91% of the protocols of each image (90% in Pharo 12), and the survey's top list is mapped. Pharo's own conventions were followed: `MethodClassifier`'s names, the spellings that Renraku corrects (they share the symbol of the right one), `Protocol unclassified`.
+- **Matching.** A name is trimmed, lowered, its blanks made single and `-` spaced as ` - ` (`Accessing-defaults` is `accessing - defaults`). Then it takes its exact row, else its longest prefix row, the prefix followed by a non-letter (`private` covers `private - accessing`; `test` does not cover `testing`), so that the families `accessing - …`, `private - …`, `tests - …`, `testing - …`, `api - …` share the symbol of their head unless a row of their own says otherwise (`accessing - defaults`, `tests - fixture`). Every extension protocol (`*Package`) takes the one `extension` symbol.
+- **The main symbols.** Distinct meanings have distinct symbols; where a key of the Material Symbols pack means the same thing its symbol is reused.
+
+  | protocol | symbol | protocol | symbol | protocol | symbol |
+  |---|---|---|---|---|---|
+  | accessing | `key` | testing | `question_mark` | tests | `labs` |
+  | initialization | `power_settings_new` | class initialization | `settings_power` | instance creation | `fiber_new` |
+  | private | `lock_person` | public | `public` | api | `api` |
+  | printing | `print` | converting | `swap_horiz` | comparing | `compare_arrows` |
+  | copying | `content_copy` | enumerating | `repeat` | adding / removing | `add` / `remove` |
+  | running | `sprint` | tests - fixture | `home_repair_service` | asserting | `verified` |
+  | visiting | `tour` | actions | `bolt` | examples | `lightbulb` |
+  | updating | `sync` | drawing | `draw` | rendering | `brush` |
+  | events | `touch_app` | settings | `settings` | utilities | `handyman` |
+  | hooks | `phishing` | deprecated | `auto_delete` | debugging | `bug_report` |
+  | as yet unclassified | `label_off` | `*Package` | `extension` | trait protocol conflict | `swords` |
+
+- **Where they show.** In Pharo 12, 13, 14 and 15, through the package `MaterialSymbols-Protocols-Calypso`, with Calypso's own extension points (table decorators, a browser plugin), no Pharo method overridden:
+  - the protocol pane of the system browser, in the icon slot of each protocol;
+  - the status bar of the method editor, before "Edit protocol: …", in the system browser and in the query browsers, following the protocol of the method shown;
+  - the protocol column of Calypso's query browsers (senders, implementors…, opened from the system browser).
+
+  The method list, the dialogs that choose a protocol, the debugger, the inspector and Iceberg show no protocol icon: they have no place for one without overriding Pharo.
+- **When.** Only on real protocols: not on Calypso's virtual groups (`instance side`, `extensions`, `overrides`, `deprecated`, `breakpoints`, `flags`…) nor on the `*Package` groups, which keep their look. Where Calypso draws its own icon (`private…` with `protocolPrivate`, `initial…`, `releas…`, `finali…` with `protocolProtected`, the extensions with `protocolExtension`), it keeps it, and the status bar and the protocol column show that icon too, so a protocol has one icon everywhere. A protocol without a row has no icon. A browser opened before the package was loaded gets the status bar icon when it is opened again.
+- **Colour.** That of the installed Material pack (`effectiveColor`: grey after `MaterialSymbolsThemeIcons installColor: Color gray monochrome: true`), else that of `MaterialIcons symbolsRounded`, the text colour of the UI theme. The icons are drawn again when the theme changes; protocols never take the fixed colours of the status keys.
+- **The switch.** `MaterialProtocolSymbols enabled: false`, or "Material Symbols of protocols" under Appearance in the Settings browser, takes every protocol symbol out of the open browsers and gives them their look back; `enabled: true` puts them back.
+
 ## What is in it
 
 ### Material Icons Rounded
@@ -244,6 +293,8 @@ These files are generated by `scripts/generate.py`:
 - the classes `MaterialThemeIconsArt` and `MaterialSymbolsThemeIconsArt`.
 
 Do not edit them. Change the generator or a mapping (`scripts/pharo-mapping.tsv`, `scripts/symbols-mapping.tsv`) and run it again.
+
+`MaterialProtocolSymbolsTable` is generated by `scripts/protocol_symbols.py` (the Python standard library only) from `scripts/protocol-symbols.tsv`: `python3 -I scripts/protocol_symbols.py` writes it, `--check` compares instead.
 
 ```sh
 python3 -m venv build/venv
