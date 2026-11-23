@@ -31,14 +31,16 @@ Metacello new
 | `ThemePack` | `MaterialIcons-ThemePack` (with `Core`) | `MaterialThemeIcons` | 0.04 MB |
 | `SymbolsThemePack` | `MaterialSymbols-ThemePack` (with `SymbolsRoundedSmall`) | `MaterialSymbolsThemeIcons` | 0.4 MB |
 | `Tests` | `MaterialIcons-Tests`, `MaterialSymbols-Tests` (`IconsTests`, `SymbolsTests`) | the tests, with the masters | |
-| `default` | all of the above but `SymbolsRoundedFilled` | | 25.5 MB |
+| `default` | `SymbolsRounded`, `SymbolsThemePack`, `SymbolsTests` | the symbols only, without Material Icons Rounded | 18.1 MB |
 | `Full` | all of them | | 40.7 MB |
 
-For example, `load: #( 'SymbolsRounded' 'SymbolsThemePack' )` loads the symbols and their pack without Material Icons Rounded. `load: 'Core'` loads what the earlier versions loaded. The image grows by more than the Tonel loaded, and by twice as much until the caches of Monticello are emptied: see [Sizes, load times, image growth](#sizes-load-times-image-growth).
+Material Icons Rounded is not in `default`: `load: #( 'IconsRounded' 'ThemePack' 'IconsTests' )` loads it with its masters, its pack and its tests, and `load: 'Full'` loads everything. `load: 'Core'` loads what the earlier versions loaded. The image grows by more than the Tonel loaded, and by twice as much until the caches of Monticello are emptied: see [Sizes, load times, image growth](#sizes-load-times-image-growth).
 
 The icon data is generated: `scripts/generate.py` rasterizes the pinned SVGs of Google's repository, see [Regenerating](#regenerating).
 
 ## The icons
+
+`MaterialIcons rounded` needs the group `Core` or `IconsRounded` (the masters), which `default` leaves out; `MaterialIcons symbolsRounded` is in `default`.
 
 ```smalltalk
 MaterialIcons rounded iconNamed: #home.				"a 16x16 Form"
@@ -89,6 +91,8 @@ MaterialIcons styles.						"#(#rounded #symbolsRounded ...), those loaded"
   Nothing else empties the cache, so each new colour or size adds Forms to it. The theme packs flush it when the UI theme changes and on `uninstall`. `cacheSize` counts the Forms of the current session only.
 
 ## Pharo's UI with Material icons
+
+`MaterialThemeIcons` is in the group `ThemePack`, which `default` leaves out; `MaterialSymbolsThemeIcons` is in `default`.
 
 ```smalltalk
 MaterialThemeIcons install.				"Material icons in the windows and menus opened from now on"
@@ -212,10 +216,12 @@ Measured on stock images: Pharo 15 build 117 and Pharo 12 build 1599. Each group
 | `IconsRounded` | 4.9 MB | 7.3 MB | 6.4 s | 15.4 s | +9.8 MB | +12.0 MB |
 | `SymbolsRoundedSmall` | 3.6 MB | 6.6 MB | 6.0 s | 24.6 s | +8.7 MB | +10.8 MB |
 | `SymbolsRounded` | 11.6 MB | 17.7 MB | 13.5 s | 44.5 s | +20.0 MB | +22.4 MB |
-| `default` | 16.8 MB | 25.5 MB | 19.5 s | 60.5 s | +28.3 MB | +31.0 MB |
+| `default` (*) | | 18.1 MB | 12.7 s | 14.4 s | +20.4 MB | +23.0 MB |
 | `Full` | 27.4 MB | 40.7 MB | 30.3 s | 90.8 s | +43.7 MB | +47.2 MB |
 
-- **The caches of Monticello.** Right after a load the image holds every method twice: Monticello's repositories keep each version they loaded, with all its method sources. A `tonel://` load of `default` makes the image about 59 MB larger, and of `Full` about 90 MB; emptying the caches frees about 28 MB of the `default` load. This empties them on Pharo 12 and 15 (on Pharo 15, `TonelRepository allInstances do: #flushCache` alone is enough; on Pharo 12 it is not):
+(*) `default` was measured later, on its own: two images loading at once instead of 14, so its load times are not comparable with the other rows.
+
+- **The caches of Monticello.** Right after a load the image holds every method twice: Monticello's repositories keep each version they loaded, with all its method sources. A `tonel://` load of `Full` makes the image about 90 MB larger, and of all the groups but `SymbolsRoundedFilled` (25.5 MB of Tonel) about 59 MB; emptying the caches frees about 28 MB of the latter. This empties them on Pharo 12 and 15 (on Pharo 15, `TonelRepository allInstances do: #flushCache` alone is enough; on Pharo 12 it is not):
 
   ```smalltalk
   MCRepository allSubInstances do: [ :each | [ each flushCache ] on: Error do: [ :error | ] ].
