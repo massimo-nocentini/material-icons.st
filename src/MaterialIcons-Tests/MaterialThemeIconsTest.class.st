@@ -67,6 +67,24 @@ MaterialThemeIconsTest >> testColors [
 ]
 
 { #category : 'tests' }
+MaterialThemeIconsTest >> testMonochrome [
+	"A monochrome pack draws the status keys in its colour too"
+
+	| pack |
+	pack := MaterialThemeIcons installColor: Color red monochrome: true.
+	self assert: pack monochrome.
+	self
+		assert: (pack iconNamed: #testGreen) bits
+		equals: (MaterialIcons rounded formNamed: #check_circle scale: 1 color: Color red) bits.
+	pack := MaterialThemeIcons installMonochrome.
+	self assert: pack monochrome.
+	self assert: pack followsTheme.
+	self
+		assert: (pack iconNamed: #testGreen) bits
+		equals: (MaterialIcons rounded formNamed: #check_circle scale: 1 color: pack provider themeColor) bits
+]
+
+{ #category : 'tests' }
 MaterialThemeIconsTest >> testEntries [
 	"Mapped keys are unique Pharo keys of the default pack, mapped to Material icons"
 

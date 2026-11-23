@@ -99,6 +99,8 @@ MaterialThemeIcons install.				"Material icons in the windows and menus opened f
 MaterialThemeIcons uninstall.				"the previous pack again"
 MaterialThemeIcons isInstalled.
 MaterialThemeIcons installColor: Color gray.		"a fixed colour instead of the theme's"
+MaterialThemeIcons installMonochrome.			"the status keys too in the theme's colour"
+MaterialThemeIcons installColor: Color gray monochrome: true.	"every key in gray"
 
 Smalltalk ui icons iconNamed: #add.			"Material, once installed"
 Smalltalk ui icons iconNamed: #material_cloud_sync.	"any Material icon, by material_<name>"
@@ -112,7 +114,7 @@ Everything below holds for both packs. Where they differ, the [Material Symbols 
 
 - **Install.** `install` makes a `MaterialThemeIcons` the current `ThemeIcons`, which is what `Smalltalk ui icons`, `iconNamed:`, Spec's icon providers and Commander use. 243 keys of the default pack are mapped to Material icons (`scripts/pharo-mapping.tsv`). They are drawn at the size the default pack uses for each key (14 pixels for `#accept`, 32 for `#info`), so rows and menus keep their layout.
 - **Keys that stay as they were.** Every other key keeps the icon of the pack that was current before: check boxes, radio buttons, the small arrows, window buttons, halos, logos (Pharo, git, GitHub), the coloured circles and so on.
-- **Colours.** The icons take the colour of the UI theme and are redrawn when the theme changes. The status keys keep fixed colours: tests (green, red, amber, and a filled grey circle for `testNotRun`, so that it does not look like a radio button), errors (red), warnings (amber), information (blue), `breakpoint` (red) and `confirm` (green).
+- **Colours.** The icons take the colour of the UI theme and are redrawn when the theme changes. The status keys keep fixed colours: tests (green, red, amber, and a filled grey circle for `testNotRun`, so that it does not look like a radio button), errors (red), warnings (amber), information (blue), `breakpoint` (red) and `confirm` (green). A monochrome pack (`installMonochrome`, `installColor:monochrome:`) draws them in its colour too: a test status is then told by its shape only (a check, an X or a ! in a disc, a plain disc for `testNotRun`), and the coloured dots and the buttons of inactive windows look like the others.
 - **Weight.** Material icons look lighter than svgPack's: they keep Material's padding of 2 units on the 24 grid, so their shapes are about 12% smaller and carry about two thirds of the ink. In `MaterialThemeIcons` it shows most on `stop`, `downArrow`, `go`/`glamorousGo`/`smallDoIt` (a 7-pixel triangle in 13 pixels) and `leftSide`/`rightSide`; its padding is not trimmed, since many icons draw into it. `MaterialSymbolsThemeIcons` trims it on the small keys where it matters (see below).
 - **Not in any pack.** A few tools draw icons of their own instead of asking the pack, so no icon pack replaces them: `StFileBrowserIconCache` and `StNoteBookPreviewerPresenter` (drive, file, folder, terminal) and, in Pharo 15, `StSettingsAbstractPresenter` (its `…Icon` methods). They are not keys of svgPack.
 - **Uninstall.** `uninstall` makes the previous pack current again and empties the cache of the icons it was drawn with.

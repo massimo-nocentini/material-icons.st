@@ -10,10 +10,12 @@ MaterialSymbolsThemeIcons install.		""Material Symbols in the UI: the windows op
 MaterialSymbolsThemeIcons uninstall.	""the previous pack again""
 MaterialSymbolsThemeIcons isInstalled.
 MaterialSymbolsThemeIcons installColor: Color gray.	""a fixed colour instead of that of the UI theme""
+MaterialSymbolsThemeIcons installMonochrome.	""the status keys too in the colour of the UI theme""
+MaterialSymbolsThemeIcons installColor: Color gray monochrome: true.	""every key in gray""
 MaterialSymbolsThemeIcons exportToIconPacks.	""materialSymbolsRounded.zip, for the Settings""
 ```
 
-The icons are in the colour of the UI theme, redrawn when the theme changes, except the status keys, of the fixed colours of the mapping (tests, errors, warnings, information...). Installing me while MaterialThemeIcons is installed goes over its fallback, and the other way round: the two packs replace each other. Everything else (uninstall, stored settings, the zip for the Settings, with LICENSE-material-symbols and NOTICE) is as described in MaterialAbstractThemeIcons.
+The icons are in the colour of the UI theme, redrawn when the theme changes, except the status keys, of the fixed colours of the mapping (tests, errors, warnings, information...); a `monochrome` pack draws them in its colour too, so that only their shapes tell them apart. Installing me while MaterialThemeIcons is installed goes over its fallback, and the other way round: the two packs replace each other. Everything else (uninstall, stored settings, the zip for the Settings, with LICENSE-material-symbols and NOTICE) is as described in MaterialAbstractThemeIcons.
 
 My pixels are those of MaterialSymbolsThemeIconsArt: I need the package MaterialSymbols-Rounded only for the keys `symbol_<name>` and the colour of the theme, and neither the masters nor the filled variant.
 "
@@ -90,9 +92,7 @@ MaterialSymbolsThemeIcons >> addEntry: anEntry to: aDictionary [
 
 	| pngs tint |
 	pngs := MaterialSymbolsThemeIconsArt perform: anEntry sixth.
-	tint := anEntry fifth
-		        ifNil: [ self effectiveColor ]
-		        ifNotNil: [ :hex | Color fromHexString: hex ].
+	tint := self colorOfEntry: anEntry fifth.
 	MaterialIcons scales doWithIndex: [ :each :index |
 		(aDictionary at: each asFloat)
 			at: anEntry first

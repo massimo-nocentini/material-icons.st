@@ -10,6 +10,7 @@ MaterialThemeIcons install.		""Material icons in the UI: the windows opened from
 MaterialThemeIcons uninstall.	""the previous pack again""
 MaterialThemeIcons isInstalled.
 MaterialThemeIcons installColor: Color gray.	""a fixed colour instead of that of the UI theme""
+MaterialThemeIcons installMonochrome.	""the status keys too in the colour of the UI theme""
 MaterialThemeIcons exportToIconPacks.	""list me in Settings > Appearance (see below)""
 ```
 
@@ -96,9 +97,7 @@ MaterialThemeIcons >> addEntry: anEntry to: aDictionary [
 	key := anEntry first.
 	material := anEntry second.
 	side := anEntry third.
-	tint := anEntry fourth
-		        ifNil: [ self effectiveColor ]
-		        ifNotNil: [ :hex | Color fromHexString: hex ].
+	tint := self colorOfEntry: anEntry fourth.
 	MaterialIcons scales doWithIndex: [ :each :index |
 		(aDictionary at: each asFloat)
 			at: key

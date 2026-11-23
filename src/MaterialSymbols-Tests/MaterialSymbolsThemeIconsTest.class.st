@@ -54,6 +54,16 @@ MaterialSymbolsThemeIconsTest >> tearDown [
 	super tearDown
 ]
 
+{ #category : 'asserting' }
+MaterialSymbolsThemeIconsTest >> assertIcon: aForm isInColor: aColor [
+	"aForm has ink, and every pixel of it that is not transparent is aColor"
+
+	aForm unhibernate.
+	self assert: (aForm bits anySatisfy: [ :pixel | (pixel bitShift: -24) > 0 ]).
+	self assert: ((aForm bits reject: [ :pixel | (pixel bitShift: -24) = 0 ]) allSatisfy: [ :pixel |
+			 (pixel bitAnd: 16rFFFFFF) = ((aColor pixelValueForDepth: 32) bitAnd: 16rFFFFFF) ])
+]
+
 { #category : 'tests' }
 MaterialSymbolsThemeIconsTest >> testColors [
 	"A fixed colour for the status keys, the colour of the pack for the others"
@@ -181,6 +191,29 @@ MaterialSymbolsThemeIconsTest >> testMappedKeysAtTheSizesOfThePreviousPack [
 	self assert: (pack iconNamed: #add) extent equals: 16 @ 16.
 	self assert: (pack iconNamed: #accept) extent equals: 14 @ 14.
 	self deny: (pack iconNamed: #add) bits equals: (previous iconNamed: #add) bits
+]
+
+{ #category : 'tests' }
+MaterialSymbolsThemeIconsTest >> testMonochrome [
+	"A monochrome pack draws the status keys in its colour too, and stays monochrome when it is redrawn for a new UI theme"
+
+	| pack themed |
+	pack := MaterialSymbolsThemeIcons installColor: Color gray monochrome: true.
+	self assert: pack monochrome.
+	self deny: pack followsTheme.
+	self assert: (MaterialSymbolsThemeIconsArt entries anySatisfy: [ :entry | entry fifth notNil ]).
+	MaterialSymbolsThemeIconsArt entries do: [ :entry |
+		self assertIcon: (pack iconNamed: entry first) isInColor: Color gray ].
+	pack := MaterialSymbolsThemeIcons installMonochrome.
+	self assert: pack monochrome.
+	self assert: pack followsTheme.
+	themed := pack provider themeColor.
+	#( #testGreen #testRed #warning #info ) do: [ :key |
+		self assertIcon: (pack iconNamed: key) isInColor: themed ].
+	MaterialSymbolsThemeIcons themeChanged: nil.
+	self assert: MaterialSymbolsThemeIcons installed monochrome.
+	self assertIcon: (MaterialSymbolsThemeIcons installed iconNamed: #testRed) isInColor: themed.
+	self deny: (MaterialSymbolsThemeIcons installColor: Color gray) monochrome
 ]
 
 { #category : 'tests' }

@@ -10,10 +10,12 @@ MaterialThemeIcons install.		""Material icons in the UI: the windows opened from
 MaterialThemeIcons uninstall.	""the previous pack again""
 MaterialThemeIcons isInstalled.
 MaterialThemeIcons installColor: Color gray.	""a fixed colour instead of that of the UI theme""
+MaterialThemeIcons installMonochrome.	""the status keys too in the colour of the UI theme""
+MaterialThemeIcons installColor: Color gray monochrome: true.	""every key in gray""
 MaterialThemeIcons exportToIconPacks.	""list it in Settings > Appearance (see below)""
 ```
 
-Loading the packages changes nothing: only `install` does. `install` keeps the current pack as the fallback (installing again keeps the first one), and `uninstall` makes it current again; both go through `ThemeIcons current:`, so the tools of Pharo 12 and 15 (Morphic, Spec, Commander) pick the new icons in the windows they open next. Installing one Material pack while another is installed goes over the fallback of the other: the two replace each other, they do not pile up. The icons are in the colour of the UI theme (`provider themeColor`), redrawn when the theme changes, except the status keys, of the fixed colours of the entries.
+Loading the packages changes nothing: only `install` does. `install` keeps the current pack as the fallback (installing again keeps the first one), and `uninstall` makes it current again; both go through `ThemeIcons current:`, so the tools of Pharo 12 and 15 (Morphic, Spec, Commander) pick the new icons in the windows they open next. Installing one Material pack while another is installed goes over the fallback of the other: the two replace each other, they do not pile up. The icons are in the colour of the UI theme (`provider themeColor`), redrawn when the theme changes, except the status keys, of the fixed colours of the entries (tests, errors, warnings, information, the coloured dots, the buttons of inactive windows). A `monochrome` pack draws those in its colour too: the status keys keep their own shapes (a check, an X, a ! in a disc...), not their colours.
 
 Saving the Settings of Pharo while a pack of mine is installed records its fallback as the icon pack: a pack restored from stored settings is read from a zip named after it, which only `exportToIconPacks` writes, so a new image could not restore mine. To get it at every start, put its `install` in a startup script.
 
@@ -28,7 +30,8 @@ Class {
 	#superclass : 'ThemeIcons',
 	#instVars : [
 		'fallback',
-		'color'
+		'color',
+		'monochrome'
 	],
 	#classInstVars : [
 		'lastFallback'
@@ -125,7 +128,14 @@ MaterialAbstractThemeIcons class >> install [
 
 { #category : 'installing' }
 MaterialAbstractThemeIcons class >> installColor: aColorOrNil [
-	"Make a pack of mine the icons of the UI, in aColorOrNil (nil: the colour of the UI theme), over the current pack, or over the fallback of the installed Material pack. Answer it"
+	"Make a pack of mine the icons of the UI, in aColorOrNil (nil: the colour of the UI theme), the status keys in their fixed colours, over the current pack, or over the fallback of the installed Material pack. Answer it"
+
+	^ self installColor: aColorOrNil monochrome: false
+]
+
+{ #category : 'installing' }
+MaterialAbstractThemeIcons class >> installColor: aColorOrNil monochrome: aBoolean [
+	"Make a pack of mine the icons of the UI, in aColorOrNil (nil: the colour of the UI theme), over the current pack, or over the fallback of the installed Material pack; when aBoolean is true the status keys too are in that colour, instead of their fixed colours. Answer it"
 
 	| previous pack |
 	previous := self fallbackForInstall.
@@ -133,11 +143,19 @@ MaterialAbstractThemeIcons class >> installColor: aColorOrNil [
 	pack := self new
 		        fallback: previous;
 		        color: aColorOrNil;
+		        monochrome: aBoolean;
 		        build;
 		        yourself.
 	pack beCurrent.
 	self subscribeToThemeChanges.
 	^ pack
+]
+
+{ #category : 'installing' }
+MaterialAbstractThemeIcons class >> installMonochrome [
+	"Make a pack of mine the icons of the UI, every key in the colour of the UI theme, the status keys too. Answer it"
+
+	^ self installColor: nil monochrome: true
 ]
 
 { #category : 'accessing' }
@@ -341,6 +359,15 @@ MaterialAbstractThemeIcons >> color: aColorOrNil [
 ]
 
 { #category : 'accessing' }
+MaterialAbstractThemeIcons >> colorOfEntry: aHexStringOrNil [
+	"The colour of an entry of my artClass whose fixed colour is aHexStringOrNil (RRGGBB, nil for none): that colour, unless I am monochrome or it has none, and then mine"
+
+	^ (monochrome or: [ aHexStringOrNil isNil ])
+		  ifTrue: [ self effectiveColor ]
+		  ifFalse: [ Color fromHexString: aHexStringOrNil ]
+]
+
+{ #category : 'accessing' }
 MaterialAbstractThemeIcons >> effectiveColor [
 
 	^ color ifNil: [ self provider themeColor ]
@@ -388,7 +415,22 @@ MaterialAbstractThemeIcons >> initialize [
 
 	super initialize.
 	name := self class packName.
-	scale := 1
+	scale := 1.
+	monochrome := false
+]
+
+{ #category : 'accessing' }
+MaterialAbstractThemeIcons >> monochrome [
+	"Whether the status keys are in my colour too, instead of their fixed colours"
+
+	^ monochrome
+]
+
+{ #category : 'accessing' }
+MaterialAbstractThemeIcons >> monochrome: aBoolean [
+	"Draw the status keys (at the next build) in my colour too when aBoolean is true, in their fixed colours when false"
+
+	monochrome := aBoolean
 ]
 
 { #category : 'loading' }
